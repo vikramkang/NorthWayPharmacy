@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Env / secrets
+.env
+.env.local
+*.env
+
+# Backend local data placeholder store — not meant for version control
+backend/data/*.jsonl
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
