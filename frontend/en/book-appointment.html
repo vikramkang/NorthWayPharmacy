@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Book an Appointment — NorthWay Clinic and Pharmacy</title>
-<meta name="description" content="Book an appointment online through Medeo.">
+<meta name="description" content="Register as a new patient or book an appointment through Medeo at NorthWay Clinic and Pharmacy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Accepting new patients</span>
+    <span class="badge" id="site-badge">Accepting new patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[PHONE NUMBER]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">EN</a> | <a href="../fr/book-appointment.html">FR</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Main navigation">
       <ul>
         <li><a href="index.html">Home</a></li>
-            <li><a href="register.html">Register</a></li>
-            <li><a href="book-appointment.html" aria-current="page">Book an Appointment</a></li>
+            <li><a href="book-appointment.html" class="nav-cta" aria-current="page">Book an Appointment</a></li>
             <li><a href="clinic-services.html">Clinic Services</a></li>
             <li><a href="pharmacy-services.html">Pharmacy Services</a></li>
-            <li><a href="long-term-care.html">Long-Term Care</a></li>
-            <li><a href="visit-us.html">Visit Us</a></li>
-            <li><a href="urgent-care.html">Urgent Care</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">About Us</a></li>
       </ul>
     </nav>
   </div>
@@ -42,25 +40,86 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Book an Appointment</h1><p class="lede">Once you're a registered patient, booking is quick and secure through our online scheduling partner, Medeo.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Book an Appointment</h1><p class="lede">New or returning — start here.</p></div></div>
+
+<section class="reveal">
   <div class="container">
-    <div class="card" style="max-width:640px;">
-      <h3>Book online with Medeo</h3>
-      <p>Select a provider, pick an available time, and get an instant confirmation by email.</p>
-      <a class="btn btn-primary" href="#" aria-disabled="true">Open Medeo Booking</a>
-      <p class="hint">[LINK PLACEHOLDER — insert the practice's live Medeo booking URL before launch.]</p>
-    </div>
+    <h2>New Patient</h2>
+    <div class="form-note">Takes about a minute. We'll take it from there.</div>
 
-    <div class="callout warn" style="margin-top:28px;">
-      <h3>Need to be seen urgently?</h3>
-      <p>Online booking isn't the right tool for urgent symptoms. See our <a href="urgent-care.html">Urgent Care Guidance</a> for what to do instead.</p>
-    </div>
+    <form class="stack" id="register-form" novalidate>
+      <div class="field">
+        <label for="reg-for">Who is this for?</label>
+        <select id="reg-for" name="registeringFor" required>
+          <option value="">Select one</option>
+          <option value="self">Myself</option>
+          <option value="dependent">My child or a dependent</option>
+        </select>
+        <p class="hint">A parent or guardian must register a child.</p>
+      </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Not registered yet?</span>
-      <p><a href="register.html">Register as a new patient</a> first — Medeo bookings are for active patients in our system.</p>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="fullName" required autocomplete="name">
+      </div>
+
+      <fieldset>
+        <legend>Gender</legend>
+        <div class="radio-row">
+          <label><input type="radio" name="gender" value="female"> Female</label>
+          <label><input type="radio" name="gender" value="male"> Male</label>
+          <label><input type="radio" name="gender" value="other"> Other</label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel">
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="address">Home address</label>
+        <input type="text" id="address" name="address" required autocomplete="street-address">
+      </div>
+
+      <div class="field">
+        <label for="pref-lang">Preferred language</label>
+        <select id="pref-lang" name="preferredLanguage">
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+
+      <div class="field consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">You can contact me by phone, email, or text.</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit Registration</button>
+      <p class="hint" id="form-error" hidden>Something went wrong. Please call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
+    </form>
+
+    <div class="callout info" id="form-confirmation" hidden>
+      <h2>Thank you</h2>
+      <p>We'll be in touch shortly to book your first visit.</p>
     </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="container">
+    <h2>Returning Patient</h2>
+    <div class="card" style="max-width:520px;">
+      <p>Book online through Medeo.</p>
+      <a class="btn btn-primary" href="#">Open Medeo Booking</a>
+      <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
+    </div>
+    <p class="hint" style="margin-top:20px;">Something urgent? <a href="clinic-services.html#urgent-care">See what to do instead</a>.</p>
   </div>
 </section>
 
@@ -76,10 +135,9 @@
       <div>
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="register.html">Register</a></li>
           <li><a href="book-appointment.html">Book an Appointment</a></li>
-          <li><a href="urgent-care.html">Urgent Care</a></li>
-          <li><a href="visit-us.html">Visit Us</a></li>
+          <li><a href="clinic-services.html">Clinic Services</a></li>
+          <li><a href="about.html">About Us</a></li>
         </ul>
       </div>
       <div>

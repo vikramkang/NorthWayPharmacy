@@ -23,7 +23,60 @@ these rules win over convenience or speed.
 - The Privacy Policy page is a draft until NorthWay's compliance officer signs
   off. Do not treat its current text as final or launch-ready.
 
+## 1a. Team roster / identity rules
+
+- Never put a real clinician's name, photo, credentials, or bio on the
+  public Team page without their explicit knowledge and consent.
+- Never copy a name, photo, or bio from another practice's real website —
+  even as a placeholder. It happened once already (a request to reuse
+  maplecures.ca's real physicians as placeholder content) and was declined;
+  see memory.md. Use clearly generic, fictional placeholder entries instead
+  until real ones are provided.
+- Stock or third-party photography needs the user's explicit go-ahead before
+  downloading (see the app's own permission rules on file downloads) and
+  clean licensing. Default to the initials-avatar placeholder rather than
+  sourcing photos without asking.
+- The decorative photos sitewide (hero + Clinic/Pharmacy/Long-Term Care/About
+  pages) are the client's own supplied stock photos, dropped into `frontend/`
+  and now optimized (resized, compressed, metadata stripped) into
+  `frontend/assets/img/`. The untouched originals are kept in
+  `frontend/assets/img/_source/` in case a different crop/size is needed
+  later. An earlier pass had used hotlinked free Pexels photos instead — the
+  client felt those looked low-quality and replaced them with these real
+  ones; see memory.md. None of them show a real, named NorthWay clinician —
+  see the rule above about the Team page specifically.
+- The Team admin page (`frontend/admin/team.html`) is gated by a single
+  shared `ADMIN_TOKEN`, not per-user accounts. Don't describe it to the
+  client as "secure" without that caveat, and don't extend it to handle
+  anything more sensitive than public marketing bios without adding real
+  authentication first.
+
 ## 2. Content rules
+
+- **Keep it short.** Ledes are a handful of words (aim for under 8), not
+  sentences. One short sentence per card. If a page needs a second sentence
+  to explain itself, cut the first one instead of adding a second. This was
+  flagged twice by the user — treat it as a hard rule, not a style
+  preference.
+- **Fewer top-level nav items, not more.** Nav is down to 5 items: Home,
+  Book an Appointment, Clinic Services, Pharmacy Services, About Us.
+  Register lives as a section on Book an Appointment; Urgent Care lives as
+  a section on Clinic Services (`#urgent-care`); Long-Term Care lives as a
+  section on Pharmacy Services (`#long-term-care`); Visit Us and Our Team
+  both live as sections on About Us (`#visit-us`, `#team`). Each retired
+  URL (`register.html`, `urgent-care.html`, `long-term-care.html`,
+  `visit-us.html`, `team.html`) still exists as a one-line meta-refresh
+  redirect to its new home — see `writeSite()`'s `RETIRED_REDIRECTS` map in
+  `build-site.js` — so old links/bookmarks don't 404. If a new page idea
+  comes up, ask whether it can be a section of an existing page before
+  adding a 6th nav item.
+- **Internal/engineering notes are HTML comments, never on-page boxes.**
+  Anything meant for a future developer or for compliance review ("this is a
+  placeholder," "pending sign-off," "coming soon") goes in a `<!-- -->`
+  comment in `build-site.js`, not a visible callout on the live page. A
+  patient should never see the word "draft," "TODO," or a bracketed
+  `[STATUS]` flag. Keep each page to at most one visible callout box —
+  more than that reads as cluttered, not helpful.
 
 - Every page ships in English **and** French — never add an English-only
   page without also adding (or clearly stub-marking) the French version.
@@ -33,6 +86,25 @@ these rules win over convenience or speed.
 - French content is a working translation, not a certified one. Flag this
   wherever French copy changes; don't let it quietly become "final" without
   a real review pass.
+
+## 2a. Visual design & animation rules
+
+- Palette: primary accent is teal (`--accent #0E7C66` / `--accent-dark
+  #0B5B4C`), secondary accent is warm amber (`--accent2 #E8873A`), on a warm
+  cream background (`--bg #FAF7F2`). Don't introduce a third accent color —
+  alternate between the two on icon badges/cards instead.
+- Headings use Poppins (Google Fonts); body text stays on the system font
+  stack for load performance. Don't add more web fonts without a reason.
+- **No infinite or auto-playing animation, ever.** Hover/focus
+  micro-interactions (card lift, button shadow, nav underline) and one-time
+  entrance effects (scroll-reveal, sticky-header shadow) are fine. A pulsing
+  badge, a looping decorative shape, or anything that moves without the user
+  triggering it is not — this is a deliberate WCAG 2.2.2 (pause/stop/hide)
+  and older-patient-demographic decision, not an oversight.
+- Every animated/transitioned rule must have a `@media
+  (prefers-reduced-motion: reduce)` fallback that disables it — see
+  `style.css`'s bottom block and `main.js`'s `prefersReducedMotion` check.
+  When adding new motion, extend both, don't just add the effect.
 
 ## 3. Engineering rules
 

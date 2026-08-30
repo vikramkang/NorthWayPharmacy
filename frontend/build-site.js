@@ -1,8 +1,14 @@
 // NorthWay Clinic and Pharmacy — Phase 1 static site generator.
 // Generates a plain HTML/CSS/JS site (no build step needed to host it).
 // Run: node build-site.js   -> writes into ./{en,fr}/*.html and ./index.html
-// (assets/css, assets/js are hand-maintained, not generated — this script
-// only creates the directories for them if missing, it never overwrites them)
+// (assets/css, assets/js are hand-maintained, not generated)
+//
+// Content rules:
+// - This file is patient-facing. Internal/engineering notes go in HTML
+//   comments or ProjectDocs — never in a visible on-page box.
+// - Keep it short. Ledes are a handful of words, not sentences. One idea
+//   per card. If you're tempted to add a second sentence, cut the first
+//   one instead. See ProjectDocs/Rules.md.
 
 const fs = require("fs");
 const path = require("path");
@@ -19,16 +25,11 @@ const T = {
     badge: "Accepting new patients",
     nav: [
       ["index.html", "Home"],
-      ["register.html", "Register"],
       ["book-appointment.html", "Book an Appointment"],
       ["clinic-services.html", "Clinic Services"],
       ["pharmacy-services.html", "Pharmacy Services"],
-      ["long-term-care.html", "Long-Term Care"],
-      ["visit-us.html", "Visit Us"],
-      ["urgent-care.html", "Urgent Care"],
-      ["about.html", "About"]
+      ["about.html", "About Us"]
     ],
-    langLabel: "EN", otherLangLabel: "FR", otherLangName: "Français",
     footerHours: "Hours",
     footerHoursLines: ["Mon–Fri: 10:00 am – 6:00 pm", "Saturday: 10:00 am – 2:00 pm", "Sunday: Closed"],
     footerQuick: "Quick Links",
@@ -36,8 +37,7 @@ const T = {
     footerAddress: "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]",
     privacy: "Privacy Policy",
     rights: "NorthWay Clinic and Pharmacy. All rights reserved.",
-    skip: "Skip to main content",
-    emergencyBanner: "Medical emergency? Call 911 or go to Cornwall Community Hospital's Emergency Department."
+    skip: "Skip to main content"
   },
   fr: {
     dir: "fr", htmlLang: "fr",
@@ -45,16 +45,11 @@ const T = {
     badge: "Nous acceptons de nouveaux patients",
     nav: [
       ["index.html", "Accueil"],
-      ["register.html", "Inscription"],
       ["book-appointment.html", "Prendre rendez-vous"],
       ["clinic-services.html", "Services de la clinique"],
       ["pharmacy-services.html", "Services de la pharmacie"],
-      ["long-term-care.html", "Soins de longue durée"],
-      ["visit-us.html", "Nous visiter"],
-      ["urgent-care.html", "Soins urgents"],
-      ["about.html", "À propos"]
+      ["about.html", "À propos de nous"]
     ],
-    langLabel: "FR", otherLangLabel: "EN", otherLangName: "English",
     footerHours: "Heures d'ouverture",
     footerHoursLines: ["Lun–Ven : 10 h – 18 h", "Samedi : 10 h – 14 h", "Dimanche : fermé"],
     footerQuick: "Liens rapides",
@@ -62,19 +57,32 @@ const T = {
     footerAddress: "[ADRESSE], Cornwall, ON [CODE POSTAL]",
     privacy: "Politique de confidentialité",
     rights: "Clinique et pharmacie NorthWay. Tous droits réservés.",
-    skip: "Passer au contenu principal",
-    emergencyBanner: "Urgence médicale? Composez le 911 ou rendez-vous aux urgences de l'Hôpital communautaire de Cornwall."
+    skip: "Passer au contenu principal"
   }
 };
 
 // ---------------------------------------------------------------------
 // Shared markup helpers
 // ---------------------------------------------------------------------
+function card(icon, badgeClass, title, text, href) {
+  const badge = icon ? `<div class="icon-badge ${badgeClass}">${icon}</div>` : "";
+  const textHtml = text ? `<p>${text}</p>` : "";
+  const inner = `${badge}<h3>${title}</h3>${textHtml}`;
+  return href ? `<a class="card" href="${href}">${inner}</a>` : `<div class="card">${inner}</div>`;
+}
+
+function navLabel(t, href) {
+  const entry = t.nav.find(([h]) => h === href);
+  return entry ? entry[1] : href;
+}
+
 function layout({ lang, slug, title, metaDesc, body }) {
   const t = T[lang];
   const navLinks = t.nav.map(([href, label]) => {
     const current = href === slug + ".html";
-    return `<li><a href="${href}"${current ? ' aria-current="page"' : ""}>${label}</a></li>`;
+    const isCta = href === "book-appointment.html";
+    const classAttr = isCta ? ' class="nav-cta"' : "";
+    return `<li><a href="${href}"${classAttr}${current ? ' aria-current="page"' : ""}>${label}</a></li>`;
   }).join("\n            ");
 
   return `<!DOCTYPE html>
@@ -84,6 +92,8 @@ function layout({ lang, slug, title, metaDesc, body }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title} — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="${metaDesc}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -91,7 +101,7 @@ function layout({ lang, slug, title, metaDesc, body }) {
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">${t.badge}</span>
+    <span class="badge" id="site-badge">${t.badge}</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:${t.phone.replace(/[^0-9+]/g, "") || "#"}">${t.phone}</a>
       <span class="lang-toggle"></span>
@@ -125,10 +135,9 @@ ${body}
       <div>
         <h4>${t.footerQuick}</h4>
         <ul>
-          <li><a href="register.html">${t.nav[1][1]}</a></li>
-          <li><a href="book-appointment.html">${t.nav[2][1]}</a></li>
-          <li><a href="urgent-care.html">${t.nav[7][1]}</a></li>
-          <li><a href="visit-us.html">${t.nav[6][1]}</a></li>
+          <li><a href="book-appointment.html">${navLabel(t, "book-appointment.html")}</a></li>
+          <li><a href="clinic-services.html">${navLabel(t, "clinic-services.html")}</a></li>
+          <li><a href="about.html">${navLabel(t, "about.html")}</a></li>
         </ul>
       </div>
       <div>
@@ -161,25 +170,38 @@ function fixLangToggle(html, lang, slug) {
   return html.replace(/<span class="lang-toggle"><\/span>/, block);
 }
 
-function card(title, text) {
-  return `<div class="card"><h3>${title}</h3><p>${text}</p></div>`;
-}
-
-function heroSection({ h1, lede, primary, secondary }) {
-  return `<section class="hero">
-    <div class="container">
+function heroSection({ h1, lede, primary, secondary, image }) {
+  const text = `<div class="hero-text">
       <h1>${h1}</h1>
-      <p class="lede">${lede}</p>
+      ${lede ? `<p class="lede">${lede}</p>` : ""}
       <div class="btn-row">
         <a class="btn btn-primary" href="${primary.href}">${primary.label}</a>
         <a class="btn btn-secondary" href="${secondary.href}">${secondary.label}</a>
       </div>
+    </div>`;
+  const media = image
+    ? `<div class="hero-media"><img src="${image.src}" alt="${image.alt}" width="1200" height="900"></div>`
+    : "";
+  return `<section class="hero">
+    <div class="container${image ? " hero-grid" : ""}">
+      ${text}
+      ${media}
     </div>
   </section>`;
 }
 
 function pageHeader(h1, lede) {
   return `<div class="page-header"><div class="container"><h1>${h1}</h1><p class="lede">${lede}</p></div></div>`;
+}
+
+// Photography note (see ProjectDocs/Rules.md §1a): these are the client's
+// own supplied stock photos (dropped directly into frontend/, now optimized
+// and moved into assets/img/ — see memory.md for the resize/compress
+// pipeline). Nothing here depicts a real, named NorthWay clinician; they're
+// generic/illustrative only.
+function photoBand(src, alt, opts) {
+  const cls = opts && opts.tall ? "photo-band photo-band--tall" : "photo-band";
+  return `<div class="container"><img class="${cls}" src="${src}" alt="${alt}" loading="lazy" width="1400" height="800"></div>`;
 }
 
 // ---------------------------------------------------------------------
@@ -192,67 +214,67 @@ pagesEn.index = {
   metaDesc: "Family medicine, walk-in and urgent care, and full-service pharmacy in Cornwall, Ontario.",
   body: `
 ${heroSection({
-  h1: "Family medicine and pharmacy care, together, in Cornwall.",
-  lede: "NorthWay Clinic and Pharmacy brings a family physician practice, walk-in and urgent care, and a full-service pharmacy under one roof — built for patients of every age.",
-  primary: { href: "register.html", label: "Register as a New Patient" },
-  secondary: { href: "book-appointment.html", label: "Book an Appointment" }
+  h1: "Cornwall's Family Clinic and Pharmacy",
+  primary: { href: "book-appointment.html", label: "Register or Book" },
+  secondary: { href: "about.html#team", label: "Meet the Team" },
+  image: { src: "../assets/img/home-reception.jpg", alt: "A NorthWay staff member helping a patient at the reception desk" }
 })}
 
-<section>
+<section class="reveal">
   <div class="container">
     <h2>What we offer</h2>
     <div class="card-grid">
-      ${card("Family &amp; Walk-In Clinic", "Rostered family physician care alongside walk-in and urgent care for when you can't wait. <a href=\"clinic-services.html\">See clinic services →</a>")}
-      ${card("Pharmacy Services", "Retail dispensing, vaccinations, and blister/compliance packaging. <a href=\"pharmacy-services.html\">See pharmacy services →</a>")}
-      ${card("Long-Term Care Support", "Dedicated packaging and delivery coordination for care homes and retirement residences. <a href=\"long-term-care.html\">Learn more →</a>")}
-      ${card("Bilingual Service", "Full service in English and French, in person and online.")}
+      ${card("🩺", "b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
+      ${card("💊", "b-accent2", "Pharmacy Services", null, "pharmacy-services.html")}
+      ${card("🏠", "b-accent", "Long-Term Care Support", null, "pharmacy-services.html#long-term-care")}
+      ${card("🗣️", "b-accent2", "Bilingual Service", null, null)}
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Hours</h3><p>Mon–Fri: 10 am – 6 pm<br>Saturday: 10 am – 2 pm</p></div>
-      <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON. Paid parking on-site.</p></div>
+      <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON</p></div>
       <div class="block"><h3>Phone</h3><p><a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="visit-us.html">Get directions</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Get directions</a></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="callout info">
-      <h2>New to NorthWay?</h2>
-      <p>Registering takes a few minutes. A team member will reach out to confirm your details and get you booked in.</p>
-      <a class="btn btn-primary" href="register.html">Start your registration</a>
+      <h2>New here?</h2>
+      <p>Registering takes about a minute.</p>
+      <a class="btn btn-primary" href="book-appointment.html">Register Now</a>
     </div>
   </div>
 </section>
 `
 };
 
-pagesEn.register = {
-  title: "Register as a New Patient",
-  metaDesc: "Register as a new patient at NorthWay Clinic and Pharmacy.",
+pagesEn["book-appointment"] = {
+  title: "Book an Appointment",
+  metaDesc: "Register as a new patient or book an appointment through Medeo at NorthWay Clinic and Pharmacy.",
   body: `
-${pageHeader("Register as a New Patient", "This short form collects your contact details only — it is not a medical record. A staff member reviews every submission and follows up to complete your registration.")}
-<section>
+${pageHeader("Book an Appointment", "New or returning — start here.")}
+
+<section class="reveal">
   <div class="container">
-    <div class="form-note">
-      <strong>What happens after you submit:</strong> our team reviews your details, adds you to our patient system, and either calls you or emails you a link to book your first appointment. No health information is collected on this page — that's gathered securely once you're an active patient.
-    </div>
+    <h2>New Patient</h2>
+    <div class="form-note">Takes about a minute. We'll take it from there.</div>
 
     <form class="stack" id="register-form" novalidate>
       <div class="field">
-        <label for="reg-for">Who is this registration for?</label>
+        <label for="reg-for">Who is this for?</label>
         <select id="reg-for" name="registeringFor" required>
           <option value="">Select one</option>
           <option value="self">Myself</option>
           <option value="dependent">My child or a dependent</option>
         </select>
-        <p class="hint">If you're registering a minor or a dependent, a parent or guardian must complete this form.</p>
+        <p class="hint">A parent or guardian must register a child.</p>
       </div>
 
       <div class="field">
@@ -265,7 +287,7 @@ ${pageHeader("Register as a New Patient", "This short form collects your contact
         <div class="radio-row">
           <label><input type="radio" name="gender" value="female"> Female</label>
           <label><input type="radio" name="gender" value="male"> Male</label>
-          <label><input type="radio" name="gender" value="other"> Other / prefer to self-describe</label>
+          <label><input type="radio" name="gender" value="other"> Other</label>
         </div>
       </fieldset>
 
@@ -294,45 +316,29 @@ ${pageHeader("Register as a New Patient", "This short form collects your contact
 
       <div class="field consent">
         <input type="checkbox" id="consent" name="consent" required>
-        <label for="consent">I consent to being contacted by phone, email, or text message to complete my registration and to receive appointment-related messages.</label>
+        <label for="consent">You can contact me by phone, email, or text.</label>
       </div>
 
       <button type="submit" class="btn btn-primary">Submit Registration</button>
-      <p class="hint" id="form-error" hidden>Something went wrong submitting your registration. Please call us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> instead.</p>
+      <p class="hint" id="form-error" hidden>Something went wrong. Please call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
     </form>
 
     <div class="callout info" id="form-confirmation" hidden>
       <h2>Thank you</h2>
-      <p>Your registration has been received. Our team will contact you shortly to confirm your details and help you book your first appointment.</p>
+      <p>We'll be in touch shortly to book your first visit.</p>
     </div>
   </div>
 </section>
-`
-};
 
-pagesEn["book-appointment"] = {
-  title: "Book an Appointment",
-  metaDesc: "Book an appointment online through Medeo.",
-  body: `
-${pageHeader("Book an Appointment", "Once you're a registered patient, booking is quick and secure through our online scheduling partner, Medeo.")}
-<section>
+<section class="reveal">
   <div class="container">
-    <div class="card" style="max-width:640px;">
-      <h3>Book online with Medeo</h3>
-      <p>Select a provider, pick an available time, and get an instant confirmation by email.</p>
-      <a class="btn btn-primary" href="#" aria-disabled="true">Open Medeo Booking</a>
-      <p class="hint">[LINK PLACEHOLDER — insert the practice's live Medeo booking URL before launch.]</p>
+    <h2>Returning Patient</h2>
+    <div class="card" style="max-width:520px;">
+      <p>Book online through Medeo.</p>
+      <a class="btn btn-primary" href="#">Open Medeo Booking</a>
+      <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
     </div>
-
-    <div class="callout warn" style="margin-top:28px;">
-      <h3>Need to be seen urgently?</h3>
-      <p>Online booking isn't the right tool for urgent symptoms. See our <a href="urgent-care.html">Urgent Care Guidance</a> for what to do instead.</p>
-    </div>
-
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Not registered yet?</span>
-      <p><a href="register.html">Register as a new patient</a> first — Medeo bookings are for active patients in our system.</p>
-    </div>
+    <p class="hint" style="margin-top:20px;">Something urgent? <a href="clinic-services.html#urgent-care">See what to do instead</a>.</p>
   </div>
 </section>
 `
@@ -342,30 +348,58 @@ pagesEn["clinic-services"] = {
   title: "Clinic Services",
   metaDesc: "Family physician, walk-in, and urgent care services at NorthWay Clinic.",
   body: `
-${pageHeader("Clinic Services", "Rostered family medicine alongside walk-in and urgent care, for patients of every age.")}
-<section>
+${pageHeader("Clinic Services", "Family medicine and urgent care.")}
+${photoBand("../assets/img/clinic-consultation.jpg", "A doctor and patient shaking hands after a consultation")}
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🩺</div>
         <h3>Family Physician Care</h3>
-        <p>Ongoing, rostered care with a consistent physician — annual check-ups, chronic disease management, referrals, and preventive care.</p>
-        <p><span class="placeholder">Accepting new patients: [STATUS]</span></p>
+        <p>Check-ups, chronic care, and referrals.</p>
+        <p>Accepting new patients</p>
+        <!-- TODO: confirm current accepting-new-patients status before launch -->
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">🚑</div>
         <h3>Walk-In &amp; Urgent Care</h3>
-        <p>For same-day concerns that can't wait for a scheduled appointment — minor illness and injury, prescription renewals, and general health concerns.</p>
+        <p>Same-day visits, no appointment needed.</p>
       </div>
     </div>
 
     <div class="callout info" style="margin-top:28px;">
-      <h3>What to bring to your visit</h3>
-      <p>Your health card (OHIP), a list of current medications, and any referral paperwork you've been given.</p>
+      <h3>What to bring</h3>
+      <p>Your health card and current medications.</p>
     </div>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="register.html">Register as a New Patient</a>
-      <a class="btn btn-secondary" href="book-appointment.html">Book an Appointment</a>
+      <a class="btn btn-primary" href="book-appointment.html">Register or Book</a>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Urgent care guidance</h2>
+    <div class="callout warn">
+      <h3>Medical emergency?</h3>
+      <p><strong>Call 911</strong> or go to Cornwall Community Hospital's Emergency Department.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">⏰</div>
+        <h3>Urgent, during our hours</h3>
+        <p>Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> — often same-day.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">🌙</div>
+        <h3>Outside of our hours</h3>
+        <p>Call Health811 (8-1-1), any time.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">Don't email for anything urgent — call instead.</p>
   </div>
 </section>
 `
@@ -375,55 +409,70 @@ pagesEn["pharmacy-services"] = {
   title: "Pharmacy Services",
   metaDesc: "Retail dispensing, vaccinations, and compliance packaging at NorthWay Pharmacy.",
   body: `
-${pageHeader("Pharmacy Services", "Full-service dispensing, vaccinations, and packaging support, in one location with your clinic team.")}
-<section>
+${pageHeader("Pharmacy Services", "Everything you need, close by.")}
+${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a bilingual prescription pickup")}
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
-      ${card("Retail Dispensing", "Prescription filling with pharmacist consultation for every new medication.")}
-      ${card("Vaccinations", "Seasonal and travel vaccinations administered by our pharmacy team.")}
-      ${card("Blister / Compliance Packaging", "Medications organized by date and time to help you stay on track.")}
-      ${card("Long-Term Care &amp; Retirement Homes", "Packaging and delivery coordination for facility partners. <a href=\"long-term-care.html\">Learn more →</a>")}
+      ${card("💊", "b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
+      ${card("💉", "b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
+      ${card("📦", "b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
+      ${card("🏠", "b-accent2", "Long-Term Care &amp; Retirement Homes", null, "#long-term-care")}
     </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Coming soon</span>
-      <p>Online prescription refill and transfer requests are planned for a future update. For now, please call the pharmacy directly at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> to arrange a refill or transfer.</p>
-    </div>
+    <p class="hint" style="margin-top:28px;">Need a refill or transfer? Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
   </div>
 </section>
-`
-};
 
-pagesEn["long-term-care"] = {
-  title: "Long-Term Care & Retirement Homes",
-  metaDesc: "Pharmacy partnership services for long-term care homes and retirement residences.",
-  body: `
-${pageHeader("Long-Term Care & Retirement Homes", "A dedicated pharmacy partnership for care homes and retirement residences in the Cornwall area.")}
-<section>
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Long-Term Care &amp; Retirement Homes</h2></div>
+  ${photoBand("../assets/img/ltc-support.jpg", "A caregiver holding hands with a resident during a home visit")}
   <div class="container">
     <div class="card-grid">
-      ${card("Compliance Packaging", "Medications packaged by resident, date, and time to simplify administration for care staff.")}
-      ${card("Scheduled Delivery", "Coordinated delivery schedules built around your facility's routine.")}
-      ${card("Dedicated Pharmacist Liaison", "A single point of contact for medication questions, changes, and reconciliation.")}
+      ${card("📦", "b-accent", "Easy-to-Follow Packaging", "Organized by resident, date, and time.")}
+      ${card("🚚", "b-accent2", "Scheduled Delivery", "Built around your facility's routine.")}
+      ${card("👤", "b-accent", "One Point of Contact", "A dedicated pharmacist for your team.")}
     </div>
     <div class="callout info" style="margin-top:28px;">
-      <h3>Interested in a partnership?</h3>
-      <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a> to discuss your facility's needs.</p>
+      <h3>Interested in partnering?</h3>
+      <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
     </div>
   </div>
 </section>
 `
 };
 
-pagesEn["visit-us"] = {
-  title: "Visit Us",
-  metaDesc: "Hours, location, parking, and contact information for NorthWay Clinic and Pharmacy.",
+pagesEn.about = {
+  title: "About Us",
+  metaDesc: "About NorthWay Clinic and Pharmacy, our team, and how to find us in Cornwall, Ontario.",
   body: `
-${pageHeader("Visit Us", "Hours, location, and how to reach us.")}
-<section>
+${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
+<section class="reveal">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <!-- TODO: replace with the real practice story once provided -->
+      <p>Your family doctor and pharmacist, working together, just down the hall from each other.</p>
+      <a class="btn btn-secondary" href="#team">Meet the Team</a>
+    </div>
+    <div class="hero-media hero-media--tall">
+      <img src="../assets/img/about-stethoscope.jpg" alt="Close-up of a stethoscope, one of the everyday tools our clinicians use" width="900" height="1350">
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="team">
   <div class="container">
+    <h2>Our team</h2>
+    <div class="team-grid" id="team-list">Loading…</div>
+  </div>
+</section>
+
+<section class="reveal" id="visit-us">
+  <div class="container">
+    <h2>Visit us</h2>
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🕒</div>
         <h3>Hours</h3>
         <table class="hours">
           <tr><td>Monday – Friday</td><td>10:00 am – 6:00 pm</td></tr>
@@ -432,12 +481,14 @@ ${pageHeader("Visit Us", "Hours, location, and how to reach us.")}
         </table>
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">📍</div>
         <h3>Location &amp; Parking</h3>
         <p>[STREET ADDRESS], Cornwall, ON [POSTAL CODE]</p>
-        <p>Paid parking is available on-site.</p>
-        <p class="hint">[MAP EMBED PLACEHOLDER]</p>
+        <p>Parking on-site.</p>
+        <!-- TODO: embed a map once the address is finalized -->
       </div>
       <div class="card">
+        <div class="icon-badge b-accent">☎️</div>
         <h3>Contact</h3>
         <p>Phone: <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p>
         <p>Email: <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a></p>
@@ -448,87 +499,27 @@ ${pageHeader("Visit Us", "Hours, location, and how to reach us.")}
 `
 };
 
-pagesEn["urgent-care"] = {
-  title: "Urgent Care Guidance",
-  metaDesc: "What to do for urgent, non-emergency needs, and when to seek emergency care instead.",
-  body: `
-${pageHeader("Urgent Care Guidance", "How to reach us for urgent (non-emergency) needs — and when to seek emergency care instead.")}
-<section>
-  <div class="container">
-    <div class="callout warn">
-      <h2>If this is a medical emergency</h2>
-      <p><strong>Call 911</strong> or go directly to the Emergency Department at Cornwall Community Hospital. Do not wait for a callback or email response.</p>
-    </div>
-
-    <div class="card-grid" style="margin-top:28px;">
-      <div class="card">
-        <h3>Urgent, but not an emergency, during our hours</h3>
-        <p>Call us directly at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>. Our walk-in and urgent care service can often see you the same day.</p>
-      </div>
-      <div class="card">
-        <h3>Outside of our hours</h3>
-        <p>Call Health811 (dial 8-1-1) for free health advice from a registered nurse, any time, day or night.</p>
-      </div>
-    </div>
-
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Note</span>
-      <p>Our contact form and email are not monitored around the clock. Please do not use them to describe an urgent or emergency symptom — call us, call Health811, or go to the Emergency Department instead.</p>
-    </div>
-  </div>
-</section>
-`
-};
-
-pagesEn.about = {
-  title: "About Us",
-  metaDesc: "About NorthWay Clinic and Pharmacy in Cornwall, Ontario.",
-  body: `
-${pageHeader("About NorthWay", "A community-focused clinic and pharmacy, built around the people we serve.")}
-<section>
-  <div class="container">
-    <div class="callout draft">
-      <span class="draft-label">Placeholder content</span>
-      <p>[Practice story / mission statement to be provided — a few sentences on why NorthWay was founded and what makes it different, in a warm, community-oriented voice.]</p>
-    </div>
-
-    <h2 style="margin-top:36px;">Our Team</h2>
-    <div class="card-grid">
-      ${card("[Provider Name]", "[Credentials] · [Languages spoken] · Accepting new patients: [STATUS]")}
-      ${card("[Provider Name]", "[Credentials] · [Languages spoken] · Accepting new patients: [STATUS]")}
-      ${card("[Pharmacist Name]", "[Credentials] · [Languages spoken]")}
-    </div>
-    <p class="hint" style="margin-top:16px;">Provider bios and photos pending — see the handoff notes for what's needed.</p>
-  </div>
-</section>
-`
-};
-
 pagesEn["privacy-policy"] = {
   title: "Privacy Policy",
   metaDesc: "Privacy policy for NorthWay Clinic and Pharmacy.",
   body: `
-${pageHeader("Privacy Policy", "How we handle information submitted through this website.")}
-<section>
+<!-- INTERNAL NOTE: this policy must be reviewed and approved by NorthWay's
+     compliance officer before the live site launches. Treat this text as a
+     starting point, not a final policy. See ProjectDocs/Rules.md. -->
+${pageHeader("Privacy Policy", "How we use your information.")}
+<section class="reveal">
   <div class="container">
-    <div class="callout draft">
-      <span class="draft-label">Draft — pending compliance review</span>
-      <p>This page must be reviewed and approved by NorthWay's compliance officer and, if needed, a privacy advisor before the site goes live. The text below is a starting point, not a final policy.</p>
-    </div>
+    <h3>What we collect</h3>
+    <p>Registration collects your name, gender, phone, email, and address only — no health information.</p>
 
-    <div style="margin-top:24px;">
-      <h3>What this website collects</h3>
-      <p>Our registration form collects your name, gender, phone number, email address, and home address only. This website does not collect or store any health information. Clinical information is collected separately, in person or through our clinic's electronic medical record system, once you are a registered patient.</p>
+    <h3>How it's used</h3>
+    <p>Staff review it to confirm your registration and book your first visit.</p>
 
-      <h3>How your information is used</h3>
-      <p>Submitted registration details are reviewed by our staff, used to add you to our patient records system, and used to contact you to complete your registration and book your first appointment.</p>
+    <h3>Booking</h3>
+    <p>Appointments are booked through Medeo, our scheduling partner.</p>
 
-      <h3>Appointment booking</h3>
-      <p>Appointment booking is handled through Medeo, our third-party scheduling partner, which has its own privacy practices.</p>
-
-      <h3>Questions about this policy</h3>
-      <p>Contact our privacy officer at <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
-    </div>
+    <h3>Questions</h3>
+    <p>Contact us at <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
   </div>
 </section>
 `
@@ -544,67 +535,67 @@ pagesFr.index = {
   metaDesc: "Médecine familiale, soins sans rendez-vous et pharmacie complète à Cornwall, en Ontario.",
   body: `
 ${heroSection({
-  h1: "Médecine familiale et soins pharmaceutiques, réunis, à Cornwall.",
-  lede: "La Clinique et pharmacie NorthWay regroupe une pratique de médecine familiale, des soins sans rendez-vous et une pharmacie complète sous un même toit — pour les patients de tous âges.",
-  primary: { href: "register.html", label: "S'inscrire comme nouveau patient" },
-  secondary: { href: "book-appointment.html", label: "Prendre rendez-vous" }
+  h1: "La clinique et pharmacie familiale de Cornwall",
+  primary: { href: "book-appointment.html", label: "S'inscrire ou réserver" },
+  secondary: { href: "about.html#team", label: "Rencontrer l'équipe" },
+  image: { src: "../assets/img/home-reception.jpg", alt: "Un membre du personnel de NorthWay aide une patiente à la réception" }
 })}
 
-<section>
+<section class="reveal">
   <div class="container">
     <h2>Nos services</h2>
     <div class="card-grid">
-      ${card("Clinique familiale et sans rendez-vous", "Soins médicaux familiaux continus, ainsi que des soins sans rendez-vous pour les besoins urgents. <a href=\"clinic-services.html\">Voir les services de la clinique →</a>")}
-      ${card("Services de pharmacie", "Distribution de médicaments, vaccinations et emballage-coque de conformité. <a href=\"pharmacy-services.html\">Voir les services de la pharmacie →</a>")}
-      ${card("Soutien aux soins de longue durée", "Emballage et coordination de livraison pour les foyers de soins et résidences pour retraités. <a href=\"long-term-care.html\">En savoir plus →</a>")}
-      ${card("Service bilingue", "Service complet en français et en anglais, en personne et en ligne.")}
+      ${card("🩺", "b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
+      ${card("💊", "b-accent2", "Services de pharmacie", null, "pharmacy-services.html")}
+      ${card("🏠", "b-accent", "Soutien aux soins de longue durée", null, "pharmacy-services.html#long-term-care")}
+      ${card("🗣️", "b-accent2", "Service bilingue", null, null)}
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Heures</h3><p>Lun–Ven : 10 h – 18 h<br>Samedi : 10 h – 14 h</p></div>
-      <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON. Stationnement payant sur place.</p></div>
+      <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON</p></div>
       <div class="block"><h3>Téléphone</h3><p><a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="visit-us.html">Obtenir l'itinéraire</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Obtenir l'itinéraire</a></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="callout info">
-      <h2>Nouveau chez NorthWay?</h2>
-      <p>L'inscription ne prend que quelques minutes. Un membre de notre équipe communiquera avec vous pour confirmer vos renseignements et planifier votre rendez-vous.</p>
-      <a class="btn btn-primary" href="register.html">Commencer mon inscription</a>
+      <h2>Nouveau ici?</h2>
+      <p>L'inscription prend environ une minute.</p>
+      <a class="btn btn-primary" href="book-appointment.html">S'inscrire</a>
     </div>
   </div>
 </section>
 `
 };
 
-pagesFr.register = {
-  title: "S'inscrire comme nouveau patient",
-  metaDesc: "Inscrivez-vous comme nouveau patient à la Clinique et pharmacie NorthWay.",
+pagesFr["book-appointment"] = {
+  title: "Prendre rendez-vous",
+  metaDesc: "Inscrivez-vous comme nouveau patient ou prenez rendez-vous en ligne grâce à Medeo.",
   body: `
-${pageHeader("S'inscrire comme nouveau patient", "Ce court formulaire recueille uniquement vos coordonnées — ce n'est pas un dossier médical. Un membre du personnel examine chaque soumission et communique avec vous pour compléter votre inscription.")}
-<section>
+${pageHeader("Prendre rendez-vous", "Nouveau ou déjà patient — commencez ici.")}
+
+<section class="reveal">
   <div class="container">
-    <div class="form-note">
-      <strong>Ce qui se passe après l'envoi :</strong> notre équipe examine vos renseignements, vous ajoute à notre système de patients, puis vous appelle ou vous envoie un courriel avec un lien pour réserver votre premier rendez-vous. Aucun renseignement de santé n'est recueilli sur cette page — cela se fait de façon sécurisée une fois que vous êtes un patient actif.
-    </div>
+    <h2>Nouveau patient</h2>
+    <div class="form-note">Environ une minute. On s'occupe du reste.</div>
 
     <form class="stack" id="register-form" novalidate>
       <div class="field">
-        <label for="reg-for">Pour qui est cette inscription?</label>
+        <label for="reg-for">Pour qui est-ce?</label>
         <select id="reg-for" name="registeringFor" required>
           <option value="">Choisir une option</option>
           <option value="self">Moi-même</option>
           <option value="dependent">Mon enfant ou une personne à charge</option>
         </select>
-        <p class="hint">Si vous inscrivez un mineur ou une personne à charge, un parent ou tuteur doit remplir ce formulaire.</p>
+        <p class="hint">Un parent ou tuteur doit inscrire un enfant.</p>
       </div>
 
       <div class="field">
@@ -617,7 +608,7 @@ ${pageHeader("S'inscrire comme nouveau patient", "Ce court formulaire recueille 
         <div class="radio-row">
           <label><input type="radio" name="gender" value="female"> Femme</label>
           <label><input type="radio" name="gender" value="male"> Homme</label>
-          <label><input type="radio" name="gender" value="other"> Autre / je préfère préciser</label>
+          <label><input type="radio" name="gender" value="other"> Autre</label>
         </div>
       </fieldset>
 
@@ -646,45 +637,29 @@ ${pageHeader("S'inscrire comme nouveau patient", "Ce court formulaire recueille 
 
       <div class="field consent">
         <input type="checkbox" id="consent" name="consent" required>
-        <label for="consent">Je consens à être contacté(e) par téléphone, courriel ou message texte pour compléter mon inscription et recevoir des messages liés à mes rendez-vous.</label>
+        <label for="consent">Vous pouvez me contacter par téléphone, courriel ou texto.</label>
       </div>
 
       <button type="submit" class="btn btn-primary">Soumettre l'inscription</button>
-      <p class="hint" id="form-error" hidden>Une erreur est survenue lors de l'envoi. Veuillez nous appeler au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
+      <p class="hint" id="form-error" hidden>Une erreur est survenue. Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
     </form>
 
     <div class="callout info" id="form-confirmation" hidden>
       <h2>Merci</h2>
-      <p>Votre inscription a été reçue. Notre équipe communiquera avec vous sous peu pour confirmer vos renseignements et planifier votre premier rendez-vous.</p>
+      <p>Nous communiquerons avec vous sous peu pour votre premier rendez-vous.</p>
     </div>
   </div>
 </section>
-`
-};
 
-pagesFr["book-appointment"] = {
-  title: "Prendre rendez-vous",
-  metaDesc: "Prenez rendez-vous en ligne grâce à Medeo.",
-  body: `
-${pageHeader("Prendre rendez-vous", "Une fois inscrit(e) comme patient, la prise de rendez-vous est rapide et sécurisée grâce à notre partenaire de planification en ligne, Medeo.")}
-<section>
+<section class="reveal">
   <div class="container">
-    <div class="card" style="max-width:640px;">
-      <h3>Réserver en ligne avec Medeo</h3>
-      <p>Choisissez un professionnel de la santé, sélectionnez une heure disponible et recevez une confirmation instantanée par courriel.</p>
-      <a class="btn btn-primary" href="#" aria-disabled="true">Ouvrir Medeo</a>
-      <p class="hint">[ESPACE RÉSERVÉ AU LIEN — insérer l'URL de réservation Medeo réelle avant le lancement.]</p>
+    <h2>Patient existant</h2>
+    <div class="card" style="max-width:520px;">
+      <p>Réservez en ligne avec Medeo.</p>
+      <a class="btn btn-primary" href="#">Ouvrir Medeo</a>
+      <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
     </div>
-
-    <div class="callout warn" style="margin-top:28px;">
-      <h3>Besoin de soins urgents?</h3>
-      <p>La réservation en ligne n'est pas l'outil approprié pour des symptômes urgents. Consultez notre page <a href="urgent-care.html">Soins urgents</a> pour savoir quoi faire.</p>
-    </div>
-
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Pas encore inscrit(e)?</span>
-      <p><a href="register.html">Inscrivez-vous comme nouveau patient</a> d'abord — les réservations Medeo sont réservées aux patients actifs de notre système.</p>
-    </div>
+    <p class="hint" style="margin-top:20px;">Besoin de soins urgents? <a href="clinic-services.html#urgent-care">Voyez quoi faire</a>.</p>
   </div>
 </section>
 `
@@ -694,30 +669,57 @@ pagesFr["clinic-services"] = {
   title: "Services de la clinique",
   metaDesc: "Médecine familiale, soins sans rendez-vous et soins urgents à la Clinique NorthWay.",
   body: `
-${pageHeader("Services de la clinique", "Médecine familiale continue, ainsi que des soins sans rendez-vous et urgents, pour les patients de tous âges.")}
-<section>
+${pageHeader("Services de la clinique", "Médecine familiale et soins urgents.")}
+${photoBand("../assets/img/clinic-consultation.jpg", "Un médecin et un patient se serrant la main après une consultation")}
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🩺</div>
         <h3>Soins de médecine familiale</h3>
-        <p>Soins continus avec un médecin attitré — bilans annuels, gestion des maladies chroniques, orientations et soins préventifs.</p>
-        <p><span class="placeholder">Accepte de nouveaux patients : [STATUT]</span></p>
+        <p>Bilans, gestion des maladies chroniques, orientations.</p>
+        <p>Accepte de nouveaux patients</p>
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">🚑</div>
         <h3>Soins sans rendez-vous et urgents</h3>
-        <p>Pour les besoins qui ne peuvent pas attendre un rendez-vous planifié — maladies et blessures mineures, renouvellements d'ordonnances et préoccupations générales de santé.</p>
+        <p>Visites le jour même, sans rendez-vous.</p>
       </div>
     </div>
 
     <div class="callout info" style="margin-top:28px;">
-      <h3>Quoi apporter à votre visite</h3>
-      <p>Votre carte santé (OHIP), une liste de vos médicaments actuels et tout document de référence qui vous a été remis.</p>
+      <h3>Quoi apporter</h3>
+      <p>Votre carte santé et vos médicaments actuels.</p>
     </div>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="register.html">S'inscrire comme nouveau patient</a>
-      <a class="btn btn-secondary" href="book-appointment.html">Prendre rendez-vous</a>
+      <a class="btn btn-primary" href="book-appointment.html">S'inscrire ou réserver</a>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Que faire en cas d'urgence</h2>
+    <div class="callout warn">
+      <h3>Urgence médicale?</h3>
+      <p><strong>Composez le 911</strong> ou rendez-vous aux urgences de l'Hôpital communautaire de Cornwall.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">⏰</div>
+        <h3>Urgent, pendant nos heures</h3>
+        <p>Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> — souvent le jour même.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">🌙</div>
+        <h3>En dehors de nos heures</h3>
+        <p>Composez Health811 (8-1-1), en tout temps.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">N'envoyez pas de courriel pour une urgence — appelez-nous.</p>
   </div>
 </section>
 `
@@ -727,55 +729,70 @@ pagesFr["pharmacy-services"] = {
   title: "Services de la pharmacie",
   metaDesc: "Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.",
   body: `
-${pageHeader("Services de la pharmacie", "Distribution complète de médicaments, vaccinations et soutien à l'emballage, au même endroit que votre équipe clinique.")}
-<section>
+${pageHeader("Services de la pharmacie", "Tout ce qu'il vous faut, juste à côté.")}
+${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant une ordonnance bilingue")}
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
-      ${card("Distribution de médicaments", "Préparation d'ordonnances avec consultation d'un pharmacien pour chaque nouveau médicament.")}
-      ${card("Vaccinations", "Vaccinations saisonnières et de voyage administrées par notre équipe de pharmacie.")}
-      ${card("Emballage-coque de conformité", "Médicaments organisés par date et heure pour vous aider à respecter votre traitement.")}
-      ${card("Soins de longue durée et résidences pour retraités", "Emballage et coordination de livraison pour nos partenaires. <a href=\"long-term-care.html\">En savoir plus →</a>")}
+      ${card("💊", "b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
+      ${card("💉", "b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
+      ${card("📦", "b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
+      ${card("🏠", "b-accent2", "Soins de longue durée et résidences pour retraités", null, "#long-term-care")}
     </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">À venir</span>
-      <p>Les demandes de renouvellement et de transfert d'ordonnances en ligne sont prévues pour une mise à jour future. Pour l'instant, veuillez appeler directement la pharmacie au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> pour un renouvellement ou un transfert.</p>
-    </div>
+    <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
   </div>
 </section>
-`
-};
 
-pagesFr["long-term-care"] = {
-  title: "Soins de longue durée et résidences pour retraités",
-  metaDesc: "Services de partenariat en pharmacie pour les foyers de soins de longue durée et résidences pour retraités.",
-  body: `
-${pageHeader("Soins de longue durée et résidences pour retraités", "Un partenariat pharmaceutique dédié aux foyers de soins et résidences pour retraités de la région de Cornwall.")}
-<section>
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Soins de longue durée et résidences pour retraités</h2></div>
+  ${photoBand("../assets/img/ltc-support.jpg", "Une aidante tenant la main d'une résidente lors d'une visite à domicile")}
   <div class="container">
     <div class="card-grid">
-      ${card("Emballage de conformité", "Médicaments emballés par résident, date et heure pour simplifier l'administration par le personnel soignant.")}
-      ${card("Livraison planifiée", "Horaires de livraison coordonnés selon la routine de votre établissement.")}
-      ${card("Pharmacien de liaison dédié", "Un seul point de contact pour les questions de médicaments, les changements et la conciliation.")}
+      ${card("📦", "b-accent", "Emballage facile à suivre", "Organisé par résident, date et heure.")}
+      ${card("🚚", "b-accent2", "Livraison planifiée", "Adaptée à la routine de votre établissement.")}
+      ${card("👤", "b-accent", "Un seul point de contact", "Un pharmacien dédié pour votre équipe.")}
     </div>
     <div class="callout info" style="margin-top:28px;">
       <h3>Intéressé par un partenariat?</h3>
-      <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a> pour discuter des besoins de votre établissement.</p>
+      <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
     </div>
   </div>
 </section>
 `
 };
 
-pagesFr["visit-us"] = {
-  title: "Nous visiter",
-  metaDesc: "Heures, emplacement, stationnement et coordonnées de la Clinique et pharmacie NorthWay.",
+pagesFr.about = {
+  title: "À propos de nous",
+  metaDesc: "À propos de la Clinique et pharmacie NorthWay, notre équipe, et comment nous trouver à Cornwall, en Ontario.",
   body: `
-${pageHeader("Nous visiter", "Heures, emplacement et comment nous joindre.")}
-<section>
+${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment nous trouver.")}
+<section class="reveal">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <!-- TODO: replace with the real practice story once provided -->
+      <p>Votre médecin de famille et votre pharmacien, ensemble, juste à côté l'un de l'autre.</p>
+      <a class="btn btn-secondary" href="#team">Rencontrer l'équipe</a>
+    </div>
+    <div class="hero-media hero-media--tall">
+      <img src="../assets/img/about-stethoscope.jpg" alt="Gros plan d'un stéthoscope, un outil que nos cliniciens utilisent chaque jour" width="900" height="1350">
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="team">
   <div class="container">
+    <h2>Notre équipe</h2>
+    <div class="team-grid" id="team-list">Chargement…</div>
+  </div>
+</section>
+
+<section class="reveal" id="visit-us">
+  <div class="container">
+    <h2>Nous visiter</h2>
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🕒</div>
         <h3>Heures d'ouverture</h3>
         <table class="hours">
           <tr><td>Lundi – Vendredi</td><td>10 h – 18 h</td></tr>
@@ -784,12 +801,14 @@ ${pageHeader("Nous visiter", "Heures, emplacement et comment nous joindre.")}
         </table>
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">📍</div>
         <h3>Emplacement et stationnement</h3>
         <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
-        <p>Stationnement payant disponible sur place.</p>
-        <p class="hint">[ESPACE RÉSERVÉ POUR CARTE]</p>
+        <p>Stationnement sur place.</p>
+        <!-- TODO: embed a map once the address is finalized -->
       </div>
       <div class="card">
+        <div class="icon-badge b-accent">☎️</div>
         <h3>Coordonnées</h3>
         <p>Téléphone : <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p>
         <p>Courriel : <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a></p>
@@ -800,87 +819,27 @@ ${pageHeader("Nous visiter", "Heures, emplacement et comment nous joindre.")}
 `
 };
 
-pagesFr["urgent-care"] = {
-  title: "Soins urgents",
-  metaDesc: "Que faire pour des besoins urgents, non urgents, et quand consulter les urgences.",
-  body: `
-${pageHeader("Soins urgents", "Comment nous joindre pour des besoins urgents (non-urgences) — et quand consulter les urgences plutôt.")}
-<section>
-  <div class="container">
-    <div class="callout warn">
-      <h2>En cas d'urgence médicale</h2>
-      <p><strong>Composez le 911</strong> ou rendez-vous directement aux urgences de l'Hôpital communautaire de Cornwall. N'attendez pas un rappel ou une réponse par courriel.</p>
-    </div>
-
-    <div class="card-grid" style="margin-top:28px;">
-      <div class="card">
-        <h3>Urgent, mais pas une urgence, pendant nos heures</h3>
-        <p>Appelez-nous directement au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>. Notre service sans rendez-vous peut souvent vous recevoir le jour même.</p>
-      </div>
-      <div class="card">
-        <h3>En dehors de nos heures</h3>
-        <p>Composez Health811 (le 8-1-1) pour des conseils de santé gratuits d'une infirmière autorisée, en tout temps.</p>
-      </div>
-    </div>
-
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Remarque</span>
-      <p>Notre formulaire de contact et notre courriel ne sont pas surveillés en tout temps. Veuillez ne pas les utiliser pour décrire un symptôme urgent ou une urgence — appelez-nous, composez Health811, ou rendez-vous aux urgences.</p>
-    </div>
-  </div>
-</section>
-`
-};
-
-pagesFr.about = {
-  title: "À propos",
-  metaDesc: "À propos de la Clinique et pharmacie NorthWay à Cornwall, en Ontario.",
-  body: `
-${pageHeader("À propos de NorthWay", "Une clinique et pharmacie axées sur la communauté, bâties autour des gens que nous servons.")}
-<section>
-  <div class="container">
-    <div class="callout draft">
-      <span class="draft-label">Contenu provisoire</span>
-      <p>[Histoire de la pratique / énoncé de mission à fournir — quelques phrases sur les origines de NorthWay et ce qui la distingue, dans un ton chaleureux et communautaire.]</p>
-    </div>
-
-    <h2 style="margin-top:36px;">Notre équipe</h2>
-    <div class="card-grid">
-      ${card("[Nom du fournisseur]", "[Titres] · [Langues parlées] · Accepte de nouveaux patients : [STATUT]")}
-      ${card("[Nom du fournisseur]", "[Titres] · [Langues parlées] · Accepte de nouveaux patients : [STATUT]")}
-      ${card("[Nom du pharmacien]", "[Titres] · [Langues parlées]")}
-    </div>
-    <p class="hint" style="margin-top:16px;">Biographies et photos des fournisseurs à venir — voir les notes de transfert pour ce qui est requis.</p>
-  </div>
-</section>
-`
-};
-
 pagesFr["privacy-policy"] = {
   title: "Politique de confidentialité",
   metaDesc: "Politique de confidentialité de la Clinique et pharmacie NorthWay.",
   body: `
-${pageHeader("Politique de confidentialité", "Comment nous traitons les renseignements soumis via ce site web.")}
-<section>
+<!-- INTERNAL NOTE: this policy must be reviewed and approved by NorthWay's
+     compliance officer before the live site launches. Treat this text as a
+     starting point, not a final policy. See ProjectDocs/Rules.md. -->
+${pageHeader("Politique de confidentialité", "Comment nous utilisons vos renseignements.")}
+<section class="reveal">
   <div class="container">
-    <div class="callout draft">
-      <span class="draft-label">Ébauche — en attente d'examen de conformité</span>
-      <p>Cette page doit être examinée et approuvée par le responsable de la conformité de NorthWay et, si nécessaire, un conseiller en protection de la vie privée avant la mise en ligne du site. Le texte ci-dessous est un point de départ, pas une politique finale.</p>
-    </div>
+    <h3>Ce que nous recueillons</h3>
+    <p>L'inscription recueille votre nom, genre, téléphone, courriel et adresse seulement — aucun renseignement de santé.</p>
 
-    <div style="margin-top:24px;">
-      <h3>Ce que ce site web recueille</h3>
-      <p>Notre formulaire d'inscription recueille uniquement votre nom, votre genre, votre numéro de téléphone, votre adresse courriel et votre adresse résidentielle. Ce site web ne recueille ni ne conserve aucun renseignement de santé. Les renseignements cliniques sont recueillis séparément, en personne ou dans le dossier médical électronique de la clinique, une fois que vous êtes un patient inscrit.</p>
+    <h3>Utilisation</h3>
+    <p>Notre personnel les examine pour confirmer votre inscription et réserver votre première visite.</p>
 
-      <h3>Utilisation de vos renseignements</h3>
-      <p>Les renseignements d'inscription soumis sont examinés par notre personnel, utilisés pour vous ajouter à notre système de dossiers de patients, et utilisés pour communiquer avec vous afin de compléter votre inscription et de réserver votre premier rendez-vous.</p>
+    <h3>Réservation</h3>
+    <p>Les rendez-vous sont réservés via Medeo, notre partenaire de planification.</p>
 
-      <h3>Réservation de rendez-vous</h3>
-      <p>La réservation de rendez-vous est gérée par Medeo, notre partenaire de planification tiers, qui a ses propres pratiques de confidentialité.</p>
-
-      <h3>Questions sur cette politique</h3>
-      <p>Contactez notre responsable de la protection de la vie privée à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
-    </div>
+    <h3>Questions</h3>
+    <p>Contactez-nous à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
   </div>
 </section>
 `
@@ -895,12 +854,42 @@ function writeSite() {
   fs.mkdirSync(path.join(OUT, "assets", "css"), { recursive: true });
   fs.mkdirSync(path.join(OUT, "assets", "js"), { recursive: true });
 
+  // Pages that used to live at their own URL but are now sections of another
+  // page (see ProjectDocs/memory.md for the history of each merge). Keep a
+  // thin meta-refresh redirect at the old filename so any old link/bookmark
+  // still lands somewhere useful, instead of a straight 404.
+  const RETIRED_REDIRECTS = {
+    "register.html": "book-appointment.html",
+    "urgent-care.html": "clinic-services.html#urgent-care",
+    "long-term-care.html": "pharmacy-services.html#long-term-care",
+    "visit-us.html": "about.html#visit-us",
+    "team.html": "about.html#team"
+  };
+
   [["en", pagesEn], ["fr", pagesFr]].forEach(([lang, pages]) => {
     Object.keys(pages).forEach(slug => {
       const p = pages[slug];
       let html = layout({ lang, slug, title: p.title, metaDesc: p.metaDesc, body: p.body });
       html = fixLangToggle(html, lang, slug);
       fs.writeFileSync(path.join(OUT, lang, slug + ".html"), html);
+    });
+
+    Object.entries(RETIRED_REDIRECTS).forEach(([oldFile, newTarget]) => {
+      const destSlug = newTarget.split("#")[0];
+      const destLabel = navLabel(T[lang], destSlug);
+      const linkText = lang === "fr" ? `Continuer vers ${destLabel}` : `Continue to ${destLabel}`;
+      fs.writeFileSync(path.join(OUT, lang, oldFile), `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0; url=${newTarget}">
+<title>NorthWay Clinic and Pharmacy</title>
+</head>
+<body>
+<p><a href="${newTarget}">${linkText}</a></p>
+</body>
+</html>
+`);
     });
   });
 
@@ -917,7 +906,8 @@ function writeSite() {
 </html>
 `);
 
-  console.log("Wrote", Object.keys(pagesEn).length * 2 + 1, "HTML files to", OUT);
+  const redirectCount = Object.keys(RETIRED_REDIRECTS).length;
+  console.log("Wrote", (Object.keys(pagesEn).length + redirectCount) * 2 + 1, "HTML files to", OUT);
 }
 
 writeSite();

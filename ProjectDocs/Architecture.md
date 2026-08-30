@@ -104,7 +104,52 @@ infrastructure. The website's role ends at "get contact info to staff."
   resolving before any pharmacy-system integration (Phase 2 refill/transfer
   form) is built.
 
-## 6. Security & compliance notes for future work
+## 6. Team roster (provider bios)
+
+Public marketing content — name, credentials, languages, a short bio,
+accepting-new-patients status. Not patient data, not PHI.
+
+- `backend/data/team.json`, managed through `backend/src/team-store.js`.
+- `GET /api/team` — public, no auth. The live Team page (`frontend/en|fr/team.html`)
+  fetches this client-side and renders it, so edits appear immediately without
+  regenerating the static site.
+- `POST /api/team`, `PUT /api/team/:id`, `DELETE /api/team/:id` — gated by a
+  single shared secret (`ADMIN_TOKEN` header, see `backend/.env.example`).
+  This is intentionally minimal: one shared password, not per-user accounts
+  or roles. It's enough to keep random visitors from editing the roster; it
+  is not real auth. If this ever needs an audit trail of who changed what,
+  or more than one editor, replace it with real authentication first.
+- `frontend/admin/team.html` — a plain, unstyled-ish internal page for
+  adding/editing/removing team members. Deliberately not linked from the
+  public nav or sitemap. Treat its URL as only slightly secret — the
+  `ADMIN_TOKEN` is the actual gate, not the URL being unlisted.
+- Never add a real clinician's name, photo, or bio here without their
+  knowledge and consent, and never copy one from another practice's real
+  website — see Rules.md and memory.md for why this came up.
+
+## 7. Site settings (public marketing toggles)
+
+Small, public, non-patient settings that staff can change without a
+developer editing code and re-running `build-site.js`. Today this is just
+the "Accepting new patients" strip shown at the top of every page; keep it
+scoped to simple marketing toggles/strings, not anything that needs real
+structure (that's what the Team roster pattern in §6 is for).
+
+- `backend/data/site-settings.json`, managed through
+  `backend/src/settings-store.js` — a single JSON object, not a list.
+- `GET /api/settings` — public, no auth. Every generated page's `main.js`
+  fetches this on load and updates the banner text/visibility; the
+  build-time string baked into the HTML by `build-site.js` is only a no-JS/
+  backend-unreachable fallback, not the source of truth.
+- `PUT /api/settings` — same `ADMIN_TOKEN` gate as the Team routes in §6, same
+  caveats (one shared secret, not real auth). Managed through the "Site
+  banner" section of `frontend/admin/team.html` — no separate admin page for
+  this, to avoid multiplying internal tools for a single on/off + two text
+  fields.
+- If this grows into more than a couple of toggles, reconsider putting it on
+  its own admin page rather than continuing to bolt it onto team.html.
+
+## 8. Security & compliance notes for future work
 
 - Nothing in this repo should ever store OHIP numbers, medication names, or
   diagnoses. If a future feature seems to require that, stop and flag it —

@@ -22,6 +22,10 @@ Server starts on `http://localhost:4000` by default.
 - `GET /api/health` — liveness check.
 - `POST /api/register` — body: `{ registeringFor, fullName, gender, phone, email, address, preferredLanguage, consent }`. Validates required fields, appends to `data/submissions.jsonl`, returns `201 { ok: true }` or `400 { ok: false, errors: [...] }`.
 - `GET /api/register/_pending` — dev-only, returns queued submissions as JSON. Disabled unless `ENABLE_DEV_PENDING_ROUTE=true`. No auth — local convenience only, never expose this publicly.
+- `GET /api/team` — public. Returns the provider roster shown on the live Team page.
+- `POST /api/team`, `PUT /api/team/:id`, `DELETE /api/team/:id` — require an `X-Admin-Token` header matching `ADMIN_TOKEN` in `.env`. Managed day-to-day through `frontend/admin/team.html`, not by editing JSON by hand.
+- `GET /api/settings` — public. Returns site settings, currently just the "Accepting new patients" top banner (`{ banner: { enabled, textEn, textFr } }`).
+- `PUT /api/settings` — requires `X-Admin-Token`. Partial update (only send the fields you're changing). Managed through the "Site banner" section of `frontend/admin/team.html`.
 
 ## What's a placeholder vs. what's real
 

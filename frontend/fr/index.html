@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Accueil — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Médecine familiale, soins sans rendez-vous et pharmacie complète à Cornwall, en Ontario.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Nous acceptons de nouveaux patients</span>
+    <span class="badge" id="site-badge">Nous acceptons de nouveaux patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[NUMÉRO DE TÉLÉPHONE]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">FR</a> | <a href="../en/index.html">EN</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html" aria-current="page">Accueil</a></li>
-            <li><a href="register.html">Inscription</a></li>
-            <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Prendre rendez-vous</a></li>
             <li><a href="clinic-services.html">Services de la clinique</a></li>
             <li><a href="pharmacy-services.html">Services de la pharmacie</a></li>
-            <li><a href="long-term-care.html">Soins de longue durée</a></li>
-            <li><a href="visit-us.html">Nous visiter</a></li>
-            <li><a href="urgent-care.html">Soins urgents</a></li>
-            <li><a href="about.html">À propos</a></li>
+            <li><a href="about.html">À propos de nous</a></li>
       </ul>
     </nav>
   </div>
@@ -43,45 +41,48 @@
 <main id="main">
 
 <section class="hero">
-    <div class="container">
-      <h1>Médecine familiale et soins pharmaceutiques, réunis, à Cornwall.</h1>
-      <p class="lede">La Clinique et pharmacie NorthWay regroupe une pratique de médecine familiale, des soins sans rendez-vous et une pharmacie complète sous un même toit — pour les patients de tous âges.</p>
+    <div class="container hero-grid">
+      <div class="hero-text">
+      <h1>La clinique et pharmacie familiale de Cornwall</h1>
+      
       <div class="btn-row">
-        <a class="btn btn-primary" href="register.html">S'inscrire comme nouveau patient</a>
-        <a class="btn btn-secondary" href="book-appointment.html">Prendre rendez-vous</a>
+        <a class="btn btn-primary" href="book-appointment.html">S'inscrire ou réserver</a>
+        <a class="btn btn-secondary" href="about.html#team">Rencontrer l'équipe</a>
       </div>
+    </div>
+      <div class="hero-media"><img src="../assets/img/home-reception.jpg" alt="Un membre du personnel de NorthWay aide une patiente à la réception" width="1200" height="900"></div>
     </div>
   </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <h2>Nos services</h2>
     <div class="card-grid">
-      <div class="card"><h3>Clinique familiale et sans rendez-vous</h3><p>Soins médicaux familiaux continus, ainsi que des soins sans rendez-vous pour les besoins urgents. <a href="clinic-services.html">Voir les services de la clinique →</a></p></div>
-      <div class="card"><h3>Services de pharmacie</h3><p>Distribution de médicaments, vaccinations et emballage-coque de conformité. <a href="pharmacy-services.html">Voir les services de la pharmacie →</a></p></div>
-      <div class="card"><h3>Soutien aux soins de longue durée</h3><p>Emballage et coordination de livraison pour les foyers de soins et résidences pour retraités. <a href="long-term-care.html">En savoir plus →</a></p></div>
-      <div class="card"><h3>Service bilingue</h3><p>Service complet en français et en anglais, en personne et en ligne.</p></div>
+      <a class="card" href="clinic-services.html"><div class="icon-badge b-accent">🩺</div><h3>Clinique familiale et sans rendez-vous</h3></a>
+      <a class="card" href="pharmacy-services.html"><div class="icon-badge b-accent2">💊</div><h3>Services de pharmacie</h3></a>
+      <a class="card" href="pharmacy-services.html#long-term-care"><div class="icon-badge b-accent">🏠</div><h3>Soutien aux soins de longue durée</h3></a>
+      <div class="card"><div class="icon-badge b-accent2">🗣️</div><h3>Service bilingue</h3></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Heures</h3><p>Lun–Ven : 10 h – 18 h<br>Samedi : 10 h – 14 h</p></div>
-      <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON. Stationnement payant sur place.</p></div>
+      <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON</p></div>
       <div class="block"><h3>Téléphone</h3><p><a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="visit-us.html">Obtenir l'itinéraire</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Obtenir l'itinéraire</a></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="callout info">
-      <h2>Nouveau chez NorthWay?</h2>
-      <p>L'inscription ne prend que quelques minutes. Un membre de notre équipe communiquera avec vous pour confirmer vos renseignements et planifier votre rendez-vous.</p>
-      <a class="btn btn-primary" href="register.html">Commencer mon inscription</a>
+      <h2>Nouveau ici?</h2>
+      <p>L'inscription prend environ une minute.</p>
+      <a class="btn btn-primary" href="book-appointment.html">S'inscrire</a>
     </div>
   </div>
 </section>
@@ -98,10 +99,9 @@
       <div>
         <h4>Liens rapides</h4>
         <ul>
-          <li><a href="register.html">Inscription</a></li>
           <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
-          <li><a href="urgent-care.html">Soins urgents</a></li>
-          <li><a href="visit-us.html">Nous visiter</a></li>
+          <li><a href="clinic-services.html">Services de la clinique</a></li>
+          <li><a href="about.html">À propos de nous</a></li>
         </ul>
       </div>
       <div>

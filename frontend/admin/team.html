@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Admin — NorthWay (internal)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  /* Internal tool — deliberately plainer than the public site. */
+  body { background: #F3F4F6; }
+  .admin-wrap { max-width: 760px; margin: 40px auto; padding: 0 20px; }
+  .admin-card { background: #fff; border: 1px solid #E4DFD6; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .admin-card h2 { margin-top: 0; font-size: 19px; }
+  .admin-field { margin-bottom: 14px; }
+  .admin-field label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 14px; }
+  .admin-field input[type="text"], .admin-field input[type="url"], .admin-field textarea {
+    width: 100%; padding: 9px 11px; border: 1px solid #D1D5DB; border-radius: 8px; font: inherit; font-size: 15px;
+  }
+  .admin-field textarea { min-height: 70px; }
+  .admin-row { display: flex; gap: 12px; }
+  .admin-row > * { flex: 1; }
+  .member-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EEE; }
+  .member-row:last-child { border-bottom: none; }
+  .member-meta { color: #6B7280; font-size: 14px; }
+  .btn-small { padding: 6px 12px; font-size: 14px; border-radius: 8px; }
+  .btn-danger { background: #fff; color: #B42318; border: 1px solid #B42318; }
+  .status-msg { font-size: 14px; margin-top: 8px; }
+  .status-msg.error { color: #B42318; }
+  .status-msg.ok { color: #16513F; }
+  .token-bar { display: flex; gap: 10px; align-items: center; }
+  .token-bar input { flex: 1; }
+  .badge-yes { background: #E7F2EE; color: #16513F; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  .badge-no { background: #F3F4F6; color: #6B7280; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <h1 style="font-size:24px;">NorthWay Team Admin</h1>
+  <p style="color:#6B7280;">Internal tool — not linked from the public site. Manages the provider bios shown on the Team page. No patient data lives here.</p>
+
+  <div class="admin-card">
+    <h2><label for="admin-token">Admin token</label></h2>
+    <div class="token-bar">
+      <input type="text" id="admin-token" placeholder="Paste your admin token">
+      <button class="btn btn-primary btn-small" id="save-token">Save</button>
+    </div>
+    <p class="status-msg" id="token-status"></p>
+  </div>
+
+  <div class="admin-card">
+    <h2>Site banner</h2>
+    <p style="color:#6B7280; margin-top:-8px;">Controls the "Accepting new patients" strip at the top of every page. Changes here show up on the live site right away — no rebuild needed.</p>
+    <div class="admin-field"><label><input type="checkbox" id="b-enabled" style="width:auto;"> Show the banner</label></div>
+    <div class="admin-field"><label for="b-text-en">Banner text (English)</label><input type="text" id="b-text-en"></div>
+    <div class="admin-field"><label for="b-text-fr">Banner text (French)</label><input type="text" id="b-text-fr"></div>
+    <button class="btn btn-primary" id="save-banner">Save banner</button>
+    <p class="status-msg" id="banner-status"></p>
+  </div>
+
+  <div class="admin-card">
+    <h2>Add a team member</h2>
+    <div class="admin-row">
+      <div class="admin-field"><label for="f-name">Full name</label><input type="text" id="f-name"></div>
+      <div class="admin-field"><label for="f-role">Role</label><input type="text" id="f-role" placeholder="Family Physician / Pharmacist"></div>
+    </div>
+    <div class="admin-row">
+      <div class="admin-field"><label for="f-credentials">Credentials</label><input type="text" id="f-credentials" placeholder="MD, CCFP"></div>
+      <div class="admin-field"><label for="f-languages">Languages</label><input type="text" id="f-languages" placeholder="English, French"></div>
+    </div>
+    <div class="admin-field"><label for="f-photo">Photo URL (optional — leave blank to show initials)</label><input type="url" id="f-photo" placeholder="https://..."></div>
+    <div class="admin-field"><label for="f-bio">Short bio</label><textarea id="f-bio"></textarea></div>
+    <div class="admin-field"><label><input type="checkbox" id="f-accepting" style="width:auto;"> Accepting new patients</label></div>
+    <button class="btn btn-primary" id="add-member">Add team member</button>
+    <p class="status-msg" id="add-status"></p>
+  </div>
+
+  <div class="admin-card">
+    <h2>Current team</h2>
+    <div id="member-list">Loading…</div>
+  </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script>
+(function () {
+  var API = (window.NORTHWAY_API_BASE || "") + "/api/team";
+  var tokenInput = document.getElementById("admin-token");
+  var tokenStatus = document.getElementById("token-status");
+  var listEl = document.getElementById("member-list");
+  var addStatus = document.getElementById("add-status");
+
+  tokenInput.value = localStorage.getItem("northway_admin_token") || "";
+
+  document.getElementById("save-token").addEventListener("click", function () {
+    localStorage.setItem("northway_admin_token", tokenInput.value.trim());
+    tokenStatus.textContent = "Saved.";
+    tokenStatus.className = "status-msg ok";
+  });
+
+  function authHeaders() {
+    return { "Content-Type": "application/json", "X-Admin-Token": tokenInput.value.trim() };
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function renderList(members) {
+    if (!members.length) {
+      listEl.innerHTML = "<p style='color:#6B7280;'>No team members yet.</p>";
+      return;
+    }
+    listEl.innerHTML = members.map(function (m) {
+      return "<div class='member-row' data-id='" + m.id + "'>" +
+        "<div>" +
+          "<strong>" + escapeHtml(m.name) + "</strong> — " + escapeHtml(m.role) +
+          " <span class='" + (m.acceptingNewPatients ? "badge-yes" : "badge-no") + "'>" +
+            (m.acceptingNewPatients ? "Accepting patients" : "Not accepting") +
+          "</span>" +
+          "<div class='member-meta'>" + escapeHtml(m.credentials) + (m.languages ? " · " + escapeHtml(m.languages) : "") + "</div>" +
+          "<div class='member-meta'>" + escapeHtml(m.bio) + "</div>" +
+        "</div>" +
+        "<button class='btn btn-secondary btn-small delete-btn'>Delete</button>" +
+      "</div>";
+    }).join("");
+
+    listEl.querySelectorAll(".delete-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.closest(".member-row").dataset.id;
+        if (!confirm("Delete this team member?")) return;
+        fetch(API + "/" + id, { method: "DELETE", headers: authHeaders() })
+          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            if (r.ok) { load(); }
+            else { alert("Delete failed: " + (r.errors || []).join(", ")); }
+          });
+      });
+    });
+  }
+
+  function load() {
+    fetch(API)
+      .then(function (r) { return r.json(); })
+      .then(function (r) { renderList(r.team || []); })
+      .catch(function () { listEl.textContent = "Failed to load team members."; });
+  }
+
+  // --- Site banner ---
+  var SETTINGS_API = (window.NORTHWAY_API_BASE || "") + "/api/settings";
+  var bEnabled = document.getElementById("b-enabled");
+  var bTextEn = document.getElementById("b-text-en");
+  var bTextFr = document.getElementById("b-text-fr");
+  var bannerStatus = document.getElementById("banner-status");
+
+  function loadBanner() {
+    fetch(SETTINGS_API)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var banner = data && data.banner ? data.banner : {};
+        bEnabled.checked = banner.enabled !== false;
+        bTextEn.value = banner.textEn || "";
+        bTextFr.value = banner.textFr || "";
+      })
+      .catch(function () {
+        bannerStatus.textContent = "Failed to load current banner settings.";
+        bannerStatus.className = "status-msg error";
+      });
+  }
+
+  document.getElementById("save-banner").addEventListener("click", function () {
+    var payload = {
+      banner: {
+        enabled: bEnabled.checked,
+        textEn: bTextEn.value.trim(),
+        textFr: bTextFr.value.trim()
+      }
+    };
+    bannerStatus.textContent = "Saving…";
+    bannerStatus.className = "status-msg";
+    fetch(SETTINGS_API, { method: "PUT", headers: authHeaders(), body: JSON.stringify(payload) })
+      .then(function (r) { return r.json().then(function (body) { return { status: r.status, body: body }; }); })
+      .then(function (res) {
+        if (res.status === 200) {
+          bannerStatus.textContent = "Saved.";
+          bannerStatus.className = "status-msg ok";
+        } else {
+          bannerStatus.textContent = (res.body.errors || ["Failed to save."]).join(", ");
+          bannerStatus.className = "status-msg error";
+        }
+      })
+      .catch(function () {
+        bannerStatus.textContent = "Network error saving banner settings.";
+        bannerStatus.className = "status-msg error";
+      });
+  });
+
+  loadBanner();
+
+  document.getElementById("add-member").addEventListener("click", function () {
+    var payload = {
+      name: document.getElementById("f-name").value.trim(),
+      role: document.getElementById("f-role").value.trim(),
+      credentials: document.getElementById("f-credentials").value.trim(),
+      languages: document.getElementById("f-languages").value.trim(),
+      photoUrl: document.getElementById("f-photo").value.trim(),
+      bio: document.getElementById("f-bio").value.trim(),
+      acceptingNewPatients: document.getElementById("f-accepting").checked
+    };
+    addStatus.textContent = "Saving…";
+    addStatus.className = "status-msg";
+    fetch(API, { method: "POST", headers: authHeaders(), body: JSON.stringify(payload) })
+      .then(function (r) { return r.json().then(function (body) { return { status: r.status, body: body }; }); })
+      .then(function (res) {
+        if (res.status === 201) {
+          addStatus.textContent = "Added.";
+          addStatus.className = "status-msg ok";
+          ["f-name", "f-role", "f-credentials", "f-languages", "f-photo", "f-bio"].forEach(function (id) {
+            document.getElementById(id).value = "";
+          });
+          document.getElementById("f-accepting").checked = false;
+          load();
+        } else {
+          addStatus.textContent = (res.body.errors || ["Failed to save."]).join(", ");
+          addStatus.className = "status-msg error";
+        }
+      })
+      .catch(function () {
+        addStatus.textContent = "Network error saving team member.";
+        addStatus.className = "status-msg error";
+      });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

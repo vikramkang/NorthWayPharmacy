@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Family medicine, walk-in and urgent care, and full-service pharmacy in Cornwall, Ontario.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Accepting new patients</span>
+    <span class="badge" id="site-badge">Accepting new patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[PHONE NUMBER]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">EN</a> | <a href="../fr/index.html">FR</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Main navigation">
       <ul>
         <li><a href="index.html" aria-current="page">Home</a></li>
-            <li><a href="register.html">Register</a></li>
-            <li><a href="book-appointment.html">Book an Appointment</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Book an Appointment</a></li>
             <li><a href="clinic-services.html">Clinic Services</a></li>
             <li><a href="pharmacy-services.html">Pharmacy Services</a></li>
-            <li><a href="long-term-care.html">Long-Term Care</a></li>
-            <li><a href="visit-us.html">Visit Us</a></li>
-            <li><a href="urgent-care.html">Urgent Care</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">About Us</a></li>
       </ul>
     </nav>
   </div>
@@ -43,45 +41,48 @@
 <main id="main">
 
 <section class="hero">
-    <div class="container">
-      <h1>Family medicine and pharmacy care, together, in Cornwall.</h1>
-      <p class="lede">NorthWay Clinic and Pharmacy brings a family physician practice, walk-in and urgent care, and a full-service pharmacy under one roof — built for patients of every age.</p>
+    <div class="container hero-grid">
+      <div class="hero-text">
+      <h1>Cornwall's Family Clinic and Pharmacy</h1>
+      
       <div class="btn-row">
-        <a class="btn btn-primary" href="register.html">Register as a New Patient</a>
-        <a class="btn btn-secondary" href="book-appointment.html">Book an Appointment</a>
+        <a class="btn btn-primary" href="book-appointment.html">Register or Book</a>
+        <a class="btn btn-secondary" href="about.html#team">Meet the Team</a>
       </div>
+    </div>
+      <div class="hero-media"><img src="../assets/img/home-reception.jpg" alt="A NorthWay staff member helping a patient at the reception desk" width="1200" height="900"></div>
     </div>
   </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <h2>What we offer</h2>
     <div class="card-grid">
-      <div class="card"><h3>Family &amp; Walk-In Clinic</h3><p>Rostered family physician care alongside walk-in and urgent care for when you can't wait. <a href="clinic-services.html">See clinic services →</a></p></div>
-      <div class="card"><h3>Pharmacy Services</h3><p>Retail dispensing, vaccinations, and blister/compliance packaging. <a href="pharmacy-services.html">See pharmacy services →</a></p></div>
-      <div class="card"><h3>Long-Term Care Support</h3><p>Dedicated packaging and delivery coordination for care homes and retirement residences. <a href="long-term-care.html">Learn more →</a></p></div>
-      <div class="card"><h3>Bilingual Service</h3><p>Full service in English and French, in person and online.</p></div>
+      <a class="card" href="clinic-services.html"><div class="icon-badge b-accent">🩺</div><h3>Family &amp; Walk-In Clinic</h3></a>
+      <a class="card" href="pharmacy-services.html"><div class="icon-badge b-accent2">💊</div><h3>Pharmacy Services</h3></a>
+      <a class="card" href="pharmacy-services.html#long-term-care"><div class="icon-badge b-accent">🏠</div><h3>Long-Term Care Support</h3></a>
+      <div class="card"><div class="icon-badge b-accent2">🗣️</div><h3>Bilingual Service</h3></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Hours</h3><p>Mon–Fri: 10 am – 6 pm<br>Saturday: 10 am – 2 pm</p></div>
-      <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON. Paid parking on-site.</p></div>
+      <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON</p></div>
       <div class="block"><h3>Phone</h3><p><a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="visit-us.html">Get directions</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Get directions</a></div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="container">
     <div class="callout info">
-      <h2>New to NorthWay?</h2>
-      <p>Registering takes a few minutes. A team member will reach out to confirm your details and get you booked in.</p>
-      <a class="btn btn-primary" href="register.html">Start your registration</a>
+      <h2>New here?</h2>
+      <p>Registering takes about a minute.</p>
+      <a class="btn btn-primary" href="book-appointment.html">Register Now</a>
     </div>
   </div>
 </section>
@@ -98,10 +99,9 @@
       <div>
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="register.html">Register</a></li>
           <li><a href="book-appointment.html">Book an Appointment</a></li>
-          <li><a href="urgent-care.html">Urgent Care</a></li>
-          <li><a href="visit-us.html">Visit Us</a></li>
+          <li><a href="clinic-services.html">Clinic Services</a></li>
+          <li><a href="about.html">About Us</a></li>
         </ul>
       </div>
       <div>

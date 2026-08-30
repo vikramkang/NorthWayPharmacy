@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Services de la pharmacie — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Nous acceptons de nouveaux patients</span>
+    <span class="badge" id="site-badge">Nous acceptons de nouveaux patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[NUMÉRO DE TÉLÉPHONE]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">FR</a> | <a href="../en/pharmacy-services.html">EN</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html">Accueil</a></li>
-            <li><a href="register.html">Inscription</a></li>
-            <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Prendre rendez-vous</a></li>
             <li><a href="clinic-services.html">Services de la clinique</a></li>
             <li><a href="pharmacy-services.html" aria-current="page">Services de la pharmacie</a></li>
-            <li><a href="long-term-care.html">Soins de longue durée</a></li>
-            <li><a href="visit-us.html">Nous visiter</a></li>
-            <li><a href="urgent-care.html">Soins urgents</a></li>
-            <li><a href="about.html">À propos</a></li>
+            <li><a href="about.html">À propos de nous</a></li>
       </ul>
     </nav>
   </div>
@@ -42,19 +40,33 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Services de la pharmacie</h1><p class="lede">Distribution complète de médicaments, vaccinations et soutien à l'emballage, au même endroit que votre équipe clinique.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Services de la pharmacie</h1><p class="lede">Tout ce qu'il vous faut, juste à côté.</p></div></div>
+<div class="container"><img class="photo-band" src="../assets/img/pharmacy-prescription.jpg" alt="Un pharmacien préparant une ordonnance bilingue" loading="lazy" width="1400" height="800"></div>
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
-      <div class="card"><h3>Distribution de médicaments</h3><p>Préparation d'ordonnances avec consultation d'un pharmacien pour chaque nouveau médicament.</p></div>
-      <div class="card"><h3>Vaccinations</h3><p>Vaccinations saisonnières et de voyage administrées par notre équipe de pharmacie.</p></div>
-      <div class="card"><h3>Emballage-coque de conformité</h3><p>Médicaments organisés par date et heure pour vous aider à respecter votre traitement.</p></div>
-      <div class="card"><h3>Soins de longue durée et résidences pour retraités</h3><p>Emballage et coordination de livraison pour nos partenaires. <a href="long-term-care.html">En savoir plus →</a></p></div>
+      <div class="card"><div class="icon-badge b-accent">💊</div><h3>Ordonnances</h3><p>Préparées avec une consultation d'un pharmacien.</p></div>
+      <div class="card"><div class="icon-badge b-accent2">💉</div><h3>Vaccinations</h3><p>Saisonnières et de voyage, sans rendez-vous.</p></div>
+      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Emballage facile à suivre</h3><p>Organisé par date et heure.</p></div>
+      <a class="card" href="#long-term-care"><div class="icon-badge b-accent2">🏠</div><h3>Soins de longue durée et résidences pour retraités</h3></a>
     </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">À venir</span>
-      <p>Les demandes de renouvellement et de transfert d'ordonnances en ligne sont prévues pour une mise à jour future. Pour l'instant, veuillez appeler directement la pharmacie au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> pour un renouvellement ou un transfert.</p>
+    <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Soins de longue durée et résidences pour retraités</h2></div>
+  <div class="container"><img class="photo-band" src="../assets/img/ltc-support.jpg" alt="Une aidante tenant la main d'une résidente lors d'une visite à domicile" loading="lazy" width="1400" height="800"></div>
+  <div class="container">
+    <div class="card-grid">
+      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Emballage facile à suivre</h3><p>Organisé par résident, date et heure.</p></div>
+      <div class="card"><div class="icon-badge b-accent2">🚚</div><h3>Livraison planifiée</h3><p>Adaptée à la routine de votre établissement.</p></div>
+      <div class="card"><div class="icon-badge b-accent">👤</div><h3>Un seul point de contact</h3><p>Un pharmacien dédié pour votre équipe.</p></div>
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Intéressé par un partenariat?</h3>
+      <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
     </div>
   </div>
 </section>
@@ -71,10 +83,9 @@
       <div>
         <h4>Liens rapides</h4>
         <ul>
-          <li><a href="register.html">Inscription</a></li>
           <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
-          <li><a href="urgent-care.html">Soins urgents</a></li>
-          <li><a href="visit-us.html">Nous visiter</a></li>
+          <li><a href="clinic-services.html">Services de la clinique</a></li>
+          <li><a href="about.html">À propos de nous</a></li>
         </ul>
       </div>
       <div>

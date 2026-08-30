@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pharmacy Services — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Retail dispensing, vaccinations, and compliance packaging at NorthWay Pharmacy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Accepting new patients</span>
+    <span class="badge" id="site-badge">Accepting new patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[PHONE NUMBER]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">EN</a> | <a href="../fr/pharmacy-services.html">FR</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Main navigation">
       <ul>
         <li><a href="index.html">Home</a></li>
-            <li><a href="register.html">Register</a></li>
-            <li><a href="book-appointment.html">Book an Appointment</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Book an Appointment</a></li>
             <li><a href="clinic-services.html">Clinic Services</a></li>
             <li><a href="pharmacy-services.html" aria-current="page">Pharmacy Services</a></li>
-            <li><a href="long-term-care.html">Long-Term Care</a></li>
-            <li><a href="visit-us.html">Visit Us</a></li>
-            <li><a href="urgent-care.html">Urgent Care</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">About Us</a></li>
       </ul>
     </nav>
   </div>
@@ -42,19 +40,33 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Pharmacy Services</h1><p class="lede">Full-service dispensing, vaccinations, and packaging support, in one location with your clinic team.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Pharmacy Services</h1><p class="lede">Everything you need, close by.</p></div></div>
+<div class="container"><img class="photo-band" src="../assets/img/pharmacy-prescription.jpg" alt="A pharmacist preparing a bilingual prescription pickup" loading="lazy" width="1400" height="800"></div>
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
-      <div class="card"><h3>Retail Dispensing</h3><p>Prescription filling with pharmacist consultation for every new medication.</p></div>
-      <div class="card"><h3>Vaccinations</h3><p>Seasonal and travel vaccinations administered by our pharmacy team.</p></div>
-      <div class="card"><h3>Blister / Compliance Packaging</h3><p>Medications organized by date and time to help you stay on track.</p></div>
-      <div class="card"><h3>Long-Term Care &amp; Retirement Homes</h3><p>Packaging and delivery coordination for facility partners. <a href="long-term-care.html">Learn more →</a></p></div>
+      <div class="card"><div class="icon-badge b-accent">💊</div><h3>Prescriptions</h3><p>Filled with a pharmacist consultation.</p></div>
+      <div class="card"><div class="icon-badge b-accent2">💉</div><h3>Vaccinations</h3><p>Seasonal and travel shots, walk in anytime.</p></div>
+      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Easy-to-Follow Packaging</h3><p>Sorted by date and time.</p></div>
+      <a class="card" href="#long-term-care"><div class="icon-badge b-accent2">🏠</div><h3>Long-Term Care &amp; Retirement Homes</h3></a>
     </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Coming soon</span>
-      <p>Online prescription refill and transfer requests are planned for a future update. For now, please call the pharmacy directly at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> to arrange a refill or transfer.</p>
+    <p class="hint" style="margin-top:28px;">Need a refill or transfer? Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Long-Term Care &amp; Retirement Homes</h2></div>
+  <div class="container"><img class="photo-band" src="../assets/img/ltc-support.jpg" alt="A caregiver holding hands with a resident during a home visit" loading="lazy" width="1400" height="800"></div>
+  <div class="container">
+    <div class="card-grid">
+      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Easy-to-Follow Packaging</h3><p>Organized by resident, date, and time.</p></div>
+      <div class="card"><div class="icon-badge b-accent2">🚚</div><h3>Scheduled Delivery</h3><p>Built around your facility's routine.</p></div>
+      <div class="card"><div class="icon-badge b-accent">👤</div><h3>One Point of Contact</h3><p>A dedicated pharmacist for your team.</p></div>
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Interested in partnering?</h3>
+      <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
     </div>
   </div>
 </section>
@@ -71,10 +83,9 @@
       <div>
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="register.html">Register</a></li>
           <li><a href="book-appointment.html">Book an Appointment</a></li>
-          <li><a href="urgent-care.html">Urgent Care</a></li>
-          <li><a href="visit-us.html">Visit Us</a></li>
+          <li><a href="clinic-services.html">Clinic Services</a></li>
+          <li><a href="about.html">About Us</a></li>
         </ul>
       </div>
       <div>

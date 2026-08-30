@@ -1,0 +1,40 @@
+name: Deploy frontend to GitHub Pages
+
+# Temporary client-demo hosting: publishes the static frontend/ folder only.
+# The Node backend (registration form, team roster, admin banner) is NOT
+# deployed here — see ProjectDocs/Architecture.md §5. The frontend already
+# fails gracefully when the backend is unreachable (friendly error text
+# instead of a broken page), so this is safe to run on its own.
+
+on:
+  push:
+    branches: ["master", "main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload frontend as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

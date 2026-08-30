@@ -12,6 +12,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { appendSubmission, readAllSubmissions } = require("./store");
+const teamStore = require("./team-store");
+const settingsStore = require("./settings-store");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -85,6 +87,108 @@ app.get("/api/register/_pending", (req, res) => {
     return res.status(404).json({ ok: false, errors: ["Not found."] });
   }
   res.json({ submissions: readAllSubmissions() });
+});
+
+// ---------------------------------------------------------------------
+// Team roster — public marketing bios (name, credentials, languages, a
+// short bio, accepting-new-patients status). Not patient data. See
+// ProjectDocs/Rules.md before adding a real person here without consent,
+// and never copy a photo/bio from another practice's real website.
+// ---------------------------------------------------------------------
+
+function requireAdmin(req, res, next) {
+  const token = req.header("X-Admin-Token");
+  if (!process.env.ADMIN_TOKEN) {
+    return res.status(503).json({ ok: false, errors: ["Admin editing is not configured on this server."] });
+  }
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ ok: false, errors: ["Invalid or missing admin token."] });
+  }
+  next();
+}
+
+function validateTeamMember(body, { partial = false } = {}) {
+  const errors = [];
+  if (!body || typeof body !== "object") return ["Request body must be a JSON object."];
+  const required = ["name", "role"];
+  if (!partial) {
+    for (const field of required) {
+      if (!body[field]) errors.push(`Missing field: ${field}`);
+    }
+  }
+  if (body.photoUrl && !/^https?:\/\//.test(body.photoUrl)) {
+    errors.push("photoUrl must be a full http(s) URL.");
+  }
+  return errors;
+}
+
+// Public — the frontend Team page fetches this directly, no auth needed.
+app.get("/api/team", (req, res) => {
+  const list = teamStore.readAll().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  res.json({ team: list });
+});
+
+// Everything below requires the admin token — see backend/README.md for
+// how to set ADMIN_TOKEN and use the admin page.
+app.post("/api/team", requireAdmin, (req, res) => {
+  const errors = validateTeamMember(req.body);
+  if (errors.length) return res.status(400).json({ ok: false, errors });
+  const record = teamStore.create(req.body);
+  res.status(201).json({ ok: true, member: record });
+});
+
+app.put("/api/team/:id", requireAdmin, (req, res) => {
+  const errors = validateTeamMember(req.body, { partial: true });
+  if (errors.length) return res.status(400).json({ ok: false, errors });
+  const record = teamStore.update(req.params.id, req.body);
+  if (!record) return res.status(404).json({ ok: false, errors: ["No team member with that id."] });
+  res.json({ ok: true, member: record });
+});
+
+app.delete("/api/team/:id", requireAdmin, (req, res) => {
+  const removed = teamStore.remove(req.params.id);
+  if (!removed) return res.status(404).json({ ok: false, errors: ["No team member with that id."] });
+  res.json({ ok: true });
+});
+
+// ---------------------------------------------------------------------
+// Site settings — small public marketing settings staff can toggle without
+// a code change/rebuild. Today: the "Accepting new patients" top banner.
+// ---------------------------------------------------------------------
+
+function validateSettingsUpdate(body) {
+  const errors = [];
+  if (!body || typeof body !== "object") return ["Request body must be a JSON object."];
+  if (body.banner !== undefined) {
+    if (typeof body.banner !== "object" || body.banner === null) {
+      errors.push("banner must be an object.");
+    } else {
+      if (body.banner.enabled !== undefined && typeof body.banner.enabled !== "boolean") {
+        errors.push("banner.enabled must be a boolean.");
+      }
+      if (body.banner.textEn !== undefined && typeof body.banner.textEn !== "string") {
+        errors.push("banner.textEn must be a string.");
+      }
+      if (body.banner.textFr !== undefined && typeof body.banner.textFr !== "string") {
+        errors.push("banner.textFr must be a string.");
+      }
+    }
+  }
+  return errors;
+}
+
+// Public — the frontend fetches this on every page load to render the
+// top banner without waiting on a site rebuild.
+app.get("/api/settings", (req, res) => {
+  res.json(settingsStore.readSettings());
+});
+
+// Admin-token gated — same shared-secret pattern as /api/team.
+app.put("/api/settings", requireAdmin, (req, res) => {
+  const errors = validateSettingsUpdate(req.body);
+  if (errors.length) return res.status(400).json({ ok: false, errors });
+  const record = settingsStore.updateSettings(req.body);
+  res.json({ ok: true, settings: record });
 });
 
 app.use((req, res) => {

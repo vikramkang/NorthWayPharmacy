@@ -13,6 +13,9 @@ backend/data/*.jsonl
 *.log
 npm-debug.log*
 
+# Stray/backup files
+*.bak
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db

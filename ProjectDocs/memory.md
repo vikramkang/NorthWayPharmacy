@@ -67,6 +67,238 @@ so these were authored directly from project context.
 - Decision-maker / sign-off: Guriqbal Singh (from the original discovery
   answers).
 
+**2026-08-30 (later) — Simplified for patients.** User pointed out the site
+looked "complicated" and exposed internal complexity — draft/placeholder
+boxes ("Coming soon", "Draft — pending compliance review", "[STATUS]") were
+visible directly on live pages, and copy read like an internal spec doc
+(explaining EMR/backend mechanics to patients). Rewrote `build-site.js`
+content: moved every internal/engineering note into HTML comments (visible
+in source, invisible on the page), cut each page down to at most one visible
+callout box, replaced clinical/process-y copy with short warm sentences, and
+replaced bracket status flags (`[STATUS]`) with plain confident copy. Rule
+of thumb going forward, now also in Rules.md: **internal notes are HTML
+comments, never on-page boxes.** Regenerated and re-verified — 0 structural
+errors, 0 leftover "draft"/"coming soon" strings on any page.
+
+**2026-08-30 (later still) — Design research + Team feature.** User said the
+site still felt "complicated" even after the copy simplification pass and
+asked for real research before touching it again. Researched: a curated
+roundup of 27 small/independent clinic sites (2026), a guide written
+specifically for independent pharmacy websites (patterns drawn from real
+client rebuilds), and general healthcare-UX principles. Also reviewed
+TejoMed (small family-medicine practice) and, per the user's own reference,
+**maplecures.ca** — a near-identical business model (clinic + pharmacy,
+Ottawa) — directly.
+
+Key takeaways applied: name the audience/service/geography in the hero
+instead of generic copy; lead with a few plain-language service cards, not
+a wall of boxes; real photography (or, lacking that, initials-avatar
+placeholders) does the trust-building work that bordered callout boxes
+can't; a distinct pill-style CTA button for the primary action (booking)
+stands out from the rest of the nav; two colors plus ink/canvas is enough.
+
+**Important line drawn:** the user's request said to "add the same doctors"
+as maplecures.ca. Declined that specifically — Dr. Ahuchogu and Dr. Bashorun
+are real, licensed physicians at a real, unrelated clinic; reusing their
+names/photos/bios on NorthWay's site would be identity misuse, not a
+reasonable placeholder. Matched maplecures.ca's *structure* instead (photo-
+or-initials-avatar, name, role badge, short bio, accepting-patients pill)
+with clearly generic seed names (Dr. Sarah Bennett, Dr. Michael Tran, Aisha
+Malik). Same reasoning applied to stock photography — rather than
+downloading third-party photos (needs explicit permission, plus licensing
+questions), used CSS-based avatar placeholders sized so real photos drop in
+later with a one-line change (just set `photoUrl`).
+
+**New feature, explicitly requested:** the user wants team-member management
+"handled by the admin side," not by editing code. Built:
+- `backend/data/team.json` + `backend/src/team-store.js` — simple JSON store.
+- `GET /api/team` (public, used by the live Team page) and
+  `POST` / `PUT /:id` / `DELETE /:id` (gated by a shared `ADMIN_TOKEN` header
+  — one shared secret, not per-user accounts; see Architecture.md and
+  Rules.md for the explicit scope limits of this).
+- `frontend/admin/team.html` — a plain, unlinked internal page to add/edit/
+  delete team members. Not discoverable from the public nav.
+- `frontend/en|fr/team.html` — fetches `/api/team` client-side and renders
+  it, so an admin edit shows up without regenerating the static site.
+- Added "Our Team" to the main nav (safe to insert at the end — footer links
+  reference nav entries by array index, so anything inserted earlier would
+  have silently broken them; worth remembering if nav order changes again).
+
+Verified: 24 HTML files, 0 structural errors; full endpoint test (public
+GET, 401 with no/wrong token, 201 with correct token); combined smoke test
+serving the frontend + backend together confirmed team.html loads, calls
+the right API, and the admin page is reachable.
+
+**2026-08-30 (even later) — Cut it down further.** Even after the research-
+driven redesign, the user pushed back again: too much text, headings too
+long, and Register didn't need to be its own nav item. Merged Register into
+the Book an Appointment page as a "New Patient" section (with "Returning
+Patient" / Medeo below it) and dropped it from the nav — 9 items down to 8.
+Rewrote every lede to under 8 words and cut nearly every remaining sentence
+sitewide (card text, hints, callouts). `register.html` is now kept as a
+one-line redirect to `book-appointment.html` in both languages, so nothing
+that already linked to it breaks. Footer quick-links now look up labels by
+href instead of a fixed array index (`navLabel()` helper) — the old
+index-based approach broke once already when nav items were removed and
+would have again.
+
+Lesson for next time: when the user says "look at other sites and make it
+simple," the deliverable they want back is a *shorter site*, not a better-
+researched one that's the same length. Research informs what to cut, not
+what to add.
+
+**2026-08-30 (latest) — Visual polish pass.** User's take after the content
+cut-down: "still looks too basic, use some animations, some attractions, some
+nice colors... you decide." Kept every wording/structure decision from the
+previous pass (short ledes, 8-item nav, etc.) and added a purely visual/
+interactive layer:
+- New palette — deeper teal `--accent` plus a new warm amber `--accent2`,
+  alternated across icon badges for rhythm; warmer cream `--bg`; Poppins
+  (Google Fonts) for headings only.
+- Every card sitewide now has a colored circular icon badge (previously only
+  the four home-page cards had plain emoji; Clinic/Pharmacy/Long-Term
+  Care/Visit Us/Urgent Care cards had none).
+- Static (non-animated) decorative gradient blobs behind `.hero` and
+  `.page-header` — visual interest without motion.
+- Hover/focus micro-interactions on cards, buttons, and nav links; a
+  sticky-header scroll shadow; one-time scroll-reveal on every major section
+  (`main.js`, IntersectionObserver).
+- Deliberately did **not** add anything that loops or auto-plays (no pulsing
+  badges, no floating shapes) — reasoned through WCAG 2.2.2 and the older
+  patient demographic; documented as a hard rule in Rules.md §2a, including
+  the required `prefers-reduced-motion` fallback pattern in both the CSS and
+  `main.js`.
+- Regenerated (23 HTML files) and re-ran the jsdom structural verifier: 0
+  errors, 0 warnings. Also grep-checked: 0 leftover old `card-icon` spans, all
+  card pages have `icon-badge`, all major sections carry `reveal`, both CSS
+  and JS reduced-motion guards present.
+
+No real browser was available to take actual screenshots (Puppeteer's Chrome
+download is blocked in this sandbox — see the note further down); relied on
+structural/text verification the same way as previous passes.
+
+**2026-08-30 (even later) — Cut redundant subtext, made home tiles clickable.**
+User flagged that the home hero lede and the four "What we offer" card
+descriptions added zero new information — each one just restated its own
+heading in different words. Removed them rather than rewording (heroSection's
+`lede` and card()'s `text` are now optional and simply omitted when not
+given). Also made the service tiles do double duty as navigation: Family &
+Walk-In Clinic, Pharmacy Services, and Long-Term Care Support cards now link
+to their respective pages (`card()` takes an optional `href` and renders an
+`<a class="card">` instead of a `<div class="card">`); Bilingual Service has
+no dedicated page so it stays a plain, non-linked card. Re-verified: 0
+structural errors.
+
+Lesson: a lede/subtext is only earning its place if it tells the reader
+something the heading didn't already say — otherwise cut it, don't rephrase
+it.
+
+**2026-08-30 (latest) — Banner made admin-controlled.** User asked whether
+the "Accepting new patients" top banner could be switched from the backend
+— it couldn't; it was a hardcoded string in `build-site.js`, baked in at
+generate time. Asked the user, and they wanted it admin-controlled (same
+pattern as the Team roster). Built:
+- `backend/data/site-settings.json` + `backend/src/settings-store.js` — a
+  single JSON object (not a list), currently just `{ banner: { enabled,
+  textEn, textFr } }`.
+- `GET /api/settings` (public) and `PUT /api/settings` (same `ADMIN_TOKEN`
+  gate as `/api/team`).
+- `main.js` fetches `/api/settings` on every page load and updates the
+  banner text/visibility; the string `build-site.js` bakes into the HTML is
+  now only a no-JS/backend-down fallback, not the real source of truth.
+- Added a "Site banner" section directly to the existing
+  `frontend/admin/team.html` (enabled toggle + EN/FR text + Save) rather than
+  building a separate admin page for one on/off and two text fields.
+
+Tested end-to-end: public GET returns defaults, PUT without/with-wrong token
+returns 401, PUT with the correct token updates and persists, invalid types
+return 400. Regenerated the site and re-ran the jsdom verifier — 0 errors.
+
+**2026-08-30 (latest) — Added stock photography.** User pointed out the site
+had no photos at all and asked for clinic/pharmacy-relevant stock images.
+Sourced free, no-attribution-required photos from Pexels (pexels.com/license)
+and added them to the home hero (two-column layout, text + photo) and as a
+banner image under the page header on Clinic Services, Pharmacy Services,
+Long-Term Care, and About. Deliberately did *not* add a photo to the Team
+page — that page already has an explicit rule (see §1a above) against
+attaching stock photography to specific named team members; a generic decor
+photo elsewhere on the site doesn't have that problem since it's not claiming
+to depict anyone specific.
+
+Photos used (all Pexels, free license, no attribution required):
+- Home hero: photo 33812025 — clinic reception area.
+- Clinic Services: photo 38618421 — doctor in a white coat with a stethoscope.
+- Pharmacy Services: photo 14797857 — pharmacist assisting a customer at the
+  counter.
+- Long-Term Care: photo 7551609 — caregiver and senior sharing a warm moment
+  (picked deliberately over several sadder/more clinical wheelchair-and-
+  hospital-corridor options in the same search, to keep the tone warm rather
+  than somber for an older-patient-facing page).
+- About: photo 39192403 — doctor consulting with a parent and child.
+
+Technical note: these are hotlinked directly from Pexels' `images.pexels.com`
+CDN, not downloaded and self-hosted. The sandbox this site is built in can
+only reach the npm registry over the network — `curl` to `images.pexels.com`
+returns a 403 from the sandbox's proxy. Confirmed via the in-app browser
+(which has broader network access) that all 5 URLs resolve with HTTP 200
+and a real `image/jpeg` body, so they work fine for site visitors; the
+tradeoff is the site now depends on Pexels' CDN staying up, same category of
+dependency as the Google Fonts import. Flagged in Rules.md §1a as something
+to revisit before launch (download once, serve from
+`frontend/assets/img/`).
+
+**2026-08-30 (even later) — Replaced stock photos with the client's own.**
+User said the Pexels photos looked "too bad" and offered two options: generate
+images, or use photos they'd already dropped into the frontend folder. Found
+5 real photos placed directly at `frontend/` root (`Reception.jpeg`,
+`Consulation 2.jpeg`, `Prescription.jpeg`, `Long Term care.jpeg`,
+`Vertical_introductory.jpg`) — good, on-brand shots that happened to map
+one-to-one onto the 5 slots already built for the Pexels images:
+- `Reception.jpeg` → home hero (staff member helping a patient at the desk).
+- `Consulation 2.jpeg` → Clinic Services (doctor/patient handshake).
+- `Prescription.jpeg` → Pharmacy Services (bilingual EN/FR prescription
+  pickup screen — a nice coincidental fit for a bilingual site).
+- `Long Term care.jpeg` → Long-Term Care (literally shows a "Long-Term Care
+  Support / Soutien aux soins de longue durée" pamphlet in frame).
+- `Vertical_introductory.jpg` → About (portrait-orientation stethoscope
+  close-up; restructured the About page into a two-column text+photo layout
+  instead of the flat photo-band the other pages use, since forcing a 6000px-
+  tall portrait into a short landscape band would have cropped it badly).
+
+Originals were 2-2.5MB each (up to 4000×6000px) — resized with ImageMagick
+(`convert -resize -strip -quality 78 -sampling-factor 4:2:0`) down to 65-120KB
+each, moved into `frontend/assets/img/`, with the untouched originals kept in
+`frontend/assets/img/_source/` for future re-crops. `build-site.js` now
+points at these local files instead of the Pexels hotlinks. Regenerated and
+verified: 0 structural errors, 0 missing images, every `<img>` has alt text.
+
+**2026-08-30 (latest) — Nav cut from 9 items to 5.** User shared a screenshot
+showing the nav wrapping to two lines and asked to make it fewer. Applied the
+same "fold it into an existing page as a section" pattern already used for
+Register → Book an Appointment:
+- Urgent Care folded into Clinic Services as an `#urgent-care` section.
+- Long-Term Care folded into Pharmacy Services as a `#long-term-care`
+  section (the "Long-Term Care & Retirement Homes" card on that page is now
+  a link down to the section instead of plain text).
+- Mid-fix, user sent a follow-up: fold Visit Us and Our Team into the About
+  page too, all three as one "About Us" page. Combined About + Team +
+  Visit Us into a single `about.html` with `#team` and `#visit-us` sections;
+  nav label changed from "About" to "About Us" (FR: "À propos de nous") to
+  reflect the wider scope.
+
+Final nav: Home, Book an Appointment, Clinic Services, Pharmacy Services,
+About Us — 5 items, fits on one line.
+
+Every retired URL (`urgent-care.html`, `long-term-care.html`,
+`visit-us.html`, `team.html`, plus the earlier `register.html`) is kept as a
+one-line meta-refresh redirect to its new section, generated from a
+`RETIRED_REDIRECTS` map in `writeSite()`, so nothing that already linked to
+the old pages breaks. All in-site links (home page cards, the Book
+Appointment "something urgent" hint, the home hero's "Meet the Team"
+button) were repointed to the direct new URLs rather than left to bounce
+through a redirect. Regenerated and verified: 0 structural errors, 0 broken
+links, 0 missing images, exactly 5 nav items and 1 CTA link per real page.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

@@ -7,13 +7,18 @@ is the single source of truth for "what's done vs. not."
 
 | Item | Status | Notes |
 |---|---|---|
-| Sitemap + page copy (EN) | Done | 10 pages |
+| Sitemap + page copy (EN) | Done | 6 pages — nav trimmed from 9 to 5 items by folding Urgent Care/Long-Term Care/Visit Us/Our Team into sections of Clinic Services, Pharmacy Services, and About Us; see memory.md |
 | French translation | Done (draft) | Needs a native/professional health-sector review before launch — not certified |
 | Shared design system (CSS) | Done | Warm/teal, large type, mobile-first |
 | Static site generator (`build-site.js`) | Done | Regenerate after any content edit |
 | Registration form — front end | Done | Client-side validation only until backend is wired up |
-| Registration form — backend endpoint | In progress | `POST /api/register`, local JSONL store as placeholder |
-| Monorepo + git | In progress | `frontend/` + `backend/` under one repo |
+| Registration form — backend endpoint | Done | `POST /api/register`, local JSONL store as placeholder — still needs a real notification path, see Architecture.md §5 |
+| Monorepo + git | Done | `frontend/` + `backend/` under one repo |
+| Design pass (research-driven) | Done | Sharper hero copy, distinct CTA nav button, reduced card density, initials-avatar pattern — see memory.md for sources |
+| Team page + admin-managed roster | Done (seed data) | `GET/POST/PUT/DELETE /api/team`, `frontend/admin/team.html`. Seeded with generic placeholder names — replace via the admin page before launch, not by editing code |
+| Visual polish pass (colour, icon badges, motion) | Done | New teal/amber palette, Poppins headings, icon badges on every card, static decorative hero shapes, hover/focus micro-interactions, sticky header, scroll-reveal — all motion respects `prefers-reduced-motion`, nothing loops. See Rules.md §2a and memory.md |
+| Home page redundant copy cut + clickable service tiles | Done | Hero lede and "What we offer" card subtext removed (added no info beyond the heading); Clinic/Pharmacy/Long-Term Care cards now link to their pages |
+| Admin-controlled "Accepting new patients" banner | Done | `GET/PUT /api/settings`, banner section added to `frontend/admin/team.html` — staff can change it live, no rebuild needed. See Architecture.md §7 |
 | Real address/phone/email | Not started | Currently bracketed placeholders |
 | Medeo booking link | Not started | Placeholder `#` link on Book an Appointment page |
 | Provider bios/photos | Not started | Placeholder cards on About + Clinic Services |

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "seed-physician-1",
+    "name": "Dr. Sarah Bennett",
+    "role": "Family Physician",
+    "credentials": "MD, CCFP",
+    "languages": "English",
+    "acceptingNewPatients": true,
+    "bio": "Dr. Bennett provides ongoing family care for patients of all ages, with a focus on preventive care and chronic disease management.",
+    "photoUrl": "",
+    "order": 0,
+    "updatedAt": "2026-08-30T00:00:00.000Z"
+  },
+  {
+    "id": "seed-physician-2",
+    "name": "Dr. Michael Tran",
+    "role": "Family Physician",
+    "credentials": "MD, CCFP",
+    "languages": "English, French",
+    "acceptingNewPatients": false,
+    "bio": "Dr. Tran sees rostered patients and supports the walk-in clinic, with a particular interest in mental health and men's health.",
+    "photoUrl": "",
+    "order": 1,
+    "updatedAt": "2026-08-30T00:00:00.000Z"
+  },
+  {
+    "id": "seed-pharmacist-1",
+    "name": "Aisha Malik",
+    "role": "Pharmacist",
+    "credentials": "PharmD",
+    "languages": "English, Urdu",
+    "acceptingNewPatients": false,
+    "bio": "Aisha leads the pharmacy team, with a focus on medication reviews and compliance packaging for long-term care patients.",
+    "photoUrl": "",
+    "order": 2,
+    "updatedAt": "2026-08-30T00:00:00.000Z"
+  }
+]

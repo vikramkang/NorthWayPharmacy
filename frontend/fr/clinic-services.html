@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Services de la clinique — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Médecine familiale, soins sans rendez-vous et soins urgents à la Clinique NorthWay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Nous acceptons de nouveaux patients</span>
+    <span class="badge" id="site-badge">Nous acceptons de nouveaux patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[NUMÉRO DE TÉLÉPHONE]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">FR</a> | <a href="../en/clinic-services.html">EN</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html">Accueil</a></li>
-            <li><a href="register.html">Inscription</a></li>
-            <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Prendre rendez-vous</a></li>
             <li><a href="clinic-services.html" aria-current="page">Services de la clinique</a></li>
             <li><a href="pharmacy-services.html">Services de la pharmacie</a></li>
-            <li><a href="long-term-care.html">Soins de longue durée</a></li>
-            <li><a href="visit-us.html">Nous visiter</a></li>
-            <li><a href="urgent-care.html">Soins urgents</a></li>
-            <li><a href="about.html">À propos</a></li>
+            <li><a href="about.html">À propos de nous</a></li>
       </ul>
     </nav>
   </div>
@@ -42,30 +40,57 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Services de la clinique</h1><p class="lede">Médecine familiale continue, ainsi que des soins sans rendez-vous et urgents, pour les patients de tous âges.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Services de la clinique</h1><p class="lede">Médecine familiale et soins urgents.</p></div></div>
+<div class="container"><img class="photo-band" src="../assets/img/clinic-consultation.jpg" alt="Un médecin et un patient se serrant la main après une consultation" loading="lazy" width="1400" height="800"></div>
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🩺</div>
         <h3>Soins de médecine familiale</h3>
-        <p>Soins continus avec un médecin attitré — bilans annuels, gestion des maladies chroniques, orientations et soins préventifs.</p>
-        <p><span class="placeholder">Accepte de nouveaux patients : [STATUT]</span></p>
+        <p>Bilans, gestion des maladies chroniques, orientations.</p>
+        <p>Accepte de nouveaux patients</p>
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">🚑</div>
         <h3>Soins sans rendez-vous et urgents</h3>
-        <p>Pour les besoins qui ne peuvent pas attendre un rendez-vous planifié — maladies et blessures mineures, renouvellements d'ordonnances et préoccupations générales de santé.</p>
+        <p>Visites le jour même, sans rendez-vous.</p>
       </div>
     </div>
 
     <div class="callout info" style="margin-top:28px;">
-      <h3>Quoi apporter à votre visite</h3>
-      <p>Votre carte santé (OHIP), une liste de vos médicaments actuels et tout document de référence qui vous a été remis.</p>
+      <h3>Quoi apporter</h3>
+      <p>Votre carte santé et vos médicaments actuels.</p>
     </div>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="register.html">S'inscrire comme nouveau patient</a>
-      <a class="btn btn-secondary" href="book-appointment.html">Prendre rendez-vous</a>
+      <a class="btn btn-primary" href="book-appointment.html">S'inscrire ou réserver</a>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Que faire en cas d'urgence</h2>
+    <div class="callout warn">
+      <h3>Urgence médicale?</h3>
+      <p><strong>Composez le 911</strong> ou rendez-vous aux urgences de l'Hôpital communautaire de Cornwall.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">⏰</div>
+        <h3>Urgent, pendant nos heures</h3>
+        <p>Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> — souvent le jour même.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">🌙</div>
+        <h3>En dehors de nos heures</h3>
+        <p>Composez Health811 (8-1-1), en tout temps.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">N'envoyez pas de courriel pour une urgence — appelez-nous.</p>
   </div>
 </section>
 
@@ -81,10 +106,9 @@
       <div>
         <h4>Liens rapides</h4>
         <ul>
-          <li><a href="register.html">Inscription</a></li>
           <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
-          <li><a href="urgent-care.html">Soins urgents</a></li>
-          <li><a href="visit-us.html">Nous visiter</a></li>
+          <li><a href="clinic-services.html">Services de la clinique</a></li>
+          <li><a href="about.html">À propos de nous</a></li>
         </ul>
       </div>
       <div>

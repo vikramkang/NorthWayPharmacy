@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clinic Services — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Family physician, walk-in, and urgent care services at NorthWay Clinic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Accepting new patients</span>
+    <span class="badge" id="site-badge">Accepting new patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[PHONE NUMBER]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">EN</a> | <a href="../fr/clinic-services.html">FR</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Main navigation">
       <ul>
         <li><a href="index.html">Home</a></li>
-            <li><a href="register.html">Register</a></li>
-            <li><a href="book-appointment.html">Book an Appointment</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Book an Appointment</a></li>
             <li><a href="clinic-services.html" aria-current="page">Clinic Services</a></li>
             <li><a href="pharmacy-services.html">Pharmacy Services</a></li>
-            <li><a href="long-term-care.html">Long-Term Care</a></li>
-            <li><a href="visit-us.html">Visit Us</a></li>
-            <li><a href="urgent-care.html">Urgent Care</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">About Us</a></li>
       </ul>
     </nav>
   </div>
@@ -42,30 +40,58 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Clinic Services</h1><p class="lede">Rostered family medicine alongside walk-in and urgent care, for patients of every age.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Clinic Services</h1><p class="lede">Family medicine and urgent care.</p></div></div>
+<div class="container"><img class="photo-band" src="../assets/img/clinic-consultation.jpg" alt="A doctor and patient shaking hands after a consultation" loading="lazy" width="1400" height="800"></div>
+<section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
+        <div class="icon-badge b-accent">🩺</div>
         <h3>Family Physician Care</h3>
-        <p>Ongoing, rostered care with a consistent physician — annual check-ups, chronic disease management, referrals, and preventive care.</p>
-        <p><span class="placeholder">Accepting new patients: [STATUS]</span></p>
+        <p>Check-ups, chronic care, and referrals.</p>
+        <p>Accepting new patients</p>
+        <!-- TODO: confirm current accepting-new-patients status before launch -->
       </div>
       <div class="card">
+        <div class="icon-badge b-accent2">🚑</div>
         <h3>Walk-In &amp; Urgent Care</h3>
-        <p>For same-day concerns that can't wait for a scheduled appointment — minor illness and injury, prescription renewals, and general health concerns.</p>
+        <p>Same-day visits, no appointment needed.</p>
       </div>
     </div>
 
     <div class="callout info" style="margin-top:28px;">
-      <h3>What to bring to your visit</h3>
-      <p>Your health card (OHIP), a list of current medications, and any referral paperwork you've been given.</p>
+      <h3>What to bring</h3>
+      <p>Your health card and current medications.</p>
     </div>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="register.html">Register as a New Patient</a>
-      <a class="btn btn-secondary" href="book-appointment.html">Book an Appointment</a>
+      <a class="btn btn-primary" href="book-appointment.html">Register or Book</a>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Urgent care guidance</h2>
+    <div class="callout warn">
+      <h3>Medical emergency?</h3>
+      <p><strong>Call 911</strong> or go to Cornwall Community Hospital's Emergency Department.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">⏰</div>
+        <h3>Urgent, during our hours</h3>
+        <p>Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> — often same-day.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">🌙</div>
+        <h3>Outside of our hours</h3>
+        <p>Call Health811 (8-1-1), any time.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">Don't email for anything urgent — call instead.</p>
   </div>
 </section>
 
@@ -81,10 +107,9 @@
       <div>
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="register.html">Register</a></li>
           <li><a href="book-appointment.html">Book an Appointment</a></li>
-          <li><a href="urgent-care.html">Urgent Care</a></li>
-          <li><a href="visit-us.html">Visit Us</a></li>
+          <li><a href="clinic-services.html">Clinic Services</a></li>
+          <li><a href="about.html">About Us</a></li>
         </ul>
       </div>
       <div>

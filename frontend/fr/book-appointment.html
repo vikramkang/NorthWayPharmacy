@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prendre rendez-vous — NorthWay Clinic and Pharmacy</title>
-<meta name="description" content="Prenez rendez-vous en ligne grâce à Medeo.">
+<meta name="description" content="Inscrivez-vous comme nouveau patient ou prenez rendez-vous en ligne grâce à Medeo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Nous acceptons de nouveaux patients</span>
+    <span class="badge" id="site-badge">Nous acceptons de nouveaux patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[NUMÉRO DE TÉLÉPHONE]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">FR</a> | <a href="../en/book-appointment.html">EN</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html">Accueil</a></li>
-            <li><a href="register.html">Inscription</a></li>
-            <li><a href="book-appointment.html" aria-current="page">Prendre rendez-vous</a></li>
+            <li><a href="book-appointment.html" class="nav-cta" aria-current="page">Prendre rendez-vous</a></li>
             <li><a href="clinic-services.html">Services de la clinique</a></li>
             <li><a href="pharmacy-services.html">Services de la pharmacie</a></li>
-            <li><a href="long-term-care.html">Soins de longue durée</a></li>
-            <li><a href="visit-us.html">Nous visiter</a></li>
-            <li><a href="urgent-care.html">Soins urgents</a></li>
-            <li><a href="about.html">À propos</a></li>
+            <li><a href="about.html">À propos de nous</a></li>
       </ul>
     </nav>
   </div>
@@ -42,25 +40,86 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>Prendre rendez-vous</h1><p class="lede">Une fois inscrit(e) comme patient, la prise de rendez-vous est rapide et sécurisée grâce à notre partenaire de planification en ligne, Medeo.</p></div></div>
-<section>
+<div class="page-header"><div class="container"><h1>Prendre rendez-vous</h1><p class="lede">Nouveau ou déjà patient — commencez ici.</p></div></div>
+
+<section class="reveal">
   <div class="container">
-    <div class="card" style="max-width:640px;">
-      <h3>Réserver en ligne avec Medeo</h3>
-      <p>Choisissez un professionnel de la santé, sélectionnez une heure disponible et recevez une confirmation instantanée par courriel.</p>
-      <a class="btn btn-primary" href="#" aria-disabled="true">Ouvrir Medeo</a>
-      <p class="hint">[ESPACE RÉSERVÉ AU LIEN — insérer l'URL de réservation Medeo réelle avant le lancement.]</p>
-    </div>
+    <h2>Nouveau patient</h2>
+    <div class="form-note">Environ une minute. On s'occupe du reste.</div>
 
-    <div class="callout warn" style="margin-top:28px;">
-      <h3>Besoin de soins urgents?</h3>
-      <p>La réservation en ligne n'est pas l'outil approprié pour des symptômes urgents. Consultez notre page <a href="urgent-care.html">Soins urgents</a> pour savoir quoi faire.</p>
-    </div>
+    <form class="stack" id="register-form" novalidate>
+      <div class="field">
+        <label for="reg-for">Pour qui est-ce?</label>
+        <select id="reg-for" name="registeringFor" required>
+          <option value="">Choisir une option</option>
+          <option value="self">Moi-même</option>
+          <option value="dependent">Mon enfant ou une personne à charge</option>
+        </select>
+        <p class="hint">Un parent ou tuteur doit inscrire un enfant.</p>
+      </div>
 
-    <div class="callout draft" style="margin-top:28px;">
-      <span class="draft-label">Pas encore inscrit(e)?</span>
-      <p><a href="register.html">Inscrivez-vous comme nouveau patient</a> d'abord — les réservations Medeo sont réservées aux patients actifs de notre système.</p>
+      <div class="field">
+        <label for="full-name">Nom complet</label>
+        <input type="text" id="full-name" name="fullName" required autocomplete="name">
+      </div>
+
+      <fieldset>
+        <legend>Genre</legend>
+        <div class="radio-row">
+          <label><input type="radio" name="gender" value="female"> Femme</label>
+          <label><input type="radio" name="gender" value="male"> Homme</label>
+          <label><input type="radio" name="gender" value="other"> Autre</label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="phone">Numéro de téléphone</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel">
+      </div>
+
+      <div class="field">
+        <label for="email">Adresse courriel</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="address">Adresse résidentielle</label>
+        <input type="text" id="address" name="address" required autocomplete="street-address">
+      </div>
+
+      <div class="field">
+        <label for="pref-lang">Langue préférée</label>
+        <select id="pref-lang" name="preferredLanguage">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <div class="field consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">Vous pouvez me contacter par téléphone, courriel ou texto.</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Soumettre l'inscription</button>
+      <p class="hint" id="form-error" hidden>Une erreur est survenue. Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
+    </form>
+
+    <div class="callout info" id="form-confirmation" hidden>
+      <h2>Merci</h2>
+      <p>Nous communiquerons avec vous sous peu pour votre premier rendez-vous.</p>
     </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="container">
+    <h2>Patient existant</h2>
+    <div class="card" style="max-width:520px;">
+      <p>Réservez en ligne avec Medeo.</p>
+      <a class="btn btn-primary" href="#">Ouvrir Medeo</a>
+      <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
+    </div>
+    <p class="hint" style="margin-top:20px;">Besoin de soins urgents? <a href="clinic-services.html#urgent-care">Voyez quoi faire</a>.</p>
   </div>
 </section>
 
@@ -76,10 +135,9 @@
       <div>
         <h4>Liens rapides</h4>
         <ul>
-          <li><a href="register.html">Inscription</a></li>
           <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
-          <li><a href="urgent-care.html">Soins urgents</a></li>
-          <li><a href="visit-us.html">Nous visiter</a></li>
+          <li><a href="clinic-services.html">Services de la clinique</a></li>
+          <li><a href="about.html">À propos de nous</a></li>
         </ul>
       </div>
       <div>

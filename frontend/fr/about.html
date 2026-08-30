@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>À propos — NorthWay Clinic and Pharmacy</title>
-<meta name="description" content="À propos de la Clinique et pharmacie NorthWay à Cornwall, en Ontario.">
+<title>À propos de nous — NorthWay Clinic and Pharmacy</title>
+<meta name="description" content="À propos de la Clinique et pharmacie NorthWay, notre équipe, et comment nous trouver à Cornwall, en Ontario.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -12,7 +14,7 @@
 
 <div class="topbar">
   <div class="container">
-    <span class="badge">Nous acceptons de nouveaux patients</span>
+    <span class="badge" id="site-badge">Nous acceptons de nouveaux patients</span>
     <div style="display:flex; align-items:center; gap:18px;">
       <a href="tel:#">[NUMÉRO DE TÉLÉPHONE]</a>
       <span class="lang-toggle"><a href="#" class="current" aria-current="true">FR</a> | <a href="../en/about.html">EN</a></span>
@@ -27,14 +29,10 @@
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html">Accueil</a></li>
-            <li><a href="register.html">Inscription</a></li>
-            <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
+            <li><a href="book-appointment.html" class="nav-cta">Prendre rendez-vous</a></li>
             <li><a href="clinic-services.html">Services de la clinique</a></li>
             <li><a href="pharmacy-services.html">Services de la pharmacie</a></li>
-            <li><a href="long-term-care.html">Soins de longue durée</a></li>
-            <li><a href="visit-us.html">Nous visiter</a></li>
-            <li><a href="urgent-care.html">Soins urgents</a></li>
-            <li><a href="about.html" aria-current="page">À propos</a></li>
+            <li><a href="about.html" aria-current="page">À propos de nous</a></li>
       </ul>
     </nav>
   </div>
@@ -42,21 +40,54 @@
 
 <main id="main">
 
-<div class="page-header"><div class="container"><h1>À propos de NorthWay</h1><p class="lede">Une clinique et pharmacie axées sur la communauté, bâties autour des gens que nous servons.</p></div></div>
-<section>
-  <div class="container">
-    <div class="callout draft">
-      <span class="draft-label">Contenu provisoire</span>
-      <p>[Histoire de la pratique / énoncé de mission à fournir — quelques phrases sur les origines de NorthWay et ce qui la distingue, dans un ton chaleureux et communautaire.]</p>
+<div class="page-header"><div class="container"><h1>À propos de nous</h1><p class="lede">Les gens derrière NorthWay — et comment nous trouver.</p></div></div>
+<section class="reveal">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <!-- TODO: replace with the real practice story once provided -->
+      <p>Votre médecin de famille et votre pharmacien, ensemble, juste à côté l'un de l'autre.</p>
+      <a class="btn btn-secondary" href="#team">Rencontrer l'équipe</a>
     </div>
+    <div class="hero-media hero-media--tall">
+      <img src="../assets/img/about-stethoscope.jpg" alt="Gros plan d'un stéthoscope, un outil que nos cliniciens utilisent chaque jour" width="900" height="1350">
+    </div>
+  </div>
+</section>
 
-    <h2 style="margin-top:36px;">Notre équipe</h2>
+<section class="reveal" id="team">
+  <div class="container">
+    <h2>Notre équipe</h2>
+    <div class="team-grid" id="team-list">Chargement…</div>
+  </div>
+</section>
+
+<section class="reveal" id="visit-us">
+  <div class="container">
+    <h2>Nous visiter</h2>
     <div class="card-grid">
-      <div class="card"><h3>[Nom du fournisseur]</h3><p>[Titres] · [Langues parlées] · Accepte de nouveaux patients : [STATUT]</p></div>
-      <div class="card"><h3>[Nom du fournisseur]</h3><p>[Titres] · [Langues parlées] · Accepte de nouveaux patients : [STATUT]</p></div>
-      <div class="card"><h3>[Nom du pharmacien]</h3><p>[Titres] · [Langues parlées]</p></div>
+      <div class="card">
+        <div class="icon-badge b-accent">🕒</div>
+        <h3>Heures d'ouverture</h3>
+        <table class="hours">
+          <tr><td>Lundi – Vendredi</td><td>10 h – 18 h</td></tr>
+          <tr><td>Samedi</td><td>10 h – 14 h</td></tr>
+          <tr><td>Dimanche</td><td>Fermé</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">📍</div>
+        <h3>Emplacement et stationnement</h3>
+        <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
+        <p>Stationnement sur place.</p>
+        <!-- TODO: embed a map once the address is finalized -->
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent">☎️</div>
+        <h3>Coordonnées</h3>
+        <p>Téléphone : <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p>
+        <p>Courriel : <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a></p>
+      </div>
     </div>
-    <p class="hint" style="margin-top:16px;">Biographies et photos des fournisseurs à venir — voir les notes de transfert pour ce qui est requis.</p>
   </div>
 </section>
 
@@ -72,10 +103,9 @@
       <div>
         <h4>Liens rapides</h4>
         <ul>
-          <li><a href="register.html">Inscription</a></li>
           <li><a href="book-appointment.html">Prendre rendez-vous</a></li>
-          <li><a href="urgent-care.html">Soins urgents</a></li>
-          <li><a href="visit-us.html">Nous visiter</a></li>
+          <li><a href="clinic-services.html">Services de la clinique</a></li>
+          <li><a href="about.html">À propos de nous</a></li>
         </ul>
       </div>
       <div>
