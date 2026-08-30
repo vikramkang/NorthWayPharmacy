@@ -113,13 +113,21 @@ header.site-header.is-scrolled { box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08); 
   padding: 14px 0;
 }
 .wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logo-mark { display: block; line-height: 0; flex-shrink: 0; }
+.logo-mark svg { display: block; }
+.wordmark-text {
+  display: block;
   font-size: 22px;
   font-weight: 800;
   color: var(--accent-dark);
-  text-decoration: none;
   line-height: 1.15;
 }
-.wordmark span { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); font-family: "Segoe UI", system-ui, sans-serif; }
+.wordmark-text span { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); font-family: "Segoe UI", system-ui, sans-serif; }
 
 nav.main-nav ul {
   list-style: none;
@@ -242,32 +250,73 @@ nav.main-nav a.nav-cta:hover { background: var(--accent-dark); transform: transl
 .hero p.lede { font-size: 20px; color: var(--ink-soft); max-width: 640px; }
 @media (max-width: 640px) { .hero h1 { font-size: 30px; } }
 
+.trust-strip { background: var(--card); border-bottom: 1px solid var(--line); }
+.trust-strip-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 32px;
+  padding: 16px 24px;
+}
+.trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.trust-item svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+@media (max-width: 640px) { .trust-item { font-size: 13px; } }
+
 .hero-grid { display: flex; align-items: center; gap: 44px; flex-wrap: wrap; }
 .hero-text { flex: 1 1 380px; min-width: 300px; }
 .hero-media { flex: 1 1 380px; min-width: 280px; }
-.hero-media img {
-  width: 100%; height: 340px; object-fit: cover;
+
+/* Photo frame: every real photo on the site (different sources/lighting)
+   goes through this wrapper so they read as one consistent, branded set
+   rather than a loose photo collage — a light brand-tinted overlay plus a
+   small saturation/contrast nudge on the image itself. */
+.photo-frame {
+  position: relative;
   border-radius: var(--radius);
   box-shadow: var(--shadow-lift);
-  display: block;
+  overflow: hidden;
 }
+.photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(14, 124, 102, 0.14) 0%, rgba(232, 135, 58, 0.08) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.06) contrast(1.03) brightness(1.01);
+}
+
+.hero-media .photo-frame { height: 340px; }
+.hero-media .photo-frame img { object-position: 85% center; }
 @media (max-width: 760px) {
   .hero-media { order: -1; }
-  .hero-media img { height: 220px; }
+  .hero-media .photo-frame { height: 220px; }
 }
 
-.hero-media--tall img { height: 420px; object-position: 35% 60%; }
-@media (max-width: 760px) { .hero-media--tall img { height: 280px; } }
+.hero-media--tall .photo-frame { height: 420px; }
+.hero-media--tall .photo-frame img { object-position: 35% 60%; }
+@media (max-width: 760px) { .hero-media--tall .photo-frame { height: 280px; } }
 
-.photo-band {
-  width: 100%;
+.photo-frame.photo-band {
   height: 280px;
-  object-fit: cover;
-  border-radius: var(--radius);
   box-shadow: var(--shadow);
   margin: 24px 0 8px;
 }
-@media (max-width: 640px) { .photo-band { height: 190px; } }
+@media (max-width: 640px) { .photo-frame.photo-band { height: 190px; } }
 
 .page-header {
   position: relative;
@@ -346,8 +395,9 @@ table.hours td, table.hours th { padding: 8px 12px; border-bottom: 1px solid var
   margin-bottom: 14px;
   transition: transform 0.22s var(--ease);
 }
-.icon-badge.b-accent { background: var(--accent-light); }
-.icon-badge.b-accent2 { background: var(--accent2-light); }
+.icon-badge.b-accent { background: var(--accent-light); color: var(--accent-dark); }
+.icon-badge.b-accent2 { background: var(--accent2-light); color: var(--accent2-dark); }
+.icon-badge svg { display: block; }
 .card:hover .icon-badge { transform: scale(1.08) rotate(-4deg); }
 
 /* ---------- Forms ---------- */

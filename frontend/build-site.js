@@ -15,6 +15,13 @@ const path = require("path");
 
 const OUT = __dirname;
 
+// Temporary demo hosting origin (GitHub Pages) — used only for absolute
+// og:image/og:url tags so the link looks right when shared during the
+// client demo. Set to "" (relative) once a real domain is picked for
+// launch, and remove the sitewide noindex meta tag / robots.txt block at
+// the same time — see ProjectDocs/Architecture.md §5 and Rules.md.
+const SITE_ORIGIN = "https://vikramkang.github.io/NorthWayPharmacy";
+
 // ---------------------------------------------------------------------
 // Chrome strings (nav, footer, buttons) per language
 // ---------------------------------------------------------------------
@@ -62,6 +69,35 @@ const T = {
 };
 
 // ---------------------------------------------------------------------
+// Icon set — small hand-drawn line icons (replacing emoji, which render
+// inconsistently across platforms/browsers with mismatched colors/styles).
+// All stroke-based icons use currentColor so they inherit the badge's own
+// accent color (see .icon-badge.b-accent / .b-accent2 in style.css).
+// ---------------------------------------------------------------------
+const ICONS = {
+  stethoscope: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v5.5a3.5 3.5 0 0 0 7 0V3"/><path d="M10.5 12v1.5a4 4 0 0 0 8 0v-1.5"/><circle cx="18.5" cy="16.2" r="2.1"/></svg>`,
+  pill: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="9" width="17" height="6" rx="3" transform="rotate(-45 12 12)"/><line x1="12" y1="6.8" x2="12" y2="17.2" transform="rotate(-45 12 12)"/></svg>`,
+  house: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h5v-5h2v5h5v-9"/></svg>`,
+  bilingual: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="9" rx="3"/><rect x="8" y="10" width="13" height="9" rx="3"/></svg>`,
+  cross: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><line x1="12" y1="8.2" x2="12" y2="15.8"/><line x1="8.2" y1="12" x2="15.8" y2="12"/></svg>`,
+  droplet: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c-3 4-5.2 7-5.2 10a5.2 5.2 0 0 0 10.4 0c0-3-2.2-6-5.2-10z"/></svg>`,
+  box: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg>`,
+  truck: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="11" height="7.5" rx="1"/><path d="M13.5 11h4l3 3v1.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/></svg>`,
+  person: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c1-4.2 4-6.3 7-6.3s6 2.1 7 6.3"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12.5" r="8"/><path d="M12 8v4.5l3 2"/></svg>`,
+  alarm: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5v4l2.6 1.7"/><path d="M5.5 5.5l-2 2"/><path d="M18.5 5.5l2 2"/></svg>`,
+  moon: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" stroke="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.8 8.8 0 1 0 10.5 10.5z"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.4 7-12.2A7 7 0 0 0 5 8.8C5 13.6 12 21 12 21z"/><circle cx="12" cy="8.8" r="2.3"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" stroke="none"><path d="M6.6 3.3 9.8 3l1.6 4.6-2 1.7a11 11 0 0 0 5.3 5.3l1.7-2 4.6 1.6-.3 3.2a2 2 0 0 1-2.1 1.8A16.4 16.4 0 0 1 4.8 5.4a2 2 0 0 1 1.8-2.1z"/></svg>`
+};
+
+// Placeholder logo mark (see ProjectDocs/Rules.md) — a simple generated
+// cross-in-rounded-square with an accent dot, used in the header and as
+// the favicon (frontend/assets/img/favicon.svg is the same design).
+// Replace with the real brand logo once one is supplied.
+const LOGO_MARK = `<svg viewBox="0 0 40 40" width="34" height="34"><rect x="1" y="1" width="38" height="38" rx="10" fill="#0E7C66"/><path d="M20 9v22M9 20h22" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/><circle cx="30.5" cy="30.5" r="6.5" fill="#E8873A"/></svg>`;
+
+// ---------------------------------------------------------------------
 // Shared markup helpers
 // ---------------------------------------------------------------------
 function card(icon, badgeClass, title, text, href) {
@@ -92,8 +128,19 @@ function layout({ lang, slug, title, metaDesc, body }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title} — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="${metaDesc}">
+<meta name="robots" content="noindex, nofollow"><!-- temporary demo domain — remove once the real launch domain is live -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="${title} — NorthWay Clinic and Pharmacy">
+<meta property="og:description" content="${metaDesc}">
+<meta property="og:image" content="${SITE_ORIGIN}/assets/img/home-reception.jpg">
+<meta property="og:url" content="${SITE_ORIGIN}/${lang}/${slug}.html">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+<link rel="alternate icon" href="../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0E7C66">
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -111,7 +158,12 @@ function layout({ lang, slug, title, metaDesc, body }) {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="index.html">NorthWay<span>Clinic &amp; Pharmacy</span></a>
+    <!-- PLACEHOLDER LOGO: generated mark, not final branding. Swap for the
+         real logo once supplied — see ProjectDocs/Rules.md. -->
+    <a class="wordmark" href="index.html">
+      <span class="logo-mark" aria-hidden="true">${LOGO_MARK}</span>
+      <span class="wordmark-text">NorthWay<span>Clinic &amp; Pharmacy</span></span>
+    </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">Menu</button>
     <nav class="main-nav" id="main-nav" aria-label="${lang === "en" ? "Main navigation" : "Navigation principale"}">
       <ul>
@@ -180,7 +232,7 @@ function heroSection({ h1, lede, primary, secondary, image }) {
       </div>
     </div>`;
   const media = image
-    ? `<div class="hero-media"><img src="${image.src}" alt="${image.alt}" width="1200" height="900"></div>`
+    ? `<div class="hero-media"><div class="photo-frame"><img src="${image.src}" alt="${image.alt}" width="1200" height="900"></div></div>`
     : "";
   return `<section class="hero">
     <div class="container${image ? " hero-grid" : ""}">
@@ -199,9 +251,8 @@ function pageHeader(h1, lede) {
 // and moved into assets/img/ — see memory.md for the resize/compress
 // pipeline). Nothing here depicts a real, named NorthWay clinician; they're
 // generic/illustrative only.
-function photoBand(src, alt, opts) {
-  const cls = opts && opts.tall ? "photo-band photo-band--tall" : "photo-band";
-  return `<div class="container"><img class="${cls}" src="${src}" alt="${alt}" loading="lazy" width="1400" height="800"></div>`;
+function photoBand(src, alt) {
+  return `<div class="container"><div class="photo-frame photo-band"><img src="${src}" alt="${alt}" loading="lazy" width="1400" height="800"></div></div>`;
 }
 
 // ---------------------------------------------------------------------
@@ -220,14 +271,23 @@ ${heroSection({
   image: { src: "../assets/img/home-reception.jpg", alt: "A NorthWay staff member helping a patient at the reception desk" }
 })}
 
+<div class="trust-strip">
+  <div class="container trust-strip-row">
+    <span class="trust-item">${ICONS.person} Licensed pharmacists &amp; physicians</span>
+    <span class="trust-item">${ICONS.bilingual} Bilingual: English &amp; French</span>
+    <span class="trust-item">${ICONS.house} Clinic and pharmacy, one visit</span>
+    <span class="trust-item">${ICONS.pin} Serving Cornwall, ON</span>
+  </div>
+</div>
+
 <section class="reveal">
   <div class="container">
     <h2>What we offer</h2>
     <div class="card-grid">
-      ${card("🩺", "b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
-      ${card("💊", "b-accent2", "Pharmacy Services", null, "pharmacy-services.html")}
-      ${card("🏠", "b-accent", "Long-Term Care Support", null, "pharmacy-services.html#long-term-care")}
-      ${card("🗣️", "b-accent2", "Bilingual Service", null, null)}
+      ${card(ICONS.stethoscope,"b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
+      ${card(ICONS.pill,"b-accent2", "Pharmacy Services", null, "pharmacy-services.html")}
+      ${card(ICONS.house,"b-accent", "Long-Term Care Support", null, "pharmacy-services.html#long-term-care")}
+      ${card(ICONS.bilingual,"b-accent2", "Bilingual Service", null, null)}
     </div>
   </div>
 </section>
@@ -349,19 +409,19 @@ pagesEn["clinic-services"] = {
   metaDesc: "Family physician, walk-in, and urgent care services at NorthWay Clinic.",
   body: `
 ${pageHeader("Clinic Services", "Family medicine and urgent care.")}
-${photoBand("../assets/img/clinic-consultation.jpg", "A doctor and patient shaking hands after a consultation")}
+${photoBand("../assets/img/family-physician.jpg", "A family physician checking on a happy baby, held by their smiling parent")}
 <section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
-        <div class="icon-badge b-accent">🩺</div>
+        <div class="icon-badge b-accent">${ICONS.stethoscope}</div>
         <h3>Family Physician Care</h3>
         <p>Check-ups, chronic care, and referrals.</p>
         <p>Accepting new patients</p>
         <!-- TODO: confirm current accepting-new-patients status before launch -->
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">🚑</div>
+        <div class="icon-badge b-accent2">${ICONS.cross}</div>
         <h3>Walk-In &amp; Urgent Care</h3>
         <p>Same-day visits, no appointment needed.</p>
       </div>
@@ -388,12 +448,12 @@ ${photoBand("../assets/img/clinic-consultation.jpg", "A doctor and patient shaki
 
     <div class="card-grid" style="margin-top:28px;">
       <div class="card">
-        <div class="icon-badge b-accent">⏰</div>
+        <div class="icon-badge b-accent">${ICONS.alarm}</div>
         <h3>Urgent, during our hours</h3>
         <p>Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> — often same-day.</p>
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">🌙</div>
+        <div class="icon-badge b-accent2">${ICONS.moon}</div>
         <h3>Outside of our hours</h3>
         <p>Call Health811 (8-1-1), any time.</p>
       </div>
@@ -414,10 +474,10 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
 <section class="reveal">
   <div class="container">
     <div class="card-grid">
-      ${card("💊", "b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
-      ${card("💉", "b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
-      ${card("📦", "b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
-      ${card("🏠", "b-accent2", "Long-Term Care &amp; Retirement Homes", null, "#long-term-care")}
+      ${card(ICONS.pill,"b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
+      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
+      ${card(ICONS.house,"b-accent2", "Long-Term Care &amp; Retirement Home Services", null, "#long-term-care")}
     </div>
 
     <p class="hint" style="margin-top:28px;">Need a refill or transfer? Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
@@ -425,13 +485,13 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
 </section>
 
 <section class="reveal" id="long-term-care">
-  <div class="container"><h2>Long-Term Care &amp; Retirement Homes</h2></div>
+  <div class="container"><h2>Long-Term Care &amp; Retirement Home Services</h2></div>
   ${photoBand("../assets/img/ltc-support.jpg", "A caregiver holding hands with a resident during a home visit")}
   <div class="container">
     <div class="card-grid">
-      ${card("📦", "b-accent", "Easy-to-Follow Packaging", "Organized by resident, date, and time.")}
-      ${card("🚚", "b-accent2", "Scheduled Delivery", "Built around your facility's routine.")}
-      ${card("👤", "b-accent", "One Point of Contact", "A dedicated pharmacist for your team.")}
+      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Organized by resident, date, and time.")}
+      ${card(ICONS.truck,"b-accent2", "Scheduled Delivery", "Built around your facility's routine.")}
+      ${card(ICONS.person,"b-accent", "One Point of Contact", "A dedicated pharmacist for your team.")}
     </div>
     <div class="callout info" style="margin-top:28px;">
       <h3>Interested in partnering?</h3>
@@ -455,7 +515,9 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
       <a class="btn btn-secondary" href="#team">Meet the Team</a>
     </div>
     <div class="hero-media hero-media--tall">
-      <img src="../assets/img/about-stethoscope.jpg" alt="Close-up of a stethoscope, one of the everyday tools our clinicians use" width="900" height="1350">
+      <div class="photo-frame">
+        <img src="../assets/img/about-stethoscope.jpg" alt="Close-up of a stethoscope, one of the everyday tools our clinicians use" width="900" height="1350">
+      </div>
     </div>
   </div>
 </section>
@@ -472,7 +534,7 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
     <h2>Visit us</h2>
     <div class="card-grid">
       <div class="card">
-        <div class="icon-badge b-accent">🕒</div>
+        <div class="icon-badge b-accent">${ICONS.clock}</div>
         <h3>Hours</h3>
         <table class="hours">
           <tr><td>Monday – Friday</td><td>10:00 am – 6:00 pm</td></tr>
@@ -481,14 +543,14 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
         </table>
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">📍</div>
+        <div class="icon-badge b-accent2">${ICONS.pin}</div>
         <h3>Location &amp; Parking</h3>
         <p>[STREET ADDRESS], Cornwall, ON [POSTAL CODE]</p>
         <p>Parking on-site.</p>
         <!-- TODO: embed a map once the address is finalized -->
       </div>
       <div class="card">
-        <div class="icon-badge b-accent">☎️</div>
+        <div class="icon-badge b-accent">${ICONS.phone}</div>
         <h3>Contact</h3>
         <p>Phone: <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p>
         <p>Email: <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a></p>
@@ -541,14 +603,23 @@ ${heroSection({
   image: { src: "../assets/img/home-reception.jpg", alt: "Un membre du personnel de NorthWay aide une patiente à la réception" }
 })}
 
+<div class="trust-strip">
+  <div class="container trust-strip-row">
+    <span class="trust-item">${ICONS.person} Pharmaciens et médecins agréés</span>
+    <span class="trust-item">${ICONS.bilingual} Bilingue : français et anglais</span>
+    <span class="trust-item">${ICONS.house} Clinique et pharmacie, en une visite</span>
+    <span class="trust-item">${ICONS.pin} Au service de Cornwall, ON</span>
+  </div>
+</div>
+
 <section class="reveal">
   <div class="container">
     <h2>Nos services</h2>
     <div class="card-grid">
-      ${card("🩺", "b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
-      ${card("💊", "b-accent2", "Services de pharmacie", null, "pharmacy-services.html")}
-      ${card("🏠", "b-accent", "Soutien aux soins de longue durée", null, "pharmacy-services.html#long-term-care")}
-      ${card("🗣️", "b-accent2", "Service bilingue", null, null)}
+      ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
+      ${card(ICONS.pill,"b-accent2", "Services de pharmacie", null, "pharmacy-services.html")}
+      ${card(ICONS.house,"b-accent", "Soutien aux soins de longue durée", null, "pharmacy-services.html#long-term-care")}
+      ${card(ICONS.bilingual,"b-accent2", "Service bilingue", null, null)}
     </div>
   </div>
 </section>
@@ -670,18 +741,18 @@ pagesFr["clinic-services"] = {
   metaDesc: "Médecine familiale, soins sans rendez-vous et soins urgents à la Clinique NorthWay.",
   body: `
 ${pageHeader("Services de la clinique", "Médecine familiale et soins urgents.")}
-${photoBand("../assets/img/clinic-consultation.jpg", "Un médecin et un patient se serrant la main après une consultation")}
+${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examine un bébé souriant, tenu par son parent")}
 <section class="reveal">
   <div class="container">
     <div class="card-grid">
       <div class="card">
-        <div class="icon-badge b-accent">🩺</div>
+        <div class="icon-badge b-accent">${ICONS.stethoscope}</div>
         <h3>Soins de médecine familiale</h3>
         <p>Bilans, gestion des maladies chroniques, orientations.</p>
         <p>Accepte de nouveaux patients</p>
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">🚑</div>
+        <div class="icon-badge b-accent2">${ICONS.cross}</div>
         <h3>Soins sans rendez-vous et urgents</h3>
         <p>Visites le jour même, sans rendez-vous.</p>
       </div>
@@ -708,12 +779,12 @@ ${photoBand("../assets/img/clinic-consultation.jpg", "Un médecin et un patient 
 
     <div class="card-grid" style="margin-top:28px;">
       <div class="card">
-        <div class="icon-badge b-accent">⏰</div>
+        <div class="icon-badge b-accent">${ICONS.alarm}</div>
         <h3>Urgent, pendant nos heures</h3>
         <p>Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> — souvent le jour même.</p>
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">🌙</div>
+        <div class="icon-badge b-accent2">${ICONS.moon}</div>
         <h3>En dehors de nos heures</h3>
         <p>Composez Health811 (8-1-1), en tout temps.</p>
       </div>
@@ -734,10 +805,10 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
 <section class="reveal">
   <div class="container">
     <div class="card-grid">
-      ${card("💊", "b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
-      ${card("💉", "b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
-      ${card("📦", "b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
-      ${card("🏠", "b-accent2", "Soins de longue durée et résidences pour retraités", null, "#long-term-care")}
+      ${card(ICONS.pill,"b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
+      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
+      ${card(ICONS.house,"b-accent2", "Services de soins de longue durée et résidences pour retraités", null, "#long-term-care")}
     </div>
 
     <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
@@ -745,13 +816,13 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
 </section>
 
 <section class="reveal" id="long-term-care">
-  <div class="container"><h2>Soins de longue durée et résidences pour retraités</h2></div>
+  <div class="container"><h2>Services de soins de longue durée et résidences pour retraités</h2></div>
   ${photoBand("../assets/img/ltc-support.jpg", "Une aidante tenant la main d'une résidente lors d'une visite à domicile")}
   <div class="container">
     <div class="card-grid">
-      ${card("📦", "b-accent", "Emballage facile à suivre", "Organisé par résident, date et heure.")}
-      ${card("🚚", "b-accent2", "Livraison planifiée", "Adaptée à la routine de votre établissement.")}
-      ${card("👤", "b-accent", "Un seul point de contact", "Un pharmacien dédié pour votre équipe.")}
+      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par résident, date et heure.")}
+      ${card(ICONS.truck,"b-accent2", "Livraison planifiée", "Adaptée à la routine de votre établissement.")}
+      ${card(ICONS.person,"b-accent", "Un seul point de contact", "Un pharmacien dédié pour votre équipe.")}
     </div>
     <div class="callout info" style="margin-top:28px;">
       <h3>Intéressé par un partenariat?</h3>
@@ -775,7 +846,9 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
       <a class="btn btn-secondary" href="#team">Rencontrer l'équipe</a>
     </div>
     <div class="hero-media hero-media--tall">
-      <img src="../assets/img/about-stethoscope.jpg" alt="Gros plan d'un stéthoscope, un outil que nos cliniciens utilisent chaque jour" width="900" height="1350">
+      <div class="photo-frame">
+        <img src="../assets/img/about-stethoscope.jpg" alt="Gros plan d'un stéthoscope, un outil que nos cliniciens utilisent chaque jour" width="900" height="1350">
+      </div>
     </div>
   </div>
 </section>
@@ -792,7 +865,7 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
     <h2>Nous visiter</h2>
     <div class="card-grid">
       <div class="card">
-        <div class="icon-badge b-accent">🕒</div>
+        <div class="icon-badge b-accent">${ICONS.clock}</div>
         <h3>Heures d'ouverture</h3>
         <table class="hours">
           <tr><td>Lundi – Vendredi</td><td>10 h – 18 h</td></tr>
@@ -801,14 +874,14 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
         </table>
       </div>
       <div class="card">
-        <div class="icon-badge b-accent2">📍</div>
+        <div class="icon-badge b-accent2">${ICONS.pin}</div>
         <h3>Emplacement et stationnement</h3>
         <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
         <p>Stationnement sur place.</p>
         <!-- TODO: embed a map once the address is finalized -->
       </div>
       <div class="card">
-        <div class="icon-badge b-accent">☎️</div>
+        <div class="icon-badge b-accent">${ICONS.phone}</div>
         <h3>Coordonnées</h3>
         <p>Téléphone : <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p>
         <p>Courriel : <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a></p>
@@ -906,8 +979,47 @@ function writeSite() {
 </html>
 `);
 
+  // Temporary demo domain — block it from being indexed so it never
+  // competes with the real launch domain in search results. Remove this
+  // file (or loosen it) once a real domain is live — see Rules.md.
+  fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nDisallow: /\n`);
+
+  // Custom 404 — GitHub Pages serves this automatically for any unmatched
+  // URL. Bilingual since we don't know which language the visitor wanted.
+  fs.writeFileSync(path.join(OUT, "404.html"), `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found — NorthWay Clinic and Pharmacy</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="page-header">
+  <div class="container">
+    <div class="logo-mark" style="margin-bottom:18px;">${LOGO_MARK}</div>
+    <h1>Page not found</h1>
+    <p class="lede">That page doesn't exist — it may have moved.</p>
+  </div>
+</div>
+<main>
+  <section>
+    <div class="container">
+      <div class="btn-row">
+        <a class="btn btn-primary" href="en/index.html">Go to homepage (English)</a>
+        <a class="btn btn-secondary" href="fr/index.html">Aller à l'accueil (Français)</a>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
+`);
+
   const redirectCount = Object.keys(RETIRED_REDIRECTS).length;
-  console.log("Wrote", (Object.keys(pagesEn).length + redirectCount) * 2 + 1, "HTML files to", OUT);
+  console.log("Wrote", (Object.keys(pagesEn).length + redirectCount) * 2 + 2, "HTML files (+ robots.txt) to", OUT);
 }
 
 writeSite();

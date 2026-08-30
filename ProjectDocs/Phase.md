@@ -19,6 +19,8 @@ is the single source of truth for "what's done vs. not."
 | Visual polish pass (colour, icon badges, motion) | Done | New teal/amber palette, Poppins headings, icon badges on every card, static decorative hero shapes, hover/focus micro-interactions, sticky header, scroll-reveal — all motion respects `prefers-reduced-motion`, nothing loops. See Rules.md §2a and memory.md |
 | Home page redundant copy cut + clickable service tiles | Done | Hero lede and "What we offer" card subtext removed (added no info beyond the heading); Clinic/Pharmacy/Long-Term Care cards now link to their pages |
 | Admin-controlled "Accepting new patients" banner | Done | `GET/PUT /api/settings`, banner section added to `frontend/admin/team.html` — staff can change it live, no rebuild needed. See Architecture.md §7 |
+| Professionalism pass (icons, placeholder logo/favicon, trust strip, SEO/OG tags, noindex, 404 page, unified photo treatment) | Done | Custom `ICONS` SVG set replaces emoji sitewide; `LOGO_MARK` placeholder in header + favicon; homepage trust-signal strip; OG/Twitter meta + `robots.txt`/noindex (temp demo only); bilingual `404.html`; `.photo-frame` treatment unifies all client photos. See Rules.md §2a-i/2a-ii/2b and memory.md |
+| Temporary GitHub Pages demo | Done | Deployed via GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) to `vikramkang.github.io/NorthWayPharmacy` for client review — not the real launch host. See Architecture.md §7 |
 | Real address/phone/email | Not started | Currently bracketed placeholders |
 | Medeo booking link | Not started | Placeholder `#` link on Book an Appointment page |
 | Provider bios/photos | Not started | Placeholder cards on About + Clinic Services |

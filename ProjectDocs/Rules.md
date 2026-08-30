@@ -87,6 +87,28 @@ these rules win over convenience or speed.
   wherever French copy changes; don't let it quietly become "final" without
   a real review pass.
 
+## 2a-i. Placeholder branding
+
+- The header/favicon logo mark (rounded square, cross + accent dot) is a
+  **generated placeholder**, not a real logo — the client doesn't have
+  final branding yet. It's defined once as `LOGO_MARK` in `build-site.js`
+  and mirrored in `frontend/assets/img/favicon.svg`; update both together
+  when the real logo arrives, and remove the "PLACEHOLDER LOGO" HTML
+  comment in `layout()` at the same time.
+- Real phone/address/email are also still unknown — bracketed placeholders
+  (`[PHONE NUMBER]`, etc.) stay until the client provides them. Don't
+  invent plausible-looking values.
+
+## 2a-ii. Icon set
+
+- Every icon-badge/trust-strip icon is a small hand-drawn inline SVG line
+  icon, defined once in the `ICONS` object in `build-site.js` and reused by
+  key (`ICONS.stethoscope`, `ICONS.pill`, etc.) — not emoji. Emoji render
+  inconsistently across platforms (mismatched colors/styles per OS), which
+  is why they were replaced. If a new icon is needed, add it to `ICONS`
+  in the same style (24x24 viewBox, stroke="currentColor", stroke-width
+  ~1.6-1.7) rather than reaching for an emoji or a new one-off pattern.
+
 ## 2a. Visual design & animation rules
 
 - Palette: primary accent is teal (`--accent #0E7C66` / `--accent-dark
@@ -105,6 +127,22 @@ these rules win over convenience or speed.
   (prefers-reduced-motion: reduce)` fallback that disables it — see
   `style.css`'s bottom block and `main.js`'s `prefersReducedMotion` check.
   When adding new motion, extend both, don't just add the effect.
+
+## 2b. Temporary demo hosting (GitHub Pages)
+
+- The site is temporarily deployed to GitHub Pages for client-demo purposes
+  (see Architecture.md §5 and memory.md) at a throwaway `github.io` URL —
+  not the real launch domain. While that's true:
+  - Every page carries `<meta name="robots" content="noindex, nofollow">`
+    and `frontend/robots.txt` disallows all crawling, so the demo URL
+    never competes with the real domain in search results.
+  - `SITE_ORIGIN` in `build-site.js` is hardcoded to the demo GitHub Pages
+    URL, used only for absolute `og:image`/`og:url` tags (so the link looks
+    right when the demo is shared). Update it (or blank it to `""` for
+    relative paths) once a real domain is chosen for launch, and remove
+    the noindex meta tag / robots.txt block at the same time.
+  - `frontend/404.html` is bilingual and hand-written (not run through
+    `layout()`, since it lives at the site root, not under `en/`/`fr/`).
 
 ## 3. Engineering rules
 

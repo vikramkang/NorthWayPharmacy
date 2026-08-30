@@ -93,12 +93,19 @@ infrastructure. The website's role ends at "get contact info to staff."
   into the EMR/task queue once Accuro vs. Oscar is decided and its API/webhook
   capability is confirmed. Do not build the EMR integration until that vendor
   question is answered (see Phase.md).
-- **Hosting.** Not decided. Static frontend can go anywhere (Netlify, Vercel,
-  GitHub Pages, S3+CloudFront). Backend needs a host that runs Node
-  continuously or as serverless functions (Render, Railway, Fly.io, or
-  Vercel/Netlify functions if we fold the backend into the same platform as
-  the frontend — worth reconsidering once a host is picked, since that could
-  simplify this back down to a single deployable).
+- **Hosting.** Not decided for real launch. For a temporary client demo, the
+  static `frontend/` is published to GitHub Pages via
+  `.github/workflows/deploy-pages.yml` (deploys on every push to
+  master/main, or manually via workflow_dispatch) — see memory.md. The
+  backend is deliberately NOT deployed as part of that demo, so the
+  registration form, Team page, and admin banner toggle won't actually work
+  live; the frontend already fails gracefully in that case (friendly error
+  text, not a broken page). For real launch: static frontend can go anywhere
+  (Netlify, Vercel, GitHub Pages, S3+CloudFront). Backend needs a host that
+  runs Node continuously or as serverless functions (Render, Railway,
+  Fly.io, or Vercel/Netlify functions if we fold the backend into the same
+  platform as the frontend — worth reconsidering once a host is picked,
+  since that could simplify this back down to a single deployable).
 - **Kroll vs. Fillware.** One questionnaire answer named Fillware as the
   pharmacy system, another mentioned Kroll in the same breath. Needs
   resolving before any pharmacy-system integration (Phase 2 refill/transfer

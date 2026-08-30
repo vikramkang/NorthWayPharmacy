@@ -5,8 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Services de la pharmacie — NorthWay Clinic and Pharmacy</title>
 <meta name="description" content="Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.">
+<meta name="robots" content="noindex, nofollow"><!-- temporary demo domain — remove once the real launch domain is live -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Services de la pharmacie — NorthWay Clinic and Pharmacy">
+<meta property="og:description" content="Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.">
+<meta property="og:image" content="https://vikramkang.github.io/NorthWayPharmacy/assets/img/home-reception.jpg">
+<meta property="og:url" content="https://vikramkang.github.io/NorthWayPharmacy/fr/pharmacy-services.html">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+<link rel="alternate icon" href="../assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0E7C66">
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -24,7 +35,12 @@
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="index.html">NorthWay<span>Clinic &amp; Pharmacy</span></a>
+    <!-- PLACEHOLDER LOGO: generated mark, not final branding. Swap for the
+         real logo once supplied — see ProjectDocs/Rules.md. -->
+    <a class="wordmark" href="index.html">
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34"><rect x="1" y="1" width="38" height="38" rx="10" fill="#0E7C66"/><path d="M20 9v22M9 20h22" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/><circle cx="30.5" cy="30.5" r="6.5" fill="#E8873A"/></svg></span>
+      <span class="wordmark-text">NorthWay<span>Clinic &amp; Pharmacy</span></span>
+    </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">Menu</button>
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <ul>
@@ -41,14 +57,14 @@
 <main id="main">
 
 <div class="page-header"><div class="container"><h1>Services de la pharmacie</h1><p class="lede">Tout ce qu'il vous faut, juste à côté.</p></div></div>
-<div class="container"><img class="photo-band" src="../assets/img/pharmacy-prescription.jpg" alt="Un pharmacien préparant une ordonnance bilingue" loading="lazy" width="1400" height="800"></div>
+<div class="container"><div class="photo-frame photo-band"><img src="../assets/img/pharmacy-prescription.jpg" alt="Un pharmacien préparant une ordonnance bilingue" loading="lazy" width="1400" height="800"></div></div>
 <section class="reveal">
   <div class="container">
     <div class="card-grid">
-      <div class="card"><div class="icon-badge b-accent">💊</div><h3>Ordonnances</h3><p>Préparées avec une consultation d'un pharmacien.</p></div>
-      <div class="card"><div class="icon-badge b-accent2">💉</div><h3>Vaccinations</h3><p>Saisonnières et de voyage, sans rendez-vous.</p></div>
-      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Emballage facile à suivre</h3><p>Organisé par date et heure.</p></div>
-      <a class="card" href="#long-term-care"><div class="icon-badge b-accent2">🏠</div><h3>Soins de longue durée et résidences pour retraités</h3></a>
+      <div class="card"><div class="icon-badge b-accent"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="9" width="17" height="6" rx="3" transform="rotate(-45 12 12)"/><line x1="12" y1="6.8" x2="12" y2="17.2" transform="rotate(-45 12 12)"/></svg></div><h3>Ordonnances</h3><p>Préparées avec une consultation d'un pharmacien.</p></div>
+      <div class="card"><div class="icon-badge b-accent2"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c-3 4-5.2 7-5.2 10a5.2 5.2 0 0 0 10.4 0c0-3-2.2-6-5.2-10z"/></svg></div><h3>Vaccinations</h3><p>Saisonnières et de voyage, sans rendez-vous.</p></div>
+      <div class="card"><div class="icon-badge b-accent"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div><h3>Emballage facile à suivre</h3><p>Organisé par date et heure.</p></div>
+      <a class="card" href="#long-term-care"><div class="icon-badge b-accent2"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h5v-5h2v5h5v-9"/></svg></div><h3>Services de soins de longue durée et résidences pour retraités</h3></a>
     </div>
 
     <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
@@ -56,13 +72,13 @@
 </section>
 
 <section class="reveal" id="long-term-care">
-  <div class="container"><h2>Soins de longue durée et résidences pour retraités</h2></div>
-  <div class="container"><img class="photo-band" src="../assets/img/ltc-support.jpg" alt="Une aidante tenant la main d'une résidente lors d'une visite à domicile" loading="lazy" width="1400" height="800"></div>
+  <div class="container"><h2>Services de soins de longue durée et résidences pour retraités</h2></div>
+  <div class="container"><div class="photo-frame photo-band"><img src="../assets/img/ltc-support.jpg" alt="Une aidante tenant la main d'une résidente lors d'une visite à domicile" loading="lazy" width="1400" height="800"></div></div>
   <div class="container">
     <div class="card-grid">
-      <div class="card"><div class="icon-badge b-accent">📦</div><h3>Emballage facile à suivre</h3><p>Organisé par résident, date et heure.</p></div>
-      <div class="card"><div class="icon-badge b-accent2">🚚</div><h3>Livraison planifiée</h3><p>Adaptée à la routine de votre établissement.</p></div>
-      <div class="card"><div class="icon-badge b-accent">👤</div><h3>Un seul point de contact</h3><p>Un pharmacien dédié pour votre équipe.</p></div>
+      <div class="card"><div class="icon-badge b-accent"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div><h3>Emballage facile à suivre</h3><p>Organisé par résident, date et heure.</p></div>
+      <div class="card"><div class="icon-badge b-accent2"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="11" height="7.5" rx="1"/><path d="M13.5 11h4l3 3v1.5h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/></svg></div><h3>Livraison planifiée</h3><p>Adaptée à la routine de votre établissement.</p></div>
+      <div class="card"><div class="icon-badge b-accent"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c1-4.2 4-6.3 7-6.3s6 2.1 7 6.3"/></svg></div><h3>Un seul point de contact</h3><p>Un pharmacien dédié pour votre équipe.</p></div>
     </div>
     <div class="callout info" style="margin-top:28px;">
       <h3>Intéressé par un partenariat?</h3>

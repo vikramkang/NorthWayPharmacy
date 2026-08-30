@@ -299,6 +299,107 @@ button) were repointed to the direct new URLs rather than left to bounce
 through a redirect. Regenerated and verified: 0 structural errors, 0 broken
 links, 0 missing images, exactly 5 nav items and 1 CTA link per real page.
 
+**2026-08-30 (latest) — Prepped for a temporary GitHub Pages demo.** User
+gave a GitHub repo (`https://github.com/vikramkang/NorthWayPharmacy`) and
+asked to deploy temporarily for a client demo. Asked which scope they
+wanted; user chose frontend-only (fastest, free), not frontend+backend.
+Built:
+- `.github/workflows/deploy-pages.yml` — publishes just `frontend/` to
+  GitHub Pages via `actions/upload-pages-artifact` +
+  `actions/deploy-pages`, triggered on push to `master`/`main` or manually.
+  The backend is intentionally excluded from this deploy.
+- `frontend/.nojekyll` — belt-and-suspenders against GitHub's Jekyll
+  processing touching the `assets/img/_source/` folder (starts with `_`).
+- Committed everything outstanding (visual polish, banner feature, client
+  photos, nav consolidation) in one commit, and added `origin` pointing at
+  the given repo URL.
+
+Important limitation flagged to the user: could not push or authenticate to
+GitHub myself — pushing requires the user's own git credentials, which this
+assistant must never handle (per the app's credential-entry rules), so the
+actual `git push` and the one-time "enable Pages" step in repo settings are
+left for the user to run themselves. Also flagged: this is frontend-only,
+so the registration form, Team roster, and admin banner toggle won't
+function on the live demo (the frontend already degrades gracefully when
+the backend is unreachable — friendly error text, not a broken page) — only
+worth upgrading to a full frontend+backend demo if the client needs to see
+those working live.
+
+**2026-08-30 (latest) — "More attractive and professional" pass, plus the
+GitHub Pages demo going live and needing fixes.** After the nav-cut, user
+asked for suggestions to make the site look more professional. Offered:
+real contact info (blocked — not finalized), a real logo/favicon (blocked —
+not finalized, user said use a placeholder), a trust-signal strip, basic
+SEO/social meta tags, a custom 404, and a consistent photo treatment; also
+flagged that fabricated testimonials aren't something to build. User said
+to proceed with a placeholder logo and continue. Then, before finishing,
+user separately flagged the emoji icons looked inconsistent/low-quality and
+asked for generated icons instead — handled that first since it touched the
+same card-badge markup.
+
+Deploy detour (interleaved with this work): user gave a GitHub repo
+(`vikramkang/NorthWayPharmacy`) and asked to deploy temporarily for a
+client demo. Committed everything, added `origin`, and — since pushing
+needs the user's own git credentials, which this assistant must never
+handle — asked the user to push and enable Pages themselves. Two real
+issues came up and got fixed:
+1. First deploy failed (404 "Ensure GitHub Pages has been enabled") because
+   the repo was private — GitHub Pages needs a public repo or a paid plan.
+   User made it public (confirmed safe: no `.env`/secrets are tracked).
+2. Second deploy "worked" but showed the root README, not the site —
+   Pages was set to "Deploy from a branch" (classic method, serves the
+   whole repo root) instead of "GitHub Actions" (our workflow, which
+   publishes only `frontend/`). User switched the Source setting and it
+   came up correctly.
+
+Built, in order:
+- Custom icon set (`ICONS` in `build-site.js`) — 14 hand-drawn inline SVG
+  line icons (stethoscope, pill, house, bilingual, cross, droplet, box,
+  truck, person, clock, alarm, moon, pin, phone) replacing every emoji
+  icon-badge sitewide. Colored via `currentColor` + `.icon-badge.b-accent
+  /.b-accent2` text-color rules, so they tint automatically per badge.
+- Placeholder logo mark (`LOGO_MARK`) — a generated rounded-square
+  cross-and-dot mark in brand colors, used in the header and as
+  `frontend/assets/img/favicon.svg` (+ PNG fallbacks via ImageMagick).
+  Explicitly commented as a placeholder pending real branding.
+- A trust-signal strip under the home hero (licensed pharmacists &
+  physicians / bilingual / clinic+pharmacy in one visit / serving
+  Cornwall) — deliberately did NOT repeat "accepting new patients" here
+  since that's already the admin-toggleable banner; duplicating it as
+  static text would drift out of sync if staff ever turn the banner off.
+- Open Graph/Twitter-card meta tags for better link-preview quality when
+  the demo is shared, plus a sitewide `noindex` meta tag and
+  `frontend/robots.txt` disallowing all crawling — this is a throwaway
+  demo domain, not the real launch domain, so it shouldn't get indexed.
+- A bilingual `frontend/404.html` (GitHub Pages serves this automatically
+  for unmatched URLs).
+- A `.photo-frame` wrapper (brand-tinted overlay + slight saturation/
+  contrast bump) applied to every real photo sitewide, so the 6 client
+  photos — sourced at different times, different lighting — read as one
+  consistent set instead of a loose collage.
+- A 6th client-supplied photo, `CheckingBaby.jpeg` (a family physician
+  checking a happy baby held by their smiling parent) — user said it felt
+  like a strong "family physician" image, so it replaced the doctor/patient
+  handshake photo as the Clinic Services page's lead photo. The handshake
+  photo remains in `assets/img/` unused, available if needed elsewhere.
+
+Regenerated and verified after each step: 0 structural errors, 0 missing
+images throughout.
+
+**2026-08-30 — Home hero photo crop fix.** User flagged the home hero photo
+was cropped so tight the visitor/patient at the reception desk was barely
+visible (just a hand). Cause: `home-reception.jpg` is a wide 1400x513
+panorama, but the hero box is much closer to square (~1.6:1), so
+`object-fit: cover` at the default center position cropped roughly a third
+off each side — center-weighted toward the receptionist, cutting the
+visitor on the right almost entirely. Fixed by adding
+`.hero-media .photo-frame img { object-position: 85% center; }` in
+`style.css`, shifting the crop right so both the receptionist and the
+visitor are in frame (confirmed via an ImageMagick test crop before
+applying). This only affects the plain `.hero-media` box (home page); the
+`.hero-media--tall` box (About page) already had its own object-position
+tuned separately and is unaffected.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.
