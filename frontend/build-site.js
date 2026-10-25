@@ -1,4 +1,4 @@
-// NorthWay Clinic and Pharmacy — Phase 1 static site generator.
+// NorthWay Clinics — Phase 1 static site generator.
 // Generates a plain HTML/CSS/JS site (no build step needed to host it).
 // Run: node build-site.js   -> writes into ./{en,fr}/*.html and ./index.html
 // (assets/css, assets/js are hand-maintained, not generated)
@@ -43,7 +43,7 @@ const T = {
     footerContact: "Contact",
     footerAddress: "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]",
     privacy: "Privacy Policy",
-    rights: "NorthWay Clinic and Pharmacy. All rights reserved.",
+    rights: "NorthWay Clinics. All rights reserved.",
     skip: "Skip to main content"
   },
   fr: {
@@ -63,7 +63,7 @@ const T = {
     footerContact: "Coordonnées",
     footerAddress: "[ADRESSE], Cornwall, ON [CODE POSTAL]",
     privacy: "Politique de confidentialité",
-    rights: "Clinique et pharmacie NorthWay. Tous droits réservés.",
+    rights: "Cliniques NorthWay. Tous droits réservés.",
     skip: "Passer au contenu principal"
   }
 };
@@ -95,7 +95,7 @@ const ICONS = {
 // cross-in-rounded-square with an accent dot, used in the header and as
 // the favicon (frontend/assets/img/favicon.svg is the same design).
 // Replace with the real brand logo once one is supplied.
-const LOGO_IMG = (prefix) => `<img class="logo-img" src="${prefix}assets/img/logo.png" alt="NorthWay Clinics — The Canadian Way to Better Health" width="150" height="52">`;
+const LOGO_IMG = (prefix) => `<img class="logo-img" src="${prefix}assets/img/logo.svg" alt="NorthWay Clinics — The Canadian Way to Better Health" width="140" height="52">`;
 
 // ---------------------------------------------------------------------
 // Shared markup helpers
@@ -126,11 +126,11 @@ function layout({ lang, slug, title, metaDesc, body }) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title} — NorthWay Clinic and Pharmacy</title>
+<title>${title} — NorthWay Clinics</title>
 <meta name="description" content="${metaDesc}">
 <meta name="robots" content="noindex, nofollow"><!-- temporary demo domain — remove once the real launch domain is live -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="${title} — NorthWay Clinic and Pharmacy">
+<meta property="og:title" content="${title} — NorthWay Clinics">
 <meta property="og:description" content="${metaDesc}">
 <meta property="og:image" content="${SITE_ORIGIN}/assets/img/home-reception.jpg">
 <meta property="og:url" content="${SITE_ORIGIN}/${lang}/${slug}.html">
@@ -158,7 +158,7 @@ function layout({ lang, slug, title, metaDesc, body }) {
 
 <header class="site-header">
   <div class="container header-inner">
-    <!-- Official NorthWay Clinics logo (assets/img/logo.png, trimmed from the client-supplied raster; swap for an SVG/hi-res version when available). -->
+    <!-- NorthWay Clinics logo: vector redraw (assets/img/logo.svg, Montserrat outlined to paths) of the client-supplied raster. Swap in the official vector file if one is supplied. -->
     <a class="wordmark" href="index.html">
       ${LOGO_IMG("../")}
     </a>
@@ -315,7 +315,7 @@ ${heroSection({
 
 pagesEn["book-appointment"] = {
   title: "Book an Appointment",
-  metaDesc: "Register as a new patient or book an appointment through Medeo at NorthWay Clinic and Pharmacy.",
+  metaDesc: "Register as a new patient or book an appointment through Medeo at NorthWay Clinics.",
   body: `
 ${pageHeader("Book an Appointment", "New or returning — start here.")}
 
@@ -404,7 +404,7 @@ ${pageHeader("Book an Appointment", "New or returning — start here.")}
 
 pagesEn["clinic-services"] = {
   title: "Clinic Services",
-  metaDesc: "Family physician, walk-in, and urgent care services at NorthWay Clinic.",
+  metaDesc: "Family physician, walk-in, and urgent care services at NorthWay Clinics.",
   body: `
 ${pageHeader("Clinic Services", "Family medicine and urgent care.")}
 ${photoBand("../assets/img/family-physician.jpg", "A family physician checking on a happy baby, held by their smiling parent")}
@@ -502,7 +502,7 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
 
 pagesEn.about = {
   title: "About Us",
-  metaDesc: "About NorthWay Clinic and Pharmacy, our team, and how to find us in Cornwall, Ontario.",
+  metaDesc: "About NorthWay Clinics, our team, and how to find us in Cornwall, Ontario.",
   body: `
 ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
 <section class="reveal">
@@ -561,7 +561,7 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
 
 pagesEn["privacy-policy"] = {
   title: "Privacy Policy",
-  metaDesc: "Privacy policy for NorthWay Clinic and Pharmacy.",
+  metaDesc: "Privacy policy for NorthWay Clinics.",
   body: `
 <!-- INTERNAL NOTE: this policy must be reviewed and approved by NorthWay's
      compliance officer before the live site launches. Treat this text as a
@@ -736,7 +736,7 @@ ${pageHeader("Prendre rendez-vous", "Nouveau ou déjà patient — commencez ici
 
 pagesFr["clinic-services"] = {
   title: "Services de la clinique",
-  metaDesc: "Médecine familiale, soins sans rendez-vous et soins urgents à la Clinique NorthWay.",
+  metaDesc: "Médecine familiale, soins sans rendez-vous et soins urgents aux Cliniques NorthWay.",
   body: `
 ${pageHeader("Services de la clinique", "Médecine familiale et soins urgents.")}
 ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examine un bébé souriant, tenu par son parent")}
@@ -833,7 +833,7 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
 
 pagesFr.about = {
   title: "À propos de nous",
-  metaDesc: "À propos de la Clinique et pharmacie NorthWay, notre équipe, et comment nous trouver à Cornwall, en Ontario.",
+  metaDesc: "À propos des Cliniques NorthWay, notre équipe, et comment nous trouver à Cornwall, en Ontario.",
   body: `
 ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment nous trouver.")}
 <section class="reveal">
@@ -892,7 +892,7 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
 
 pagesFr["privacy-policy"] = {
   title: "Politique de confidentialité",
-  metaDesc: "Politique de confidentialité de la Clinique et pharmacie NorthWay.",
+  metaDesc: "Politique de confidentialité des Cliniques NorthWay.",
   body: `
 <!-- INTERNAL NOTE: this policy must be reviewed and approved by NorthWay's
      compliance officer before the live site launches. Treat this text as a
@@ -954,7 +954,7 @@ function writeSite() {
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="0; url=${newTarget}">
-<title>NorthWay Clinic and Pharmacy</title>
+<title>NorthWay Clinics</title>
 </head>
 <body>
 <p><a href="${newTarget}">${linkText}</a></p>
@@ -969,10 +969,10 @@ function writeSite() {
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="0; url=en/index.html">
-<title>NorthWay Clinic and Pharmacy</title>
+<title>NorthWay Clinics</title>
 </head>
 <body>
-<p>Redirecting to <a href="en/index.html">NorthWay Clinic and Pharmacy</a>…</p>
+<p>Redirecting to <a href="en/index.html">NorthWay Clinics</a>…</p>
 </body>
 </html>
 `);
@@ -989,7 +989,7 @@ function writeSite() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page Not Found — NorthWay Clinic and Pharmacy</title>
+<title>Page Not Found — NorthWay Clinics</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/style.css">

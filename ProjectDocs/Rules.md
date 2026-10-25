@@ -89,11 +89,16 @@ these rules win over convenience or speed.
 
 ## 2a-i. Branding
 
+- The brand name on the site is **NorthWay Clinics** (matches the logo);
+  descriptive copy like "Family Clinic and Pharmacy" stays where it describes services.
+
 - The logo is the client's official **NorthWay Clinics** logo
-  (`frontend/assets/img/logo.png`, trimmed + background-transparent from the
-  supplied raster; original in `assets/img/_source/NorthWay-Clinics-logo.jpeg`).
-  It's rendered via `LOGO_IMG()` in `build-site.js` (header + 404). Swap in an
-  SVG/hi-res version when the client has one. The favicon is a simple
+  (`frontend/assets/img/logo.svg`, a vector redraw of the supplied low-res
+  raster using Montserrat outlined to paths; the original raster is kept in
+  `assets/img/_source/NorthWay-Clinics-logo.jpeg`, and `logo.png` is an older
+  trimmed copy of it).
+  It's rendered via `LOGO_IMG()` in `build-site.js` (header + 404). Swap in the
+  official vector file if the client has one. The favicon is a simple
   navy/purple "N" derived from the brand colors, not an official mark.
 - Real phone/address/email are still unknown — bracketed placeholders
   (`[PHONE NUMBER]`, etc.) stay until the client provides them. Don't

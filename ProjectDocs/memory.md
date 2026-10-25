@@ -405,7 +405,7 @@ tuned separately and is unaffected.
 Header and 404 now use it (`logo.png`); palette switched from teal/amber to
 the logo's purple (#662B85) / navy (#0E1F5A) with a mid-blue secondary;
 favicon redone in brand colors. Note the logo says "Clinics" while site copy
-says "Clinic and Pharmacy" — worth confirming the official name with the client.
+says "Clinic and Pharmacy" — resolved: client said to use the NorthWay Clinics name sitewide and to redraw the logo as a vector (`logo.svg`, Montserrat outlines) since the raster was low-res.
 
 ## Next things likely to happen
 
