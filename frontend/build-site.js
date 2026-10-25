@@ -298,7 +298,7 @@ ${heroSection({
       <div class="block"><h3>Hours</h3><p>Mon–Sat: 12 pm – 8 pm<br>Sunday: Closed</p></div>
       <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON</p></div>
       <div class="block"><h3>Phone</h3><p><a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Get directions</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Hours &amp; Location</a></div>
     </div>
   </div>
 </section>
@@ -598,7 +598,7 @@ ${heroSection({
       <div class="block"><h3>Heures</h3><p>Lun–Sam : 12 h – 20 h<br>Dimanche : fermé</p></div>
       <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON</p></div>
       <div class="block"><h3>Téléphone</h3><p><a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p></div>
-      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Obtenir l'itinéraire</a></div>
+      <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Heures et emplacement</a></div>
     </div>
   </div>
 </section>

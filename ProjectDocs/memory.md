@@ -419,6 +419,17 @@ Hours changed sitewide to Mon–Sat 12–8 pm, Sunday closed. Unused photos
 `pharmacy-prescription.jpg`/`ltc-support.jpg` left in assets/img (can't delete
 in this sandbox); safe to remove. GitHub repo name still says "Pharmacy".
 
+**2026-10-25 — Apple HIG design review pass.** Client installed the
+`apple-design` skill (cloned to `PersonelProjects/apple-design-skill`, outside
+the repo). Reviewed the site as a web project (principles + accessibility/
+color/typography/layout/writing lenses; no iOS platform conventions). Contrast
+all pass (lowest 5.3:1, most >7:1). Fixed: nav, language-toggle and footer-link
+hit areas now ~44px tall (were ~24-30px); mobile trust-strip text 13->14px;
+the home "Get directions" button (which only jumped to hours/location, no
+map) renamed "Hours & Location" / "Heures et emplacement". Open: "Accepting
+new patients" is still static text in the Clinic Services card as well as
+the admin-controlled banner (can drift); no map yet (needs real address).
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

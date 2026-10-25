@@ -76,8 +76,8 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 0;
+  padding-bottom: 0;
   flex-wrap: wrap;
   gap: 8px;
 }
@@ -90,7 +90,8 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus {
   font-weight: 600;
 }
 .lang-toggle a {
-  padding: 2px 6px;
+  display: inline-block;
+  padding: 10px 8px;   /* >=44px tall hit area */
   font-weight: 700;
 }
 .lang-toggle .current { text-decoration: underline; }
@@ -144,12 +145,12 @@ nav.main-nav a {
   color: var(--ink);
   font-weight: 600;
   font-size: 16px;
-  padding-bottom: 4px;
+  padding: 11px 2px;   /* 16px*1.6 line + 22px = ~48px hit height (HIG: 44pt default) */
 }
 nav.main-nav a::after {
   content: "";
   position: absolute;
-  left: 0; bottom: -2px;
+  left: 0; bottom: 6px;
   width: 100%; height: 2px;
   background: var(--accent);
   transform: scaleX(0);
@@ -269,7 +270,7 @@ nav.main-nav a.nav-cta:hover { background: var(--accent-dark); transform: transl
   white-space: nowrap;
 }
 .trust-item svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
-@media (max-width: 640px) { .trust-item { font-size: 13px; } }
+@media (max-width: 640px) { .trust-item { font-size: 14px; } }
 
 .hero-grid { display: flex; align-items: center; gap: 44px; flex-wrap: wrap; }
 .hero-text { flex: 1 1 380px; min-width: 300px; }
@@ -452,7 +453,8 @@ footer.site-footer a:hover { opacity: 0.8; }
 }
 footer.site-footer h4 { margin: 0 0 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: #C9CEE8; }
 footer.site-footer ul { list-style: none; padding: 0; margin: 0; }
-footer.site-footer li { margin-bottom: 6px; }
+footer.site-footer li { margin: 0; }
+footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit area */
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; color: #C9CEE8; }
 
 .placeholder { background: #FEF3C7; padding: 1px 6px; border-radius: 4px; }
