@@ -20,6 +20,7 @@ const OUT = __dirname;
 // client demo. Set to "" (relative) once a real domain is picked for
 // launch, and remove the sitewide noindex meta tag / robots.txt block at
 // the same time — see ProjectDocs/Architecture.md §5 and Rules.md.
+const BUILD_ID = Date.now().toString(36); // cache-buster so browsers fetch the latest stylesheet after each rebuild
 const SITE_ORIGIN = "https://vikramkang.github.io/NorthWayPharmacy";
 
 // ---------------------------------------------------------------------
@@ -141,7 +142,7 @@ function layout({ lang, slug, title, metaDesc, body }) {
 <link rel="alternate icon" href="../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 <meta name="theme-color" content="#662B85">
-<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/style.css?v=${BUILD_ID}">
 </head>
 <body>
 <a class="skip-link" href="#main">${t.skip}</a>
@@ -992,7 +993,7 @@ function writeSite() {
 <title>Page Not Found — NorthWay Clinics</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=${BUILD_ID}">
 </head>
 <body>
 <div class="page-header">

@@ -437,7 +437,7 @@ fieldset legend { font-weight: 700; padding: 0 6px; }
 /* ---------- Footer ---------- */
 footer.site-footer {
   background: var(--accent-dark);
-  color: #EFEFEA;
+  color: #EEEFF7;
   margin-top: 60px;
   padding: 40px 0 28px;
   font-size: 15px;
@@ -450,10 +450,10 @@ footer.site-footer a:hover { opacity: 0.8; }
   gap: 24px;
   margin-bottom: 24px;
 }
-footer.site-footer h4 { margin: 0 0 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: #C9E2D8; }
+footer.site-footer h4 { margin: 0 0 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: #C9CEE8; }
 footer.site-footer ul { list-style: none; padding: 0; margin: 0; }
 footer.site-footer li { margin-bottom: 6px; }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; color: #C9E2D8; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px; color: #C9CEE8; }
 
 .placeholder { background: #FEF3C7; padding: 1px 6px; border-radius: 4px; }
 
