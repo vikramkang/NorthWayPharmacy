@@ -7,7 +7,7 @@ is the single source of truth for "what's done vs. not."
 
 | Item | Status | Notes |
 |---|---|---|
-| Sitemap + page copy (EN) | Done | 6 pages — nav trimmed from 9 to 5 items by folding Urgent Care/Long-Term Care/Visit Us/Our Team into sections of Clinic Services, Pharmacy Services, and About Us; see memory.md |
+| Sitemap + page copy (EN) | Done | Clinic only (pharmacy dropped Oct 2026); Meet the Team is its own nav tab; hours Mon–Sat 12–8, Sun closed. 6 pages — nav trimmed from 9 to 5 items by folding Urgent Care/Long-Term Care/Visit Us/Our Team into sections of Clinic Services, Pharmacy Services, and About Us; see memory.md |
 | French translation | Done (draft) | Needs a native/professional health-sector review before launch — not certified |
 | Shared design system (CSS) | Done | Warm/teal, large type, mobile-first |
 | Static site generator (`build-site.js`) | Done | Regenerate after any content edit |

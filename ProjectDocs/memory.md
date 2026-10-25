@@ -407,6 +407,18 @@ the logo's purple (#662B85) / navy (#0E1F5A) with a mid-blue secondary;
 favicon redone in brand colors. Note the logo says "Clinics" while site copy
 says "Clinic and Pharmacy" — resolved: client said to use the NorthWay Clinics name sitewide and to redraw the logo as a vector (`logo.svg`, Montserrat outlines) since the raster was low-res.
 
+**2026-10-25 — Clinic only (pharmacy dropped), Meet the Team tab, new hours.**
+Client dropped the pharmacy entirely. Removed the Pharmacy Services page and
+its Long-Term Care section (old URLs redirect to Clinic Services), and cut
+all pharmacy wording from home, trust strip, About, footer (EN+FR). Home
+cards are now Family & Walk-In Clinic / Urgent Care Guidance / Meet the
+Team / Bilingual Service; hero is "Cornwall's Family Clinic". "Meet the
+Team" is now its own nav tab and page (`team.html`) that shows the doctors
+list directly (taking the nav slot Pharmacy had; team removed from About).
+Hours changed sitewide to Mon–Sat 12–8 pm, Sunday closed. Unused photos
+`pharmacy-prescription.jpg`/`ltc-support.jpg` left in assets/img (can't delete
+in this sandbox); safe to remove. GitHub repo name still says "Pharmacy".
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

@@ -58,18 +58,19 @@ these rules win over convenience or speed.
   to explain itself, cut the first one instead of adding a second. This was
   flagged twice by the user — treat it as a hard rule, not a style
   preference.
-- **Fewer top-level nav items, not more.** Nav is down to 5 items: Home,
-  Book an Appointment, Clinic Services, Pharmacy Services, About Us.
-  Register lives as a section on Book an Appointment; Urgent Care lives as
-  a section on Clinic Services (`#urgent-care`); Long-Term Care lives as a
-  section on Pharmacy Services (`#long-term-care`); Visit Us and Our Team
-  both live as sections on About Us (`#visit-us`, `#team`). Each retired
-  URL (`register.html`, `urgent-care.html`, `long-term-care.html`,
-  `visit-us.html`, `team.html`) still exists as a one-line meta-refresh
-  redirect to its new home — see `writeSite()`'s `RETIRED_REDIRECTS` map in
-  `build-site.js` — so old links/bookmarks don't 404. If a new page idea
-  comes up, ask whether it can be a section of an existing page before
-  adding a 6th nav item.
+- **Fewer top-level nav items, not more.** Nav is 5 items: Home, Book an
+  Appointment, Clinic Services, Meet the Team (`team.html`, opens the doctors
+  list directly), About Us. The business is now **clinic only — no pharmacy**
+  (client decision, Oct 2026): never reintroduce pharmacy/long-term-care copy.
+  Register lives on Book an Appointment; Urgent Care is a section of Clinic
+  Services (`#urgent-care`); Hours/Location/Contact are the `#visit-us`
+  section of About Us. Retired URLs (`register`, `urgent-care`,
+  `long-term-care`, `pharmacy-services`, `visit-us`) remain as one-line
+  meta-refresh redirects via `RETIRED_REDIRECTS` in `build-site.js`. If a new
+  page idea comes up, ask whether it can be a section of an existing page
+  before adding a 6th nav item.
+- **Hours:** Mon–Sat 12:00 pm – 8:00 pm, Sunday closed. Hours appear in the
+  footer, home strip, and About Us table (EN + FR) — change all together.
 - **Internal/engineering notes are HTML comments, never on-page boxes.**
   Anything meant for a future developer or for compliance review ("this is a
   placeholder," "pending sign-off," "coming soon") goes in a `<!-- -->`

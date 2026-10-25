@@ -1,4 +1,4 @@
-# NorthWay Clinic and Pharmacy — Website Monorepo
+# NorthWay Clinics — Website Monorepo
 
 Bilingual (EN/FR) website + registration API for NorthWay Clinic and
 Pharmacy, Cornwall, Ontario.

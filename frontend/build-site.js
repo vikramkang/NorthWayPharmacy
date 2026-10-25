@@ -35,11 +35,11 @@ const T = {
       ["index.html", "Home"],
       ["book-appointment.html", "Book an Appointment"],
       ["clinic-services.html", "Clinic Services"],
-      ["pharmacy-services.html", "Pharmacy Services"],
+      ["team.html", "Meet the Team"],
       ["about.html", "About Us"]
     ],
     footerHours: "Hours",
-    footerHoursLines: ["Mon–Fri: 10:00 am – 6:00 pm", "Saturday: 10:00 am – 2:00 pm", "Sunday: Closed"],
+    footerHoursLines: ["Mon–Sat: 12:00 pm – 8:00 pm", "Sunday: Closed"],
     footerQuick: "Quick Links",
     footerContact: "Contact",
     footerAddress: "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]",
@@ -55,11 +55,11 @@ const T = {
       ["index.html", "Accueil"],
       ["book-appointment.html", "Prendre rendez-vous"],
       ["clinic-services.html", "Services de la clinique"],
-      ["pharmacy-services.html", "Services de la pharmacie"],
+      ["team.html", "Rencontrer l'équipe"],
       ["about.html", "À propos de nous"]
     ],
     footerHours: "Heures d'ouverture",
-    footerHoursLines: ["Lun–Ven : 10 h – 18 h", "Samedi : 10 h – 14 h", "Dimanche : fermé"],
+    footerHoursLines: ["Lun–Sam : 12 h – 20 h", "Dimanche : fermé"],
     footerQuick: "Liens rapides",
     footerContact: "Coordonnées",
     footerAddress: "[ADRESSE], Cornwall, ON [CODE POSTAL]",
@@ -188,6 +188,7 @@ ${body}
         <ul>
           <li><a href="book-appointment.html">${navLabel(t, "book-appointment.html")}</a></li>
           <li><a href="clinic-services.html">${navLabel(t, "clinic-services.html")}</a></li>
+          <li><a href="team.html">${navLabel(t, "team.html")}</a></li>
           <li><a href="about.html">${navLabel(t, "about.html")}</a></li>
         </ul>
       </div>
@@ -261,20 +262,20 @@ const pagesEn = {};
 
 pagesEn.index = {
   title: "Home",
-  metaDesc: "Family medicine, walk-in and urgent care, and full-service pharmacy in Cornwall, Ontario.",
+  metaDesc: "Family medicine, walk-in and urgent care, and and bilingual care in Cornwall, Ontario.",
   body: `
 ${heroSection({
-  h1: "Cornwall's Family Clinic and Pharmacy",
+  h1: "Cornwall's Family Clinic",
   primary: { href: "book-appointment.html", label: "Register or Book" },
-  secondary: { href: "about.html#team", label: "Meet the Team" },
+  secondary: { href: "team.html", label: "Meet the Team" },
   image: { src: "../assets/img/home-reception.jpg", alt: "A NorthWay staff member helping a patient at the reception desk" }
 })}
 
 <div class="trust-strip">
   <div class="container trust-strip-row">
-    <span class="trust-item">${ICONS.person} Licensed pharmacists &amp; physicians</span>
+    <span class="trust-item">${ICONS.person} Licensed physicians &amp; clinicians</span>
     <span class="trust-item">${ICONS.bilingual} Bilingual: English &amp; French</span>
-    <span class="trust-item">${ICONS.house} Clinic and pharmacy, one visit</span>
+    <span class="trust-item">${ICONS.stethoscope} Walk-ins welcome</span>
     <span class="trust-item">${ICONS.pin} Serving Cornwall, ON</span>
   </div>
 </div>
@@ -284,8 +285,8 @@ ${heroSection({
     <h2>What we offer</h2>
     <div class="card-grid">
       ${card(ICONS.stethoscope,"b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
-      ${card(ICONS.pill,"b-accent2", "Pharmacy Services", null, "pharmacy-services.html")}
-      ${card(ICONS.house,"b-accent", "Long-Term Care Support", null, "pharmacy-services.html#long-term-care")}
+      ${card(ICONS.cross,"b-accent2", "Urgent Care Guidance", null, "clinic-services.html#urgent-care")}
+      ${card(ICONS.person,"b-accent", "Meet the Team", null, "team.html")}
       ${card(ICONS.bilingual,"b-accent2", "Bilingual Service", null, null)}
     </div>
   </div>
@@ -294,7 +295,7 @@ ${heroSection({
 <section class="reveal">
   <div class="container">
     <div class="strip">
-      <div class="block"><h3>Hours</h3><p>Mon–Fri: 10 am – 6 pm<br>Saturday: 10 am – 2 pm</p></div>
+      <div class="block"><h3>Hours</h3><p>Mon–Sat: 12 pm – 8 pm<br>Sunday: Closed</p></div>
       <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON</p></div>
       <div class="block"><h3>Phone</h3><p><a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p></div>
       <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Get directions</a></div>
@@ -464,38 +465,14 @@ ${photoBand("../assets/img/family-physician.jpg", "A family physician checking o
 `
 };
 
-pagesEn["pharmacy-services"] = {
-  title: "Pharmacy Services",
-  metaDesc: "Retail dispensing, vaccinations, and compliance packaging at NorthWay Pharmacy.",
+pagesEn.team = {
+  title: "Meet the Team",
+  metaDesc: "Meet the doctors and staff at NorthWay Clinics in Cornwall, Ontario.",
   body: `
-${pageHeader("Pharmacy Services", "Everything you need, close by.")}
-${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a bilingual prescription pickup")}
-<section class="reveal">
+${pageHeader("Meet the Team", "The doctors and staff at NorthWay.")}
+<section class="reveal" id="team">
   <div class="container">
-    <div class="card-grid">
-      ${card(ICONS.pill,"b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
-      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
-      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
-      ${card(ICONS.house,"b-accent2", "Long-Term Care &amp; Retirement Home Services", null, "#long-term-care")}
-    </div>
-
-    <p class="hint" style="margin-top:28px;">Need a refill or transfer? Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
-  </div>
-</section>
-
-<section class="reveal" id="long-term-care">
-  <div class="container"><h2>Long-Term Care &amp; Retirement Home Services</h2></div>
-  ${photoBand("../assets/img/ltc-support.jpg", "A caregiver holding hands with a resident during a home visit")}
-  <div class="container">
-    <div class="card-grid">
-      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Organized by resident, date, and time.")}
-      ${card(ICONS.truck,"b-accent2", "Scheduled Delivery", "Built around your facility's routine.")}
-      ${card(ICONS.person,"b-accent", "One Point of Contact", "A dedicated pharmacist for your team.")}
-    </div>
-    <div class="callout info" style="margin-top:28px;">
-      <h3>Interested in partnering?</h3>
-      <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
-    </div>
+    <div class="team-grid" id="team-list">Loading…</div>
   </div>
 </section>
 `
@@ -510,21 +487,14 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
   <div class="container hero-grid">
     <div class="hero-text">
       <!-- TODO: replace with the real practice story once provided -->
-      <p>Your family doctor and pharmacist, working together, just down the hall from each other.</p>
-      <a class="btn btn-secondary" href="#team">Meet the Team</a>
+      <p>Your family doctor, close to home.</p>
+      <a class="btn btn-secondary" href="team.html">Meet the Team</a>
     </div>
     <div class="hero-media hero-media--tall">
       <div class="photo-frame">
         <img src="../assets/img/about-stethoscope.jpg" alt="Close-up of a stethoscope, one of the everyday tools our clinicians use" width="900" height="1350">
       </div>
     </div>
-  </div>
-</section>
-
-<section class="reveal" id="team">
-  <div class="container">
-    <h2>Our team</h2>
-    <div class="team-grid" id="team-list">Loading…</div>
   </div>
 </section>
 
@@ -536,8 +506,7 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
         <div class="icon-badge b-accent">${ICONS.clock}</div>
         <h3>Hours</h3>
         <table class="hours">
-          <tr><td>Monday – Friday</td><td>10:00 am – 6:00 pm</td></tr>
-          <tr><td>Saturday</td><td>10:00 am – 2:00 pm</td></tr>
+          <tr><td>Monday – Saturday</td><td>12:00 pm – 8:00 pm</td></tr>
           <tr><td>Sunday</td><td>Closed</td></tr>
         </table>
       </div>
@@ -593,20 +562,20 @@ const pagesFr = {};
 
 pagesFr.index = {
   title: "Accueil",
-  metaDesc: "Médecine familiale, soins sans rendez-vous et pharmacie complète à Cornwall, en Ontario.",
+  metaDesc: "Médecine familiale, soins sans rendez-vous et soins bilingues à Cornwall, en Ontario.",
   body: `
 ${heroSection({
-  h1: "La clinique et pharmacie familiale de Cornwall",
+  h1: "La clinique familiale de Cornwall",
   primary: { href: "book-appointment.html", label: "S'inscrire ou réserver" },
-  secondary: { href: "about.html#team", label: "Rencontrer l'équipe" },
+  secondary: { href: "team.html", label: "Rencontrer l'équipe" },
   image: { src: "../assets/img/home-reception.jpg", alt: "Un membre du personnel de NorthWay aide une patiente à la réception" }
 })}
 
 <div class="trust-strip">
   <div class="container trust-strip-row">
-    <span class="trust-item">${ICONS.person} Pharmaciens et médecins agréés</span>
+    <span class="trust-item">${ICONS.person} Médecins et cliniciens agréés</span>
     <span class="trust-item">${ICONS.bilingual} Bilingue : français et anglais</span>
-    <span class="trust-item">${ICONS.house} Clinique et pharmacie, en une visite</span>
+    <span class="trust-item">${ICONS.stethoscope} Sans rendez-vous bienvenus</span>
     <span class="trust-item">${ICONS.pin} Au service de Cornwall, ON</span>
   </div>
 </div>
@@ -616,8 +585,8 @@ ${heroSection({
     <h2>Nos services</h2>
     <div class="card-grid">
       ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
-      ${card(ICONS.pill,"b-accent2", "Services de pharmacie", null, "pharmacy-services.html")}
-      ${card(ICONS.house,"b-accent", "Soutien aux soins de longue durée", null, "pharmacy-services.html#long-term-care")}
+      ${card(ICONS.cross,"b-accent2", "Que faire en cas d'urgence", null, "clinic-services.html#urgent-care")}
+      ${card(ICONS.person,"b-accent", "Rencontrer l'équipe", null, "team.html")}
       ${card(ICONS.bilingual,"b-accent2", "Service bilingue", null, null)}
     </div>
   </div>
@@ -626,7 +595,7 @@ ${heroSection({
 <section class="reveal">
   <div class="container">
     <div class="strip">
-      <div class="block"><h3>Heures</h3><p>Lun–Ven : 10 h – 18 h<br>Samedi : 10 h – 14 h</p></div>
+      <div class="block"><h3>Heures</h3><p>Lun–Sam : 12 h – 20 h<br>Dimanche : fermé</p></div>
       <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON</p></div>
       <div class="block"><h3>Téléphone</h3><p><a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p></div>
       <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Obtenir l'itinéraire</a></div>
@@ -795,38 +764,14 @@ ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examin
 `
 };
 
-pagesFr["pharmacy-services"] = {
-  title: "Services de la pharmacie",
-  metaDesc: "Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.",
+pagesFr.team = {
+  title: "Rencontrer l'équipe",
+  metaDesc: "Rencontrez les médecins et le personnel des Cliniques NorthWay à Cornwall, en Ontario.",
   body: `
-${pageHeader("Services de la pharmacie", "Tout ce qu'il vous faut, juste à côté.")}
-${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant une ordonnance bilingue")}
-<section class="reveal">
+${pageHeader("Rencontrer l'équipe", "Les médecins et le personnel de NorthWay.")}
+<section class="reveal" id="team">
   <div class="container">
-    <div class="card-grid">
-      ${card(ICONS.pill,"b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
-      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
-      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
-      ${card(ICONS.house,"b-accent2", "Services de soins de longue durée et résidences pour retraités", null, "#long-term-care")}
-    </div>
-
-    <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
-  </div>
-</section>
-
-<section class="reveal" id="long-term-care">
-  <div class="container"><h2>Services de soins de longue durée et résidences pour retraités</h2></div>
-  ${photoBand("../assets/img/ltc-support.jpg", "Une aidante tenant la main d'une résidente lors d'une visite à domicile")}
-  <div class="container">
-    <div class="card-grid">
-      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par résident, date et heure.")}
-      ${card(ICONS.truck,"b-accent2", "Livraison planifiée", "Adaptée à la routine de votre établissement.")}
-      ${card(ICONS.person,"b-accent", "Un seul point de contact", "Un pharmacien dédié pour votre équipe.")}
-    </div>
-    <div class="callout info" style="margin-top:28px;">
-      <h3>Intéressé par un partenariat?</h3>
-      <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
-    </div>
+    <div class="team-grid" id="team-list">Chargement…</div>
   </div>
 </section>
 `
@@ -841,21 +786,14 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
   <div class="container hero-grid">
     <div class="hero-text">
       <!-- TODO: replace with the real practice story once provided -->
-      <p>Votre médecin de famille et votre pharmacien, ensemble, juste à côté l'un de l'autre.</p>
-      <a class="btn btn-secondary" href="#team">Rencontrer l'équipe</a>
+      <p>Votre médecin de famille, près de chez vous.</p>
+      <a class="btn btn-secondary" href="team.html">Rencontrer l'équipe</a>
     </div>
     <div class="hero-media hero-media--tall">
       <div class="photo-frame">
         <img src="../assets/img/about-stethoscope.jpg" alt="Gros plan d'un stéthoscope, un outil que nos cliniciens utilisent chaque jour" width="900" height="1350">
       </div>
     </div>
-  </div>
-</section>
-
-<section class="reveal" id="team">
-  <div class="container">
-    <h2>Notre équipe</h2>
-    <div class="team-grid" id="team-list">Chargement…</div>
   </div>
 </section>
 
@@ -867,8 +805,7 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
         <div class="icon-badge b-accent">${ICONS.clock}</div>
         <h3>Heures d'ouverture</h3>
         <table class="hours">
-          <tr><td>Lundi – Vendredi</td><td>10 h – 18 h</td></tr>
-          <tr><td>Samedi</td><td>10 h – 14 h</td></tr>
+          <tr><td>Lundi – Samedi</td><td>12 h – 20 h</td></tr>
           <tr><td>Dimanche</td><td>Fermé</td></tr>
         </table>
       </div>
@@ -933,9 +870,9 @@ function writeSite() {
   const RETIRED_REDIRECTS = {
     "register.html": "book-appointment.html",
     "urgent-care.html": "clinic-services.html#urgent-care",
-    "long-term-care.html": "pharmacy-services.html#long-term-care",
-    "visit-us.html": "about.html#visit-us",
-    "team.html": "about.html#team"
+    "long-term-care.html": "clinic-services.html",
+    "pharmacy-services.html": "clinic-services.html",
+    "visit-us.html": "about.html#visit-us"
   };
 
   [["en", pagesEn], ["fr", pagesFr]].forEach(([lang, pages]) => {
