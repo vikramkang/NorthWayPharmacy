@@ -96,7 +96,7 @@ const ICONS = {
 // cross-in-rounded-square with an accent dot, used in the header and as
 // the favicon (frontend/assets/img/favicon.svg is the same design).
 // Replace with the real brand logo once one is supplied.
-const LOGO_IMG = (prefix) => `<img class="logo-img" src="${prefix}assets/img/logo.svg" alt="NorthWay Clinics — The Canadian Way to Better Health" width="194" height="72">`;
+const LOGO_IMG = (prefix) => `<img class="logo-img" src="${prefix}assets/img/logo.svg" alt="NorthWay Clinics — The Canadian Way to Better Health" width="239" height="88">`;
 
 // ---------------------------------------------------------------------
 // Shared markup helpers

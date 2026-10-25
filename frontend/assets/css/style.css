@@ -118,8 +118,8 @@ header.site-header.is-scrolled { box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08); 
   gap: 10px;
   text-decoration: none;
 }
-.logo-img { display: block; height: 72px; width: auto; }
-@media (max-width: 640px) { .logo-img { height: 56px; } }
+.logo-img { display: block; height: 88px; width: auto; }
+@media (max-width: 640px) { .logo-img { height: 68px; } }
 .logo-mark svg { display: block; }
 .wordmark-text {
   display: block;
