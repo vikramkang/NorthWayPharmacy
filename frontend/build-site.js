@@ -104,6 +104,7 @@ const ICONS = {
   alarm: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5v4l2.6 1.7"/><path d="M5.5 5.5l-2 2"/><path d="M18.5 5.5l2 2"/></svg>`,
   moon: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" stroke="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.8 8.8 0 1 0 10.5 10.5z"/></svg>`,
   pin: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.4 7-12.2A7 7 0 0 0 5 8.8C5 13.6 12 21 12 21z"/><circle cx="12" cy="8.8" r="2.3"/></svg>`,
+  mail: `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" stroke="none"><path d="M6.6 3.3 9.8 3l1.6 4.6-2 1.7a11 11 0 0 0 5.3 5.3l1.7-2 4.6 1.6-.3 3.2a2 2 0 0 1-2.1 1.8A16.4 16.4 0 0 1 4.8 5.4a2 2 0 0 1 1.8-2.1z"/></svg>`
 };
 
@@ -264,6 +265,10 @@ function heroSection({ h1, lede, primary, secondary, image }) {
       ${media}
     </div>
   </section>`;
+}
+
+function infoRow(icon, label, value) {
+  return `<div class="info-row"><div class="info-icon">${icon}</div><div><div class="info-label">${label}</div><div class="info-value">${value}</div></div></div>`;
 }
 
 function pageHeader(h1, lede) {
@@ -507,31 +512,17 @@ pagesEn["walk-ins"] = {
   title: "Walk-Ins",
   metaDesc: "Walk-in and urgent care at NorthWay Clinics in Cornwall, Ontario — same-day visits, no appointment needed.",
   body: `
-${pageHeader("Walk-Ins", "Same-day care, no appointment needed.")}
+${pageHeader("Walk-Ins Welcome", "Same-day care, no appointment needed.")}
 <section class="reveal">
   <div class="container">
-    <div class="card-grid">
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.clock}</div>
-        <h3>Walk-in hours</h3>
-        <p>Monday – Saturday<br>12:00 pm – 8:00 pm</p>
-        <p>Closed Sunday.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent2">${ICONS.person}</div>
-        <h3>What to bring</h3>
-        <p>Your health card and current medications.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.pin}</div>
-        <h3>Find us</h3>
-        <p>[STREET ADDRESS], Cornwall, ON [POSTAL CODE]</p>
-      </div>
-    </div>
-    <div class="callout info" style="margin-top:28px;">
-      <h3>Prefer a set time?</h3>
-      <p>Booking ahead guarantees your spot.</p>
-      <a class="btn btn-primary" href="book-appointment.html">Book an Appointment</a>
+    <div class="info-card">
+      <p class="info-intro">Booking ahead is recommended to guarantee your time.</p>
+      ${infoRow(ICONS.clock, "Walk-in hours", "Monday – Saturday, 12:00 pm – 8:00 pm<br>Closed Sunday")}
+      ${infoRow(ICONS.phone, "Phone", `<a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>`)}
+      ${infoRow(ICONS.mail, "Email", `<a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>`)}
+      ${infoRow(ICONS.pin, "Location", "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]")}
+      ${infoRow(ICONS.person, "What to bring", "Your health card and current medications")}
+      <div class="info-actions"><a class="btn btn-primary" href="book-appointment.html">Book an Appointment</a></div>
     </div>
   </div>
 </section>
@@ -908,31 +899,17 @@ pagesFr["walk-ins"] = {
   title: "Sans rendez-vous",
   metaDesc: "Soins sans rendez-vous et urgents aux Cliniques NorthWay à Cornwall, en Ontario — visites le jour même.",
   body: `
-${pageHeader("Sans rendez-vous", "Soins le jour même, sans rendez-vous.")}
+${pageHeader("Sans rendez-vous bienvenus", "Soins le jour même, sans rendez-vous.")}
 <section class="reveal">
   <div class="container">
-    <div class="card-grid">
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.clock}</div>
-        <h3>Heures sans rendez-vous</h3>
-        <p>Lundi – Samedi<br>12 h – 20 h</p>
-        <p>Fermé le dimanche.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent2">${ICONS.person}</div>
-        <h3>Quoi apporter</h3>
-        <p>Votre carte santé et vos médicaments actuels.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.pin}</div>
-        <h3>Nous trouver</h3>
-        <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
-      </div>
-    </div>
-    <div class="callout info" style="margin-top:28px;">
-      <h3>Vous préférez une heure précise?</h3>
-      <p>Réserver à l'avance garantit votre place.</p>
-      <a class="btn btn-primary" href="book-appointment.html">Prendre rendez-vous</a>
+    <div class="info-card">
+      <p class="info-intro">Réserver à l'avance est recommandé pour garantir votre place.</p>
+      ${infoRow(ICONS.clock, "Heures sans rendez-vous", "Lundi – Samedi, 12 h – 20 h<br>Fermé le dimanche")}
+      ${infoRow(ICONS.phone, "Téléphone", `<a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>`)}
+      ${infoRow(ICONS.mail, "Courriel", `<a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>`)}
+      ${infoRow(ICONS.pin, "Emplacement", "[ADRESSE], Cornwall, ON [CODE POSTAL]")}
+      ${infoRow(ICONS.person, "Quoi apporter", "Votre carte santé et vos médicaments actuels")}
+      <div class="info-actions"><a class="btn btn-primary" href="book-appointment.html">Prendre rendez-vous</a></div>
     </div>
   </div>
 </section>

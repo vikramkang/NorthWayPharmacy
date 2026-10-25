@@ -448,6 +448,12 @@ button, hover/focus pause, static for reduced motion). **Open:** $80 fee and
 policy wording copied from maplecures.ca/draft — confirm with client; the
 MapleCures policies are branded images, so none were copied.
 
+**2026-10-25 — Walk-Ins page restyled** to follow the maplecures.ca layout:
+big headline + subtitle, then one white card (gradient top bar) of tinted rows
+(hours, phone, email, location, what to bring) and a Book button; urgent-care
+guidance stays below. Omitted MapleCures' "existing patients only" line, and kept
+NorthWay's own "no appointment needed" (MapleCures requires one) — confirm.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

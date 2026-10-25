@@ -544,3 +544,29 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
   .ribbon-item[aria-hidden="true"], .ribbon-item::after, .ribbon-pause { display: none; }
   .ribbon-item { padding: 10px 0; }
 }
+
+/* ---------- Info card (Walk-Ins contact/hours) ---------- */
+.info-card {
+  max-width: 760px; margin: 0 auto;
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); border: 1px solid var(--line);
+  position: relative; overflow: hidden;
+  padding: 33px 28px 28px;
+}
+.info-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+}
+.info-intro { text-align: center; margin: 0 0 22px; color: var(--ink-soft); }
+.info-row {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--accent-light); border: 1px solid var(--line);
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 14px;
+}
+.info-icon { color: var(--accent); flex: 0 0 auto; padding-top: 2px; }
+.info-icon svg { display: block; width: 26px; height: 26px; }
+.info-label { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.info-value { font-size: 18px; font-weight: 600; color: var(--ink); }
+.info-value a { color: var(--accent); text-decoration: none; }
+.info-value a:hover { text-decoration: underline; }
+.info-actions { text-align: center; margin-top: 22px; }
