@@ -1,9 +1,6 @@
-<!-- PLACEHOLDER favicon — a simple generated mark (rounded square, cross +
-     accent dot in the site's brand colors), used because no final logo has
-     been supplied yet. Replace with the real brand mark once available;
-     see ProjectDocs/Rules.md. -->
+<!-- Favicon derived from the NorthWay Clinics brand colors (navy + purple). Replace with the official mark if one is supplied. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-  <rect x="1" y="1" width="38" height="38" rx="10" fill="#0E7C66"/>
-  <path d="M20 9v22M9 20h22" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/>
-  <circle cx="30.5" cy="30.5" r="6.5" fill="#E8873A"/>
+  <rect x="1" y="1" width="38" height="38" rx="10" fill="#0E1F5A"/>
+  <path d="M11 29V11l12 18V11" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="30.5" cy="30.5" r="5" fill="#662B85"/>
 </svg>

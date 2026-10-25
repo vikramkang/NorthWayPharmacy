@@ -400,6 +400,13 @@ applying). This only affects the plain `.hero-media` box (home page); the
 `.hero-media--tall` box (About page) already had its own object-position
 tuned separately and is unaffected.
 
+**2026-10-25 — Official logo + rebrand.** Client supplied the final logo
+("NorthWay Clinics — The Canadian Way to Better Health", navy + purple).
+Header and 404 now use it (`logo.png`); palette switched from teal/amber to
+the logo's purple (#662B85) / navy (#0E1F5A) with a mid-blue secondary;
+favicon redone in brand colors. Note the logo says "Clinics" while site copy
+says "Clinic and Pharmacy" — worth confirming the official name with the client.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

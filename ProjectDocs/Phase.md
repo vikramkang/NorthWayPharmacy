@@ -24,7 +24,7 @@ is the single source of truth for "what's done vs. not."
 | Real address/phone/email | Not started | Currently bracketed placeholders |
 | Medeo booking link | Not started | Placeholder `#` link on Book an Appointment page |
 | Provider bios/photos | Not started | Placeholder cards on About + Clinic Services |
-| Logo / final brand colours | Not started | Text wordmark only |
+| Logo / final brand colours | Done (raster) | Official NorthWay Clinics logo in header; site palette switched to navy/purple. Want an SVG/hi-res logo for crisper rendering |
 | Privacy Policy sign-off | Not started | Drafted, needs compliance officer review |
 | Hosting decision (frontend + backend) | Not started | See Architecture.md §5 |
 | Submission → staff workflow | Not started (placeholder only) | Depends on EMR choice |

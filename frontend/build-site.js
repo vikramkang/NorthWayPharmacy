@@ -95,7 +95,7 @@ const ICONS = {
 // cross-in-rounded-square with an accent dot, used in the header and as
 // the favicon (frontend/assets/img/favicon.svg is the same design).
 // Replace with the real brand logo once one is supplied.
-const LOGO_MARK = `<svg viewBox="0 0 40 40" width="34" height="34"><rect x="1" y="1" width="38" height="38" rx="10" fill="#0E7C66"/><path d="M20 9v22M9 20h22" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/><circle cx="30.5" cy="30.5" r="6.5" fill="#E8873A"/></svg>`;
+const LOGO_IMG = (prefix) => `<img class="logo-img" src="${prefix}assets/img/logo.png" alt="NorthWay Clinics — The Canadian Way to Better Health" width="150" height="52">`;
 
 // ---------------------------------------------------------------------
 // Shared markup helpers
@@ -140,7 +140,7 @@ function layout({ lang, slug, title, metaDesc, body }) {
 <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
 <link rel="alternate icon" href="../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-<meta name="theme-color" content="#0E7C66">
+<meta name="theme-color" content="#662B85">
 <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -158,11 +158,9 @@ function layout({ lang, slug, title, metaDesc, body }) {
 
 <header class="site-header">
   <div class="container header-inner">
-    <!-- PLACEHOLDER LOGO: generated mark, not final branding. Swap for the
-         real logo once supplied — see ProjectDocs/Rules.md. -->
+    <!-- Official NorthWay Clinics logo (assets/img/logo.png, trimmed from the client-supplied raster; swap for an SVG/hi-res version when available). -->
     <a class="wordmark" href="index.html">
-      <span class="logo-mark" aria-hidden="true">${LOGO_MARK}</span>
-      <span class="wordmark-text">NorthWay<span>Clinic &amp; Pharmacy</span></span>
+      ${LOGO_IMG("../")}
     </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">Menu</button>
     <nav class="main-nav" id="main-nav" aria-label="${lang === "en" ? "Main navigation" : "Navigation principale"}">
@@ -999,7 +997,7 @@ function writeSite() {
 <body>
 <div class="page-header">
   <div class="container">
-    <div class="logo-mark" style="margin-bottom:18px;">${LOGO_MARK}</div>
+    <div style="margin-bottom:18px;">${LOGO_IMG("")}</div>
     <h1>Page not found</h1>
     <p class="lede">That page doesn't exist — it may have moved.</p>
   </div>

@@ -87,15 +87,15 @@ these rules win over convenience or speed.
   wherever French copy changes; don't let it quietly become "final" without
   a real review pass.
 
-## 2a-i. Placeholder branding
+## 2a-i. Branding
 
-- The header/favicon logo mark (rounded square, cross + accent dot) is a
-  **generated placeholder**, not a real logo — the client doesn't have
-  final branding yet. It's defined once as `LOGO_MARK` in `build-site.js`
-  and mirrored in `frontend/assets/img/favicon.svg`; update both together
-  when the real logo arrives, and remove the "PLACEHOLDER LOGO" HTML
-  comment in `layout()` at the same time.
-- Real phone/address/email are also still unknown — bracketed placeholders
+- The logo is the client's official **NorthWay Clinics** logo
+  (`frontend/assets/img/logo.png`, trimmed + background-transparent from the
+  supplied raster; original in `assets/img/_source/NorthWay-Clinics-logo.jpeg`).
+  It's rendered via `LOGO_IMG()` in `build-site.js` (header + 404). Swap in an
+  SVG/hi-res version when the client has one. The favicon is a simple
+  navy/purple "N" derived from the brand colors, not an official mark.
+- Real phone/address/email are still unknown — bracketed placeholders
   (`[PHONE NUMBER]`, etc.) stay until the client provides them. Don't
   invent plausible-looking values.
 
@@ -111,9 +111,10 @@ these rules win over convenience or speed.
 
 ## 2a. Visual design & animation rules
 
-- Palette: primary accent is teal (`--accent #0E7C66` / `--accent-dark
-  #0B5B4C`), secondary accent is warm amber (`--accent2 #E8873A`), on a warm
-  cream background (`--bg #FAF7F2`). Don't introduce a third accent color —
+- Palette comes from the logo: primary accent is purple (`--accent #662B85`),
+  navy (`--accent-dark #0E1F5A`) for headings/hover, secondary accent is a
+  mid blue (`--accent2 #2F4BA0`), on a cool off-white background (`--bg
+  #F8F7FB`). Don't introduce a third accent color —
   alternate between the two on icon badges/cards instead.
 - Headings use Poppins (Google Fonts); body text stays on the system font
   stack for load performance. Don't add more web fonts without a reason.
