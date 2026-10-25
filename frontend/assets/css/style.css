@@ -578,3 +578,9 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
   nav.main-nav ul { gap: 14px; }
   nav.main-nav a { font-size: 15px; }
 }
+
+/* ---------- Map block (About Us) ---------- */
+.map-block { margin-top: 32px; }
+.map-frame { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); margin: 14px 0; }
+.map-frame iframe { display: block; width: 100%; height: 380px; border: 0; }
+@media (max-width: 640px) { .map-frame iframe { height: 300px; } }

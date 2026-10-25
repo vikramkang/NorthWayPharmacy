@@ -171,6 +171,8 @@ these rules win over convenience or speed.
   treat it as a database to build features against — it's there so the
   registration form has *somewhere* to go pending the real EMR-integration
   decision.
+- The only third-party embed is the Google Maps iframe on About Us (`#map`).
+  Keep it off the booking/registration pages and don't add other embeds.
 - Don't add a new third-party script/tracker to any frontend page without
   checking it against the "no tracking on pages that could touch health
   context" stance from the discovery answers — when in doubt, keep analytics

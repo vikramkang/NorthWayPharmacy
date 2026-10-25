@@ -477,6 +477,13 @@ policy gained a "Job applications" line. The no-show ribbon is now purple, and i
 Pause button no longer overlaps the scrolling text. Like the register form,
 the form does nothing on the GitHub Pages demo (no backend there).
 
+**2026-10-25 — Address + map.** Real address 113 Montreal Rd, Cornwall, ON
+replaces the placeholders everywhere (footer, home, Walk-Ins, About, EN+FR);
+postal code not provided so omitted. About Us has a "How to find us" map block
+(lazy Google Maps embed + Get Directions + OpenStreetMap link). Removed the
+earlier unverified "Parking on-site" line. Couldn't confirm the pin location
+in this sandbox — check the embed after deploy. Phone/email still placeholders.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

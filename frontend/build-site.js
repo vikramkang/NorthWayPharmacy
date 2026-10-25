@@ -52,7 +52,7 @@ const T = {
     footerHoursLines: ["Mon–Sat: 12:00 pm – 8:00 pm", "Sunday: Closed"],
     footerQuick: "Quick Links",
     footerContact: "Contact",
-    footerAddress: "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]",
+    footerAddress: "113 Montreal Rd, Cornwall, ON",
     privacy: "Privacy Policy",
     rights: "NorthWay Clinics. All rights reserved.",
     ribbon: (fee) => `Please note: cancellations with less than 24 hours’ notice, or missed appointments without prior notice, may be subject to a ${fee} no-show fee.`,
@@ -77,7 +77,7 @@ const T = {
     footerHoursLines: ["Lun–Sam : 12 h – 20 h", "Dimanche : fermé"],
     footerQuick: "Liens rapides",
     footerContact: "Coordonnées",
-    footerAddress: "[ADRESSE], Cornwall, ON [CODE POSTAL]",
+    footerAddress: "113 Montreal Rd, Cornwall, ON",
     privacy: "Politique de confidentialité",
     rights: "Cliniques NorthWay. Tous droits réservés.",
     ribbon: (fee) => `Veuillez noter que toute annulation faite moins de 24 heures à l’avance, ou tout rendez-vous manqué sans préavis, peut entraîner des frais de ${fee} pour absence.`,
@@ -330,7 +330,7 @@ ${heroSection({
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Hours</h3><p>Mon–Sat: 12 pm – 8 pm<br>Sunday: Closed</p></div>
-      <div class="block"><h3>Location</h3><p>[STREET ADDRESS], Cornwall, ON</p></div>
+      <div class="block"><h3>Location</h3><p>113 Montreal Rd, Cornwall, ON</p></div>
       <div class="block"><h3>Phone</h3><p><a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p></div>
       <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Hours &amp; Location</a></div>
     </div>
@@ -524,7 +524,7 @@ ${pageHeader("Walk-Ins", "Appointment required for walk-in visits.")}
       ${infoRow(ICONS.phone, "Phone", `<a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>`)}
       ${infoRow(ICONS.clock, "Hours", "Monday – Saturday, 12:00 pm – 8:00 pm<br>Closed Sunday")}
       ${infoRow(ICONS.mail, "Email", `<a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>`)}
-      ${infoRow(ICONS.pin, "Location", "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]")}
+      ${infoRow(ICONS.pin, "Location", "113 Montreal Rd, Cornwall, ON")}
       ${infoRow(ICONS.person, "What to bring", "Your health card and current medications")}
       <div class="info-actions"><a class="btn btn-primary" href="book-appointment.html">Book an Appointment</a></div>
     </div>
@@ -700,16 +700,28 @@ ${pageHeader("About Us", "The people behind NorthWay — and how to find us.")}
       </div>
       <div class="card">
         <div class="icon-badge b-accent2">${ICONS.pin}</div>
-        <h3>Location &amp; Parking</h3>
-        <p>[STREET ADDRESS], Cornwall, ON [POSTAL CODE]</p>
-        <p>Parking on-site.</p>
-        <!-- TODO: embed a map once the address is finalized -->
+        <h3>Location</h3>
+        <p>113 Montreal Rd, Cornwall, ON</p>
+        <p><a href="#map">See the map</a></p>
       </div>
       <div class="card">
         <div class="icon-badge b-accent">${ICONS.phone}</div>
         <h3>Contact</h3>
         <p>Phone: <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a></p>
         <p>Email: <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a></p>
+      </div>
+    </div>
+
+    <div class="map-block" id="map">
+      <h3>How to find us</h3>
+      <p>113 Montreal Rd, Cornwall, Ontario.</p>
+      <div class="map-frame">
+        <iframe title="Map showing NorthWay Clinics at 113 Montreal Rd, Cornwall, Ontario" src="https://www.google.com/maps?q=113+Montreal+Rd,+Cornwall,+Ontario&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <p class="hint">Tap Get Directions to open turn-by-turn directions from wherever you are.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=113+Montreal+Rd,+Cornwall,+Ontario" target="_blank" rel="noopener">Get Directions</a>
+        <a class="btn btn-secondary" href="https://www.openstreetmap.org/search?query=113%20Montreal%20Rd%2C%20Cornwall%2C%20Ontario" target="_blank" rel="noopener">Open in OpenStreetMap</a>
       </div>
     </div>
   </div>
@@ -788,7 +800,7 @@ ${heroSection({
   <div class="container">
     <div class="strip">
       <div class="block"><h3>Heures</h3><p>Lun–Sam : 12 h – 20 h<br>Dimanche : fermé</p></div>
-      <div class="block"><h3>Emplacement</h3><p>[ADRESSE], Cornwall, ON</p></div>
+      <div class="block"><h3>Emplacement</h3><p>113 Montreal Rd, Cornwall, ON</p></div>
       <div class="block"><h3>Téléphone</h3><p><a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p></div>
       <div class="block"><a class="btn btn-secondary" href="about.html#visit-us">Heures et emplacement</a></div>
     </div>
@@ -981,7 +993,7 @@ ${pageHeader("Visites le jour même", "Rendez-vous requis pour les visites le jo
       ${infoRow(ICONS.phone, "Téléphone", `<a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>`)}
       ${infoRow(ICONS.clock, "Heures", "Lundi – Samedi, 12 h – 20 h<br>Fermé le dimanche")}
       ${infoRow(ICONS.mail, "Courriel", `<a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>`)}
-      ${infoRow(ICONS.pin, "Emplacement", "[ADRESSE], Cornwall, ON [CODE POSTAL]")}
+      ${infoRow(ICONS.pin, "Emplacement", "113 Montreal Rd, Cornwall, ON")}
       ${infoRow(ICONS.person, "Quoi apporter", "Votre carte santé et vos médicaments actuels")}
       <div class="info-actions"><a class="btn btn-primary" href="book-appointment.html">Prendre rendez-vous</a></div>
     </div>
@@ -1157,16 +1169,28 @@ ${pageHeader("À propos de nous", "Les gens derrière NorthWay — et comment no
       </div>
       <div class="card">
         <div class="icon-badge b-accent2">${ICONS.pin}</div>
-        <h3>Emplacement et stationnement</h3>
-        <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
-        <p>Stationnement sur place.</p>
-        <!-- TODO: embed a map once the address is finalized -->
+        <h3>Emplacement</h3>
+        <p>113 Montreal Rd, Cornwall, ON</p>
+        <p><a href="#map">Voir la carte</a></p>
       </div>
       <div class="card">
         <div class="icon-badge b-accent">${ICONS.phone}</div>
         <h3>Coordonnées</h3>
         <p>Téléphone : <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a></p>
         <p>Courriel : <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a></p>
+      </div>
+    </div>
+
+    <div class="map-block" id="map">
+      <h3>Comment nous trouver</h3>
+      <p>113 Montreal Rd, Cornwall (Ontario).</p>
+      <div class="map-frame">
+        <iframe title="Carte montrant les Cliniques NorthWay au 113 Montreal Rd, Cornwall (Ontario)" src="https://www.google.com/maps?q=113+Montreal+Rd,+Cornwall,+Ontario&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <p class="hint">Touchez Obtenir l'itinéraire pour ouvrir le guidage depuis votre position.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=113+Montreal+Rd,+Cornwall,+Ontario" target="_blank" rel="noopener">Obtenir l'itinéraire</a>
+        <a class="btn btn-secondary" href="https://www.openstreetmap.org/search?query=113%20Montreal%20Rd%2C%20Cornwall%2C%20Ontario" target="_blank" rel="noopener">Ouvrir dans OpenStreetMap</a>
       </div>
     </div>
   </div>
