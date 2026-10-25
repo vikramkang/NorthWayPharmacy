@@ -454,6 +454,13 @@ big headline + subtitle, then one white card (gradient top bar) of tinted rows
 guidance stays below. Omitted MapleCures' "existing patients only" line, and kept
 NorthWay's own "no appointment needed" (MapleCures requires one) — confirm.
 
+**2026-10-25 — Walk-ins require an appointment (correction).** Client
+clarified: walk-in visits are same-day but need a call/appointment to check
+availability — you can't just show up. Removed every "no appointment needed" /
+"sans rendez-vous" claim (EN+FR). Walk-Ins page now says "Appointment required
+for walk-in visits", phone is the first row; French tab/page renamed "Visites
+le jour même" (literal "sans rendez-vous" means no appointment, which is wrong).
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

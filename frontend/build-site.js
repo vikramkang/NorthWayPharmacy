@@ -63,7 +63,7 @@ const T = {
     phone: "[NUMÉRO DE TÉLÉPHONE]",
     badge: "Nous acceptons de nouveaux patients",
     nav: [
-      ["walk-ins.html", "Sans rendez-vous"],
+      ["walk-ins.html", "Visites le jour même"],
       ["clinic-services.html", "Nos services"],
       ["team.html", "L'équipe"],
       ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Services de la pharmacie"]] : []),
@@ -291,7 +291,7 @@ const pagesEn = {};
 
 pagesEn.index = {
   title: "Home",
-  metaDesc: "Family medicine, walk-in and urgent care, and and bilingual care in Cornwall, Ontario.",
+  metaDesc: "Family medicine, walk-in and urgent care, and bilingual care in Cornwall, Ontario.",
   body: `
 ${heroSection({
   h1: "Cornwall's Family Clinic",
@@ -304,7 +304,7 @@ ${heroSection({
   <div class="container trust-strip-row">
     <span class="trust-item">${ICONS.person} Licensed physicians &amp; clinicians</span>
     <span class="trust-item">${ICONS.bilingual} Bilingual: English &amp; French</span>
-    <span class="trust-item">${ICONS.stethoscope} Walk-ins welcome</span>
+    <span class="trust-item">${ICONS.stethoscope} Same-day walk-in care</span>
     <span class="trust-item">${ICONS.pin} Serving Cornwall, ON</span>
   </div>
 </div>
@@ -453,7 +453,7 @@ ${photoBand("../assets/img/family-physician.jpg", "A family physician checking o
       <div class="card">
         <div class="icon-badge b-accent2">${ICONS.cross}</div>
         <h3>Walk-In &amp; Urgent Care</h3>
-        <p>Same-day visits, no appointment needed.</p>
+        <p>Same-day visits. Call to check availability.</p>
         <p><a href="walk-ins.html">Walk-in details</a></p>
       </div>
     </div>
@@ -481,7 +481,7 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
   <div class="container">
     <div class="card-grid">
       ${card(ICONS.pill,"b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
-      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Seasonal and travel shots.")}
       ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
       ${card(ICONS.house,"b-accent2", "Long-Term Care &amp; Retirement Home Services", null, "#long-term-care")}
     </div>
@@ -510,15 +510,15 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
 
 pagesEn["walk-ins"] = {
   title: "Walk-Ins",
-  metaDesc: "Walk-in and urgent care at NorthWay Clinics in Cornwall, Ontario — same-day visits, no appointment needed.",
+  metaDesc: "Walk-in and urgent care at NorthWay Clinics in Cornwall, Ontario — same-day visits by appointment. Call to check availability.",
   body: `
-${pageHeader("Walk-Ins Welcome", "Same-day care, no appointment needed.")}
+${pageHeader("Walk-Ins", "Appointment required for walk-in visits.")}
 <section class="reveal">
   <div class="container">
     <div class="info-card">
-      <p class="info-intro">Booking ahead is recommended to guarantee your time.</p>
-      ${infoRow(ICONS.clock, "Walk-in hours", "Monday – Saturday, 12:00 pm – 8:00 pm<br>Closed Sunday")}
+      <p class="info-intro">Please call first to check same-day availability. Booking ahead is recommended to guarantee your time.</p>
       ${infoRow(ICONS.phone, "Phone", `<a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>`)}
+      ${infoRow(ICONS.clock, "Hours", "Monday – Saturday, 12:00 pm – 8:00 pm<br>Closed Sunday")}
       ${infoRow(ICONS.mail, "Email", `<a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>`)}
       ${infoRow(ICONS.pin, "Location", "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]")}
       ${infoRow(ICONS.person, "What to bring", "Your health card and current medications")}
@@ -679,7 +679,7 @@ const pagesFr = {};
 
 pagesFr.index = {
   title: "Accueil",
-  metaDesc: "Médecine familiale, soins sans rendez-vous et soins bilingues à Cornwall, en Ontario.",
+  metaDesc: "Médecine familiale, soins le jour même et soins bilingues à Cornwall, en Ontario.",
   body: `
 ${heroSection({
   h1: "La clinique familiale de Cornwall",
@@ -692,7 +692,7 @@ ${heroSection({
   <div class="container trust-strip-row">
     <span class="trust-item">${ICONS.person} Médecins et cliniciens agréés</span>
     <span class="trust-item">${ICONS.bilingual} Bilingue : français et anglais</span>
-    <span class="trust-item">${ICONS.stethoscope} Sans rendez-vous bienvenus</span>
+    <span class="trust-item">${ICONS.stethoscope} Visites le jour même</span>
     <span class="trust-item">${ICONS.pin} Au service de Cornwall, ON</span>
   </div>
 </div>
@@ -701,8 +701,8 @@ ${heroSection({
   <div class="container">
     <h2>Nos services</h2>
     <div class="card-grid">
-      ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
-      ${card(ICONS.cross,"b-accent2", "Sans rendez-vous et urgences", null, "walk-ins.html")}
+      ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et visites le jour même", null, "clinic-services.html")}
+      ${card(ICONS.cross,"b-accent2", "Visites le jour même et urgences", null, "walk-ins.html")}
       ${card(ICONS.person,"b-accent", "Rencontrer l'équipe", null, "team.html")}
       ${SHOW_PHARMACY ? card(ICONS.pill,"b-accent2", "Services de pharmacie", null, "pharmacy-services.html") : ""}
       ${card(ICONS.bilingual,"b-accent2", "Service bilingue", null, null)}
@@ -824,7 +824,7 @@ ${pageHeader("Prendre rendez-vous", "Nouveau ou déjà patient — commencez ici
 
 pagesFr["clinic-services"] = {
   title: "Services de la clinique",
-  metaDesc: "Médecine familiale, soins sans rendez-vous et soins urgents aux Cliniques NorthWay.",
+  metaDesc: "Médecine familiale, visites le jour même et soins urgents aux Cliniques NorthWay.",
   body: `
 ${pageHeader("Services de la clinique", "Médecine familiale et soins urgents.")}
 ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examine un bébé souriant, tenu par son parent")}
@@ -839,9 +839,9 @@ ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examin
       </div>
       <div class="card">
         <div class="icon-badge b-accent2">${ICONS.cross}</div>
-        <h3>Soins sans rendez-vous et urgents</h3>
-        <p>Visites le jour même, sans rendez-vous.</p>
-        <p><a href="walk-ins.html">Détails sans rendez-vous</a></p>
+        <h3>Visites le jour même et soins urgents</h3>
+        <p>Appelez pour connaître les disponibilités.</p>
+        <p><a href="walk-ins.html">Détails des visites le jour même</a></p>
       </div>
     </div>
 
@@ -868,7 +868,7 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
   <div class="container">
     <div class="card-grid">
       ${card(ICONS.pill,"b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
-      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Saisonnières et de voyage.")}
       ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
       ${card(ICONS.house,"b-accent2", "Services de soins de longue durée et résidences pour retraités", null, "#long-term-care")}
     </div>
@@ -896,16 +896,16 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
 };
 
 pagesFr["walk-ins"] = {
-  title: "Sans rendez-vous",
-  metaDesc: "Soins sans rendez-vous et urgents aux Cliniques NorthWay à Cornwall, en Ontario — visites le jour même.",
+  title: "Visites le jour même",
+  metaDesc: "Visites le jour même et soins urgents aux Cliniques NorthWay à Cornwall, en Ontario — sur rendez-vous, appelez pour connaître les disponibilités.",
   body: `
-${pageHeader("Sans rendez-vous bienvenus", "Soins le jour même, sans rendez-vous.")}
+${pageHeader("Visites le jour même", "Rendez-vous requis pour les visites le jour même.")}
 <section class="reveal">
   <div class="container">
     <div class="info-card">
-      <p class="info-intro">Réserver à l'avance est recommandé pour garantir votre place.</p>
-      ${infoRow(ICONS.clock, "Heures sans rendez-vous", "Lundi – Samedi, 12 h – 20 h<br>Fermé le dimanche")}
+      <p class="info-intro">Veuillez appeler d'abord pour connaître les disponibilités du jour. Réserver à l'avance est recommandé pour garantir votre place.</p>
       ${infoRow(ICONS.phone, "Téléphone", `<a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>`)}
+      ${infoRow(ICONS.clock, "Heures", "Lundi – Samedi, 12 h – 20 h<br>Fermé le dimanche")}
       ${infoRow(ICONS.mail, "Courriel", `<a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>`)}
       ${infoRow(ICONS.pin, "Emplacement", "[ADRESSE], Cornwall, ON [CODE POSTAL]")}
       ${infoRow(ICONS.person, "Quoi apporter", "Votre carte santé et vos médicaments actuels")}
