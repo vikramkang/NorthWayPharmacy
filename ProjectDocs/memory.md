@@ -466,6 +466,17 @@ apply by emailing a resume to the (placeholder) email. No application form on
 purpose (no personal-data collection on the site). Needs real hiring info from
 the client. Nav is 7 entries incl. the Book CTA; CSS keeps it on one line 1041-1180px.
 
+**2026-10-25 — Careers page rebuilt like maplecures.ca; ribbon recoloured.**
+Careers now has intro, "Hiring Physicians" and "What We Offer" cards, and an
+application form (name, email, phone, position, type, resume upload, comments)
+or email fallback. Backend: `POST /api/careers` (multer, PDF/Word only, 5 MB;
+saves to `backend/data/resumes/` + `careers.jsonl`, both gitignored) — tested
+ok/invalid/wrong-type. Pharmacist roles and MapleCures' "industry-leading
+compensation" claim were left out (pharmacy hidden; claim unverified). Privacy
+policy gained a "Job applications" line. The no-show ribbon is now purple, and its
+Pause button no longer overlaps the scrolling text. Like the register form,
+the form does nothing on the GitHub Pages demo (no backend there).
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

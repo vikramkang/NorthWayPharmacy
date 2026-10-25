@@ -14,6 +14,9 @@ const cors = require("cors");
 const { appendSubmission, readAllSubmissions } = require("./store");
 const teamStore = require("./team-store");
 const settingsStore = require("./settings-store");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -87,6 +90,59 @@ app.get("/api/register/_pending", (req, res) => {
     return res.status(404).json({ ok: false, errors: ["Not found."] });
   }
   res.json({ submissions: readAllSubmissions() });
+});
+
+
+// ---------------------------------------------------------------------
+// Careers applications — name, contact details, position, and a resume file.
+// Personal data (not health data). Resumes are saved under data/resumes/
+// (gitignored) and the application is appended to data/careers.jsonl.
+// ---------------------------------------------------------------------
+const RESUME_DIR = path.join(__dirname, "..", "data", "resumes");
+const RESUME_TYPES = {
+  "application/pdf": ".pdf",
+  "application/msword": ".doc",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx"
+};
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => { fs.mkdirSync(RESUME_DIR, { recursive: true }); cb(null, RESUME_DIR); },
+    filename: (req, file, cb) => cb(null, Date.now() + "-" + Math.random().toString(36).slice(2, 8) + RESUME_TYPES[file.mimetype])
+  }),
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+  fileFilter: (req, file, cb) => cb(null, Object.prototype.hasOwnProperty.call(RESUME_TYPES, file.mimetype))
+});
+
+app.post("/api/careers", (req, res) => {
+  upload.single("resume")(req, res, (uploadErr) => {
+    if (uploadErr) {
+      return res.status(400).json({ ok: false, errors: [uploadErr.code === "LIMIT_FILE_SIZE" ? "Resume must be 5 MB or smaller." : "Upload failed."] });
+    }
+    const b = req.body || {};
+    const errors = [];
+    ["fullName", "email", "phone", "position", "positionType"].forEach(f => { if (!b[f]) errors.push("Missing field: " + f); });
+    if (b.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) errors.push("Invalid email format.");
+    if (!req.file) errors.push("A resume (PDF or Word, up to 5 MB) is required.");
+    if (errors.length) {
+      if (req.file) fs.unlink(req.file.path, () => {});
+      return res.status(400).json({ ok: false, errors });
+    }
+    const record = {
+      fullName: String(b.fullName).slice(0, 200), email: String(b.email).slice(0, 200), phone: String(b.phone).slice(0, 50),
+      position: String(b.position).slice(0, 100), positionType: String(b.positionType).slice(0, 50),
+      comments: String(b.comments || "").slice(0, 2000), resumeFile: req.file.filename,
+      receivedAt: new Date().toISOString()
+    };
+    try {
+      fs.mkdirSync(path.join(__dirname, "..", "data"), { recursive: true });
+      fs.appendFileSync(path.join(__dirname, "..", "data", "careers.jsonl"), JSON.stringify(record) + "\n", "utf8");
+    } catch (err) {
+      console.error("Failed to store careers application:", err);
+      return res.status(500).json({ ok: false, errors: ["Internal error saving application."] });
+    }
+    console.log("New careers application received for:", record.position);
+    res.status(201).json({ ok: true });
+  });
 });
 
 // ---------------------------------------------------------------------

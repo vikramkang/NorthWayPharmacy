@@ -196,3 +196,32 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.textContent = paused ? btn.getAttribute("data-play") : btn.getAttribute("data-pause");
   });
 })();
+
+
+// ---- Careers application form (multipart: includes resume file) ----
+(function () {
+  var form = document.querySelector("#careers-form");
+  if (!form) return;
+  var done = document.querySelector("#careers-confirmation");
+  var err = document.querySelector("#careers-error");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    err.hidden = true;
+    var ok = true;
+    form.querySelectorAll("[required]").forEach(function (f) {
+      var bad = !f.value || (f.type === "file" && !f.files.length);
+      f.classList.toggle("invalid", bad);
+      if (bad) ok = false;
+    });
+    var file = form.querySelector('[name="resume"]').files[0];
+    if (file && file.size > 5 * 1024 * 1024) { ok = false; err.hidden = false; }
+    if (!ok) return;
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    fetch((window.NORTHWAY_API_BASE || "") + "/api/careers", { method: "POST", body: new FormData(form) })
+      .then(function (res) { if (!res.ok) throw new Error("status " + res.status); return res.json(); })
+      .then(function () { form.hidden = true; done.hidden = false; })
+      .catch(function (e2) { console.error("Careers submission failed:", e2); err.hidden = false; })
+      .finally(function () { btn.disabled = false; });
+  });
+})();

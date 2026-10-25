@@ -176,8 +176,10 @@ function layout({ lang, slug, title, metaDesc, body }) {
 </div>
 
 <div class="ribbon" role="region" aria-label="${t.ribbonLabel}">
+  <div class="ribbon-viewport">
   <div class="ribbon-track" id="ribbon-track">
     ${[0,1,2,3].map(i => `<span class="ribbon-item"${i ? ' aria-hidden="true"' : ""}>${t.ribbon(NO_SHOW_FEE[lang])} <a href="policies.html#late-cancellation"${i ? ' tabindex="-1"' : ""}>${t.ribbonLink}</a></span>`).join("\n    ")}
+  </div>
   </div>
   <button type="button" class="ribbon-pause" id="ribbon-pause" aria-pressed="false" data-pause="${t.ribbonPause}" data-play="${t.ribbonPlay}">${t.ribbonPause}</button>
 </div>
@@ -558,18 +560,66 @@ ${pageHeader("Walk-Ins", "Appointment required for walk-in visits.")}
 
 pagesEn.careers = {
   title: "Careers",
-  metaDesc: "Join the NorthWay Clinics team in Cornwall, Ontario.",
+  metaDesc: "Join the NorthWay Clinics team in Cornwall, Ontario. Physicians and clinical staff welcome to apply.",
   body: `
-<!-- TODO: replace with real openings / hiring process once the client provides them. -->
-${pageHeader("Careers", "Join the NorthWay team.")}
+<!-- INTERNAL NOTE: structure modelled on the client's other site (maplecures.ca).
+     Roles/offer list are a draft — confirm with the client. Pharmacist roles are
+     left out while pharmacy is hidden (SHOW_PHARMACY). -->
+${pageHeader("Join the NorthWay Team", "We'd love to connect.")}
 <section class="reveal">
   <div class="container">
-    <div class="info-card">
-      <p class="info-intro">We're a growing, bilingual community clinic. If you'd like to help care for families in Cornwall, we'd like to hear from you.</p>
-      ${infoRow(ICONS.person, "Open positions", "No openings are listed right now. Send us your resume and we'll keep it on file.")}
-      ${infoRow(ICONS.mail, "How to apply", `Email your resume to <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>`)}
-      ${infoRow(ICONS.bilingual, "Languages", "English and French are both valued.")}
+    <p>We're building a bilingual community clinic that values excellence and compassion. We proudly welcome physicians moving to Ontario.</p>
+    <div class="card-grid" style="margin-top:24px;">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.stethoscope}</div>
+        <h3>Hiring Physicians</h3>
+        <p>Family Physicians / GPs<br>Medical Specialists<br>Locums welcome<br>International Medical Graduates welcome</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.person}</div>
+        <h3>What We Offer</h3>
+        <p>Flexible scheduling<br>Smooth onboarding for physicians moving to Ontario<br>Collaborative team culture<br>A bilingual, welcoming community</p>
+      </div>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="apply">
+  <div class="container">
+    <h2>Application Form</h2>
+    <p class="form-note">Or email your resume to <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
+    <form class="stack" id="careers-form" novalidate>
+      <div class="field"><label for="c-name">Full name</label><input type="text" id="c-name" name="fullName" required autocomplete="name"></div>
+      <div class="field"><label for="c-email">Email</label><input type="email" id="c-email" name="email" required autocomplete="email"></div>
+      <div class="field"><label for="c-phone">Phone</label><input type="tel" id="c-phone" name="phone" required autocomplete="tel"></div>
+      <div class="field">
+        <label for="c-pos">Position</label>
+        <select id="c-pos" name="position" required>
+          <option value="">Select a position</option>
+          <option>Family Physician / GP</option>
+          <option>Medical Specialist</option>
+          <option>Locum</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-type">Position type</label>
+        <select id="c-type" name="positionType" required>
+          <option value="">Select position type</option>
+          <option>Full Time</option>
+          <option>Part Time</option>
+          <option>Volunteer</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-resume">Resume (PDF or Word, up to 5 MB)</label>
+        <input type="file" id="c-resume" name="resume" accept=".pdf,.doc,.docx" required>
+      </div>
+      <div class="field"><label for="c-comments">Additional comments</label><textarea id="c-comments" name="comments" rows="4"></textarea></div>
+      <button type="submit" class="btn btn-primary">Submit Application</button>
+    </form>
+    <div class="callout info" id="careers-confirmation" hidden><h3>Thank you</h3><p>We've received your application and will be in touch if there's a fit.</p></div>
+    <div class="callout warn" id="careers-error" hidden><p>Something went wrong. Please try again, or email your resume instead.</p></div>
   </div>
 </section>
 `
@@ -682,6 +732,9 @@ ${pageHeader("Privacy Policy", "How we use your information.")}
 
     <h3>How it's used</h3>
     <p>Staff review it to confirm your registration and book your first visit.</p>
+
+    <h3>Job applications</h3>
+    <p>If you apply for a job, we collect the details and resume you submit, only to consider your application.</p>
 
     <h3>Booking</h3>
     <p>Appointments are booked through Medeo, our scheduling partner.</p>
@@ -964,18 +1017,66 @@ ${pageHeader("Visites le jour même", "Rendez-vous requis pour les visites le jo
 
 pagesFr.careers = {
   title: "Carrières",
-  metaDesc: "Joignez-vous à l'équipe des Cliniques NorthWay à Cornwall, en Ontario.",
+  metaDesc: "Joignez-vous à l'équipe des Cliniques NorthWay à Cornwall, en Ontario. Médecins et personnel clinique bienvenus.",
   body: `
-<!-- TODO: replace with real openings / hiring process once the client provides them. -->
-${pageHeader("Carrières", "Joignez-vous à l'équipe NorthWay.")}
+<!-- INTERNAL NOTE: structure modelled on the client's other site (maplecures.ca).
+     Roles/offer list are a draft — confirm with the client. Pharmacist roles are
+     left out while pharmacy is hidden (SHOW_PHARMACY). -->
+${pageHeader("Joignez-vous à l'équipe NorthWay", "Nous aimerions faire votre connaissance.")}
 <section class="reveal">
   <div class="container">
-    <div class="info-card">
-      <p class="info-intro">Nous sommes une clinique communautaire bilingue en croissance. Si vous souhaitez contribuer aux soins des familles de Cornwall, nous aimerions avoir de vos nouvelles.</p>
-      ${infoRow(ICONS.person, "Postes ouverts", "Aucun poste n'est affiché pour le moment. Envoyez-nous votre CV et nous le conserverons.")}
-      ${infoRow(ICONS.mail, "Comment postuler", `Envoyez votre CV à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>`)}
-      ${infoRow(ICONS.bilingual, "Langues", "L'anglais et le français sont tous deux appréciés.")}
+    <p>Nous bâtissons une clinique communautaire bilingue qui valorise l'excellence et la compassion. Nous accueillons avec plaisir les médecins qui s'installent en Ontario.</p>
+    <div class="card-grid" style="margin-top:24px;">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.stethoscope}</div>
+        <h3>Médecins recherchés</h3>
+        <p>Médecins de famille / omnipraticiens<br>Médecins spécialistes<br>Remplaçants bienvenus<br>Diplômés internationaux en médecine bienvenus</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.person}</div>
+        <h3>Ce que nous offrons</h3>
+        <p>Horaires flexibles<br>Intégration facilitée pour les médecins qui s'installent en Ontario<br>Culture d'équipe collaborative<br>Une communauté bilingue et accueillante</p>
+      </div>
     </div>
+  </div>
+</section>
+
+<section class="reveal" id="apply">
+  <div class="container">
+    <h2>Formulaire de candidature</h2>
+    <p class="form-note">Ou envoyez votre CV par courriel à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
+    <form class="stack" id="careers-form" novalidate>
+      <div class="field"><label for="c-name">Nom complet</label><input type="text" id="c-name" name="fullName" required autocomplete="name"></div>
+      <div class="field"><label for="c-email">Courriel</label><input type="email" id="c-email" name="email" required autocomplete="email"></div>
+      <div class="field"><label for="c-phone">Téléphone</label><input type="tel" id="c-phone" name="phone" required autocomplete="tel"></div>
+      <div class="field">
+        <label for="c-pos">Poste</label>
+        <select id="c-pos" name="position" required>
+          <option value="">Choisir un poste</option>
+          <option>Médecin de famille / omnipraticien</option>
+          <option>Médecin spécialiste</option>
+          <option>Remplaçant</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-type">Type de poste</label>
+        <select id="c-type" name="positionType" required>
+          <option value="">Choisir le type de poste</option>
+          <option>Temps plein</option>
+          <option>Temps partiel</option>
+          <option>Bénévole</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-resume">CV (PDF ou Word, 5 Mo maximum)</label>
+        <input type="file" id="c-resume" name="resume" accept=".pdf,.doc,.docx" required>
+      </div>
+      <div class="field"><label for="c-comments">Commentaires additionnels</label><textarea id="c-comments" name="comments" rows="4"></textarea></div>
+      <button type="submit" class="btn btn-primary">Envoyer la candidature</button>
+    </form>
+    <div class="callout info" id="careers-confirmation" hidden><h3>Merci</h3><p>Nous avons bien reçu votre candidature et vous contacterons si votre profil correspond.</p></div>
+    <div class="callout warn" id="careers-error" hidden><p>Une erreur est survenue. Veuillez réessayer ou envoyer votre CV par courriel.</p></div>
   </div>
 </section>
 `
@@ -1088,6 +1189,9 @@ ${pageHeader("Politique de confidentialité", "Comment nous utilisons vos rensei
 
     <h3>Utilisation</h3>
     <p>Notre personnel les examine pour confirmer votre inscription et réserver votre première visite.</p>
+
+    <h3>Candidatures</h3>
+    <p>Si vous postulez à un emploi, nous recueillons les renseignements et le CV que vous soumettez, uniquement pour étudier votre candidature.</p>
 
     <h3>Réservation</h3>
     <p>Les rendez-vous sont réservés via Medeo, notre partenaire de planification.</p>

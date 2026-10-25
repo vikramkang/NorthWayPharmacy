@@ -517,12 +517,13 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
    visitor prefers reduced motion. */
 .ribbon {
   display: flex; align-items: center;
-  background: var(--accent2); color: #fff;
+  background: var(--accent); color: #fff;
   font-size: 15px; font-weight: 600;
   overflow: hidden;
 }
+.ribbon-viewport { flex: 1 1 auto; min-width: 0; overflow: hidden; }
 .ribbon-track {
-  display: flex; flex: 1 1 auto; min-width: 0;
+  display: flex;
   white-space: nowrap;
   width: max-content;
   animation: ribbonScroll 60s linear infinite;
@@ -533,14 +534,15 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
 .ribbon a { color: #fff; text-decoration: underline; }
 .ribbon-pause {
   flex: 0 0 auto; margin: 0 12px; min-height: 36px; padding: 4px 14px;
-  background: rgba(255,255,255,0.18); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
+  background: var(--accent-dark); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
   border: 1px solid rgba(255,255,255,0.6); border-radius: 999px; cursor: pointer;
   position: relative; z-index: 1;
 }
-.ribbon-pause:hover { background: rgba(255,255,255,0.3); }
+.ribbon-pause:hover { background: #000; }
 @keyframes ribbonScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
   .ribbon-track { animation: none; width: auto; flex-wrap: wrap; white-space: normal; padding: 0 16px; }
+  .ribbon-viewport { overflow: visible; }
   .ribbon-item[aria-hidden="true"], .ribbon-item::after, .ribbon-pause { display: none; }
   .ribbon-item { padding: 10px 0; }
 }
