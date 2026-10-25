@@ -461,6 +461,11 @@ availability — you can't just show up. Removed every "no appointment needed" /
 for walk-in visits", phone is the first row; French tab/page renamed "Visites
 le jour même" (literal "sans rendez-vous" means no appointment, which is wrong).
 
+**2026-10-25 — Careers tab added.** Simple page (EN+FR): no openings listed,
+apply by emailing a resume to the (placeholder) email. No application form on
+purpose (no personal-data collection on the site). Needs real hiring info from
+the client. Nav is 7 entries incl. the Book CTA; CSS keeps it on one line 1041-1180px.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

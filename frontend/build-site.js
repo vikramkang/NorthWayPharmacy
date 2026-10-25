@@ -43,6 +43,7 @@ const T = {
       ["clinic-services.html", "Clinic Services"],
       ["team.html", "Meet the Team"],
       ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Pharmacy Services"]] : []),
+      ["careers.html", "Careers"],
       ["policies.html", "Policies"],
       ["about.html", "About Us"],
       ["book-appointment.html", "Book an Appointment"]
@@ -67,6 +68,7 @@ const T = {
       ["clinic-services.html", "Nos services"],
       ["team.html", "L'équipe"],
       ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Services de la pharmacie"]] : []),
+      ["careers.html", "Carrières"],
       ["policies.html", "Politiques"],
       ["about.html", "À propos"],
       ["book-appointment.html", "Prendre rendez-vous"]
@@ -554,6 +556,25 @@ ${pageHeader("Walk-Ins", "Appointment required for walk-in visits.")}
 `
 };
 
+pagesEn.careers = {
+  title: "Careers",
+  metaDesc: "Join the NorthWay Clinics team in Cornwall, Ontario.",
+  body: `
+<!-- TODO: replace with real openings / hiring process once the client provides them. -->
+${pageHeader("Careers", "Join the NorthWay team.")}
+<section class="reveal">
+  <div class="container">
+    <div class="info-card">
+      <p class="info-intro">We're a growing, bilingual community clinic. If you'd like to help care for families in Cornwall, we'd like to hear from you.</p>
+      ${infoRow(ICONS.person, "Open positions", "No openings are listed right now. Send us your resume and we'll keep it on file.")}
+      ${infoRow(ICONS.mail, "How to apply", `Email your resume to <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>`)}
+      ${infoRow(ICONS.bilingual, "Languages", "English and French are both valued.")}
+    </div>
+  </div>
+</section>
+`
+};
+
 pagesEn.policies = {
   title: "Policies",
   metaDesc: "Clinic policies at NorthWay Clinics: late cancellation and no-show, and our respectful environment policy.",
@@ -936,6 +957,25 @@ ${pageHeader("Visites le jour même", "Rendez-vous requis pour les visites le jo
     </div>
 
     <p class="hint" style="margin-top:24px;">N'envoyez pas de courriel pour une urgence — appelez-nous.</p>
+  </div>
+</section>
+`
+};
+
+pagesFr.careers = {
+  title: "Carrières",
+  metaDesc: "Joignez-vous à l'équipe des Cliniques NorthWay à Cornwall, en Ontario.",
+  body: `
+<!-- TODO: replace with real openings / hiring process once the client provides them. -->
+${pageHeader("Carrières", "Joignez-vous à l'équipe NorthWay.")}
+<section class="reveal">
+  <div class="container">
+    <div class="info-card">
+      <p class="info-intro">Nous sommes une clinique communautaire bilingue en croissance. Si vous souhaitez contribuer aux soins des familles de Cornwall, nous aimerions avoir de vos nouvelles.</p>
+      ${infoRow(ICONS.person, "Postes ouverts", "Aucun poste n'est affiché pour le moment. Envoyez-nous votre CV et nous le conserverons.")}
+      ${infoRow(ICONS.mail, "Comment postuler", `Envoyez votre CV à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>`)}
+      ${infoRow(ICONS.bilingual, "Langues", "L'anglais et le français sont tous deux appréciés.")}
+    </div>
   </div>
 </section>
 `

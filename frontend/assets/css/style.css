@@ -570,3 +570,9 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
 .info-value a { color: var(--accent); text-decoration: none; }
 .info-value a:hover { text-decoration: underline; }
 .info-actions { text-align: center; margin-top: 22px; }
+
+/* Keep the 7-item desktop nav on one line between the hamburger breakpoint and wide screens */
+@media (min-width: 1041px) and (max-width: 1180px) {
+  nav.main-nav ul { gap: 14px; }
+  nav.main-nav a { font-size: 15px; }
+}

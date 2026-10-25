@@ -59,7 +59,7 @@ these rules win over convenience or speed.
   flagged twice by the user — treat it as a hard rule, not a style
   preference.
 - **Fewer top-level nav items, not more.** Nav: Walk-Ins, Clinic Services,
-  Meet the Team, Policies, About Us, plus the "Book an Appointment" CTA (no
+  Meet the Team, Careers, Policies, About Us, plus the "Book an Appointment" CTA (no
   "Home" tab — the logo goes home). The business is **clinic only for now**;
   Pharmacy pages are kept in source but hidden behind `SHOW_PHARMACY = false`
   at the top of `build-site.js` (set `true` + rebuild to restore; review the
