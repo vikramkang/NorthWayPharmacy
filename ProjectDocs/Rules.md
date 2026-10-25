@@ -58,20 +58,22 @@ these rules win over convenience or speed.
   to explain itself, cut the first one instead of adding a second. This was
   flagged twice by the user — treat it as a hard rule, not a style
   preference.
-- **Fewer top-level nav items, not more.** Nav is 5 items: Home, Book an
-  Appointment, Clinic Services, Meet the Team (`team.html`, opens the doctors
-  list directly), About Us. The business is **clinic only for now**. Pharmacy
-  pages are kept in the source but hidden behind `SHOW_PHARMACY = false` at the
-  top of `build-site.js` (no nav item, home card, or page; the old URL
-  redirects to Clinic Services). Set it to `true` to bring them back; review
-  the clinic-only hero/trust-strip wording when you do.
-  Register lives on Book an Appointment; Urgent Care is a section of Clinic
-  Services (`#urgent-care`); Hours/Location/Contact are the `#visit-us`
-  section of About Us. Retired URLs (`register`, `urgent-care`,
-  `long-term-care`, `pharmacy-services`, `visit-us`) remain as one-line
-  meta-refresh redirects via `RETIRED_REDIRECTS` in `build-site.js`. If a new
-  page idea comes up, ask whether it can be a section of an existing page
-  before adding a 6th nav item.
+- **Fewer top-level nav items, not more.** Nav: Walk-Ins, Clinic Services,
+  Meet the Team, Policies, About Us, plus the "Book an Appointment" CTA (no
+  "Home" tab — the logo goes home). The business is **clinic only for now**;
+  Pharmacy pages are kept in source but hidden behind `SHOW_PHARMACY = false`
+  at the top of `build-site.js` (set `true` + rebuild to restore; review the
+  clinic-only hero/trust-strip wording when you do). Urgent-care guidance lives
+  on Walk-Ins (`#urgent-care`); Hours/Location/Contact are `#visit-us` on About
+  Us. Retired URLs (`register`, `urgent-care`, `long-term-care`,
+  `pharmacy-services`, `visit-us`) are one-line meta-refresh redirects via
+  `RETIRED_REDIRECTS`. Ask whether a new page can be a section of an existing
+  one before adding another nav item. (Hamburger menu kicks in below 1040px.)
+- **Policies page** (`policies.html`): Late Cancellation & No-Show (fee in
+  `NO_SHOW_FEE`, currently $80 / 24h notice, taken from the client's other site
+  maplecures.ca — **confirm for NorthWay**) and Respectful Environment (generic
+  draft wording, needs client approval). A Prescription Refill policy is not
+  included while pharmacy is hidden.
 - **Hours:** Mon–Sat 12:00 pm – 8:00 pm, Sunday closed. Hours appear in the
   footer, home strip, and About Us table (EN + FR) — change all together.
 - **Internal/engineering notes are HTML comments, never on-page boxes.**
@@ -127,7 +129,10 @@ these rules win over convenience or speed.
   alternate between the two on icon badges/cards instead.
 - Headings use Poppins (Google Fonts); body text stays on the system font
   stack for load performance. Don't add more web fonts without a reason.
-- **No infinite or auto-playing animation, ever.** Hover/focus
+- **No infinite or auto-playing animation, with one exception** — the client-requested
+  no-show notice ribbon (scrolling text under the top bar), which has a visible
+  Pause/Play button, pauses on hover/focus, and is static under
+  `prefers-reduced-motion` (WCAG 2.2.2). Nothing else may loop. Hover/focus
   micro-interactions (card lift, button shadow, nav underline) and one-time
   entrance effects (scroll-reveal, sticky-header shadow) are fine. A pulsing
   badge, a looping decorative shape, or anything that moves without the user

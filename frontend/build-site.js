@@ -25,6 +25,9 @@ const BUILD_ID = Date.now().toString(36); // cache-buster so browsers fetch the 
 // Pharmacy Services page (+ Long-Term Care section), nav item and home card.
 // Note: hero/trust-strip wording is clinic-only; review it when re-enabling.
 const SHOW_PHARMACY = false;
+// No-show policy details (shown in the scrolling ribbon + Policies page).
+// Source: client's other site (maplecures.ca) — confirm the amount/notice for NorthWay.
+const NO_SHOW_FEE = { en: "$80", fr: "80 $" };
 const SITE_ORIGIN = "https://vikramkang.github.io/NorthWayPharmacy";
 
 // ---------------------------------------------------------------------
@@ -36,12 +39,13 @@ const T = {
     phone: "[PHONE NUMBER]",
     badge: "Accepting new patients",
     nav: [
-      ["index.html", "Home"],
-      ["book-appointment.html", "Book an Appointment"],
+      ["walk-ins.html", "Walk-Ins"],
       ["clinic-services.html", "Clinic Services"],
       ["team.html", "Meet the Team"],
       ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Pharmacy Services"]] : []),
-      ["about.html", "About Us"]
+      ["policies.html", "Policies"],
+      ["about.html", "About Us"],
+      ["book-appointment.html", "Book an Appointment"]
     ],
     footerHours: "Hours",
     footerHoursLines: ["Mon–Sat: 12:00 pm – 8:00 pm", "Sunday: Closed"],
@@ -50,6 +54,8 @@ const T = {
     footerAddress: "[STREET ADDRESS], Cornwall, ON [POSTAL CODE]",
     privacy: "Privacy Policy",
     rights: "NorthWay Clinics. All rights reserved.",
+    ribbon: (fee) => `Please note: cancellations with less than 24 hours’ notice, or missed appointments without prior notice, may be subject to a ${fee} no-show fee.`,
+    ribbonLink: "View policy", ribbonPause: "Pause", ribbonPlay: "Play", ribbonLabel: "Important notice",
     skip: "Skip to main content"
   },
   fr: {
@@ -57,12 +63,13 @@ const T = {
     phone: "[NUMÉRO DE TÉLÉPHONE]",
     badge: "Nous acceptons de nouveaux patients",
     nav: [
-      ["index.html", "Accueil"],
-      ["book-appointment.html", "Prendre rendez-vous"],
-      ["clinic-services.html", "Services de la clinique"],
-      ["team.html", "Rencontrer l'équipe"],
+      ["walk-ins.html", "Sans rendez-vous"],
+      ["clinic-services.html", "Nos services"],
+      ["team.html", "L'équipe"],
       ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Services de la pharmacie"]] : []),
-      ["about.html", "À propos de nous"]
+      ["policies.html", "Politiques"],
+      ["about.html", "À propos"],
+      ["book-appointment.html", "Prendre rendez-vous"]
     ],
     footerHours: "Heures d'ouverture",
     footerHoursLines: ["Lun–Sam : 12 h – 20 h", "Dimanche : fermé"],
@@ -71,6 +78,8 @@ const T = {
     footerAddress: "[ADRESSE], Cornwall, ON [CODE POSTAL]",
     privacy: "Politique de confidentialité",
     rights: "Cliniques NorthWay. Tous droits réservés.",
+    ribbon: (fee) => `Veuillez noter que toute annulation faite moins de 24 heures à l’avance, ou tout rendez-vous manqué sans préavis, peut entraîner des frais de ${fee} pour absence.`,
+    ribbonLink: "Voir la politique", ribbonPause: "Pause", ribbonPlay: "Lecture", ribbonLabel: "Avis important",
     skip: "Passer au contenu principal"
   }
 };
@@ -163,6 +172,13 @@ function layout({ lang, slug, title, metaDesc, body }) {
   </div>
 </div>
 
+<div class="ribbon" role="region" aria-label="${t.ribbonLabel}">
+  <div class="ribbon-track" id="ribbon-track">
+    ${[0,1,2,3].map(i => `<span class="ribbon-item"${i ? ' aria-hidden="true"' : ""}>${t.ribbon(NO_SHOW_FEE[lang])} <a href="policies.html#late-cancellation"${i ? ' tabindex="-1"' : ""}>${t.ribbonLink}</a></span>`).join("\n    ")}
+  </div>
+  <button type="button" class="ribbon-pause" id="ribbon-pause" aria-pressed="false" data-pause="${t.ribbonPause}" data-play="${t.ribbonPlay}">${t.ribbonPause}</button>
+</div>
+
 <header class="site-header">
   <div class="container header-inner">
     <!-- NorthWay Clinics logo: vector redraw (assets/img/logo.svg, Montserrat outlined to paths) of the client-supplied raster. Swap in the official vector file if one is supplied. -->
@@ -193,7 +209,9 @@ ${body}
         <h4>${t.footerQuick}</h4>
         <ul>
           <li><a href="book-appointment.html">${navLabel(t, "book-appointment.html")}</a></li>
+          <li><a href="walk-ins.html">${navLabel(t, "walk-ins.html")}</a></li>
           <li><a href="clinic-services.html">${navLabel(t, "clinic-services.html")}</a></li>
+          <li><a href="policies.html">${navLabel(t, "policies.html")}</a></li>
           <li><a href="team.html">${navLabel(t, "team.html")}</a></li>
           <li><a href="about.html">${navLabel(t, "about.html")}</a></li>
         </ul>
@@ -291,7 +309,7 @@ ${heroSection({
     <h2>What we offer</h2>
     <div class="card-grid">
       ${card(ICONS.stethoscope,"b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
-      ${card(ICONS.cross,"b-accent2", "Urgent Care Guidance", null, "clinic-services.html#urgent-care")}
+      ${card(ICONS.cross,"b-accent2", "Walk-Ins &amp; Urgent Care", null, "walk-ins.html")}
       ${card(ICONS.person,"b-accent", "Meet the Team", null, "team.html")}
       ${SHOW_PHARMACY ? card(ICONS.pill,"b-accent2", "Pharmacy Services", null, "pharmacy-services.html") : ""}
       ${card(ICONS.bilingual,"b-accent2", "Bilingual Service", null, null)}
@@ -405,7 +423,7 @@ ${pageHeader("Book an Appointment", "New or returning — start here.")}
       <a class="btn btn-primary" href="#">Open Medeo Booking</a>
       <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
     </div>
-    <p class="hint" style="margin-top:20px;">Something urgent? <a href="clinic-services.html#urgent-care">See what to do instead</a>.</p>
+    <p class="hint" style="margin-top:20px;">Something urgent? <a href="walk-ins.html#urgent-care">See what to do instead</a>.</p>
   </div>
 </section>
 `
@@ -431,6 +449,7 @@ ${photoBand("../assets/img/family-physician.jpg", "A family physician checking o
         <div class="icon-badge b-accent2">${ICONS.cross}</div>
         <h3>Walk-In &amp; Urgent Care</h3>
         <p>Same-day visits, no appointment needed.</p>
+        <p><a href="walk-ins.html">Walk-in details</a></p>
       </div>
     </div>
 
@@ -442,31 +461,6 @@ ${photoBand("../assets/img/family-physician.jpg", "A family physician checking o
     <div class="btn-row">
       <a class="btn btn-primary" href="book-appointment.html">Register or Book</a>
     </div>
-  </div>
-</section>
-
-<section class="reveal" id="urgent-care">
-  <div class="container">
-    <h2>Urgent care guidance</h2>
-    <div class="callout warn">
-      <h3>Medical emergency?</h3>
-      <p><strong>Call 911</strong> or go to Cornwall Community Hospital's Emergency Department.</p>
-    </div>
-
-    <div class="card-grid" style="margin-top:28px;">
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.alarm}</div>
-        <h3>Urgent, during our hours</h3>
-        <p>Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> — often same-day.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent2">${ICONS.moon}</div>
-        <h3>Outside of our hours</h3>
-        <p>Call Health811 (8-1-1), any time.</p>
-      </div>
-    </div>
-
-    <p class="hint" style="margin-top:24px;">Don't email for anything urgent — call instead.</p>
   </div>
 </section>
 `
@@ -504,6 +498,94 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a
       <h3>Interested in partnering?</h3>
       <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
     </div>
+  </div>
+</section>
+`
+};
+
+pagesEn["walk-ins"] = {
+  title: "Walk-Ins",
+  metaDesc: "Walk-in and urgent care at NorthWay Clinics in Cornwall, Ontario — same-day visits, no appointment needed.",
+  body: `
+${pageHeader("Walk-Ins", "Same-day care, no appointment needed.")}
+<section class="reveal">
+  <div class="container">
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.clock}</div>
+        <h3>Walk-in hours</h3>
+        <p>Monday – Saturday<br>12:00 pm – 8:00 pm</p>
+        <p>Closed Sunday.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.person}</div>
+        <h3>What to bring</h3>
+        <p>Your health card and current medications.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.pin}</div>
+        <h3>Find us</h3>
+        <p>[STREET ADDRESS], Cornwall, ON [POSTAL CODE]</p>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Prefer a set time?</h3>
+      <p>Booking ahead guarantees your spot.</p>
+      <a class="btn btn-primary" href="book-appointment.html">Book an Appointment</a>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Urgent care guidance</h2>
+    <div class="callout warn">
+      <h3>Medical emergency?</h3>
+      <p><strong>Call 911</strong> or go to Cornwall Community Hospital's Emergency Department.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.alarm}</div>
+        <h3>Urgent, during our hours</h3>
+        <p>Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> — often same-day.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.moon}</div>
+        <h3>Outside of our hours</h3>
+        <p>Call Health811 (8-1-1), any time.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">Don't email for anything urgent — call instead.</p>
+  </div>
+</section>
+`
+};
+
+pagesEn.policies = {
+  title: "Policies",
+  metaDesc: "Clinic policies at NorthWay Clinics: late cancellation and no-show, and our respectful environment policy.",
+  body: `
+<!-- INTERNAL NOTE: policy wording is a draft based on the client's other site
+     (fee/notice) plus generic respectful-environment language. Needs client
+     review/approval before launch. See ProjectDocs/Rules.md. -->
+${pageHeader("Policies", "Please review before your visit.")}
+<section class="reveal" id="late-cancellation">
+  <div class="container">
+    <h2>Late Cancellation &amp; No-Show</h2>
+    <div class="callout warn">
+      <p>Cancellations with less than <strong>24 hours’ notice</strong>, or missed appointments without prior notice, may be subject to a <strong>${NO_SHOW_FEE.en} no-show fee</strong>.</p>
+    </div>
+    <p>We ask for at least 24 hours’ notice to cancel or reschedule, so we can offer your time to another patient. To cancel, call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or email <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="respectful-environment">
+  <div class="container">
+    <h2>Respectful Environment</h2>
+    <p>Everyone who walks through our doors deserves to feel safe and welcome. We do not tolerate abusive language, threats, harassment, or discrimination toward our staff or other patients.</p>
+    <p>Behaviour of this kind may result in being asked to leave, and in the clinic ending the care relationship.</p>
   </div>
 </section>
 `
@@ -629,7 +711,7 @@ ${heroSection({
     <h2>Nos services</h2>
     <div class="card-grid">
       ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
-      ${card(ICONS.cross,"b-accent2", "Que faire en cas d'urgence", null, "clinic-services.html#urgent-care")}
+      ${card(ICONS.cross,"b-accent2", "Sans rendez-vous et urgences", null, "walk-ins.html")}
       ${card(ICONS.person,"b-accent", "Rencontrer l'équipe", null, "team.html")}
       ${SHOW_PHARMACY ? card(ICONS.pill,"b-accent2", "Services de pharmacie", null, "pharmacy-services.html") : ""}
       ${card(ICONS.bilingual,"b-accent2", "Service bilingue", null, null)}
@@ -743,7 +825,7 @@ ${pageHeader("Prendre rendez-vous", "Nouveau ou déjà patient — commencez ici
       <a class="btn btn-primary" href="#">Ouvrir Medeo</a>
       <!-- TODO: replace with the practice's live Medeo booking URL before launch -->
     </div>
-    <p class="hint" style="margin-top:20px;">Besoin de soins urgents? <a href="clinic-services.html#urgent-care">Voyez quoi faire</a>.</p>
+    <p class="hint" style="margin-top:20px;">Besoin de soins urgents? <a href="walk-ins.html#urgent-care">Voyez quoi faire</a>.</p>
   </div>
 </section>
 `
@@ -768,6 +850,7 @@ ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examin
         <div class="icon-badge b-accent2">${ICONS.cross}</div>
         <h3>Soins sans rendez-vous et urgents</h3>
         <p>Visites le jour même, sans rendez-vous.</p>
+        <p><a href="walk-ins.html">Détails sans rendez-vous</a></p>
       </div>
     </div>
 
@@ -779,31 +862,6 @@ ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examin
     <div class="btn-row">
       <a class="btn btn-primary" href="book-appointment.html">S'inscrire ou réserver</a>
     </div>
-  </div>
-</section>
-
-<section class="reveal" id="urgent-care">
-  <div class="container">
-    <h2>Que faire en cas d'urgence</h2>
-    <div class="callout warn">
-      <h3>Urgence médicale?</h3>
-      <p><strong>Composez le 911</strong> ou rendez-vous aux urgences de l'Hôpital communautaire de Cornwall.</p>
-    </div>
-
-    <div class="card-grid" style="margin-top:28px;">
-      <div class="card">
-        <div class="icon-badge b-accent">${ICONS.alarm}</div>
-        <h3>Urgent, pendant nos heures</h3>
-        <p>Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> — souvent le jour même.</p>
-      </div>
-      <div class="card">
-        <div class="icon-badge b-accent2">${ICONS.moon}</div>
-        <h3>En dehors de nos heures</h3>
-        <p>Composez Health811 (8-1-1), en tout temps.</p>
-      </div>
-    </div>
-
-    <p class="hint" style="margin-top:24px;">N'envoyez pas de courriel pour une urgence — appelez-nous.</p>
   </div>
 </section>
 `
@@ -841,6 +899,94 @@ ${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant
       <h3>Intéressé par un partenariat?</h3>
       <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
     </div>
+  </div>
+</section>
+`
+};
+
+pagesFr["walk-ins"] = {
+  title: "Sans rendez-vous",
+  metaDesc: "Soins sans rendez-vous et urgents aux Cliniques NorthWay à Cornwall, en Ontario — visites le jour même.",
+  body: `
+${pageHeader("Sans rendez-vous", "Soins le jour même, sans rendez-vous.")}
+<section class="reveal">
+  <div class="container">
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.clock}</div>
+        <h3>Heures sans rendez-vous</h3>
+        <p>Lundi – Samedi<br>12 h – 20 h</p>
+        <p>Fermé le dimanche.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.person}</div>
+        <h3>Quoi apporter</h3>
+        <p>Votre carte santé et vos médicaments actuels.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.pin}</div>
+        <h3>Nous trouver</h3>
+        <p>[ADRESSE], Cornwall, ON [CODE POSTAL]</p>
+      </div>
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Vous préférez une heure précise?</h3>
+      <p>Réserver à l'avance garantit votre place.</p>
+      <a class="btn btn-primary" href="book-appointment.html">Prendre rendez-vous</a>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="urgent-care">
+  <div class="container">
+    <h2>Que faire en cas d'urgence</h2>
+    <div class="callout warn">
+      <h3>Urgence médicale?</h3>
+      <p><strong>Composez le 911</strong> ou rendez-vous aux urgences de l'Hôpital communautaire de Cornwall.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:28px;">
+      <div class="card">
+        <div class="icon-badge b-accent">${ICONS.alarm}</div>
+        <h3>Urgent, pendant nos heures</h3>
+        <p>Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> — souvent le jour même.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge b-accent2">${ICONS.moon}</div>
+        <h3>En dehors de nos heures</h3>
+        <p>Composez Health811 (8-1-1), en tout temps.</p>
+      </div>
+    </div>
+
+    <p class="hint" style="margin-top:24px;">N'envoyez pas de courriel pour une urgence — appelez-nous.</p>
+  </div>
+</section>
+`
+};
+
+pagesFr.policies = {
+  title: "Politiques",
+  metaDesc: "Politiques des Cliniques NorthWay : annulation tardive et absence, et politique d'un environnement respectueux.",
+  body: `
+<!-- INTERNAL NOTE: policy wording is a draft based on the client's other site
+     (fee/notice) plus generic respectful-environment language. Needs client
+     review/approval before launch. See ProjectDocs/Rules.md. -->
+${pageHeader("Politiques", "À lire avant votre visite.")}
+<section class="reveal" id="late-cancellation">
+  <div class="container">
+    <h2>Annulation tardive et absence</h2>
+    <div class="callout warn">
+      <p>Toute annulation faite moins de <strong>24 heures à l’avance</strong>, ou tout rendez-vous manqué sans préavis, peut entraîner des <strong>frais de ${NO_SHOW_FEE.fr} pour absence</strong>.</p>
+    </div>
+    <p>Nous demandons un préavis d’au moins 24 heures pour annuler ou reporter un rendez-vous, afin de pouvoir offrir votre place à un autre patient. Pour annuler, appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou écrivez à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="respectful-environment">
+  <div class="container">
+    <h2>Environnement respectueux</h2>
+    <p>Toute personne qui franchit nos portes mérite de se sentir en sécurité et la bienvenue. Nous ne tolérons ni propos injurieux, ni menaces, ni harcèlement, ni discrimination envers notre personnel ou les autres patients.</p>
+    <p>Un tel comportement peut entraîner une demande de quitter les lieux et la fin de la relation de soins avec la clinique.</p>
   </div>
 </section>
 `
@@ -951,7 +1097,7 @@ function writeSite() {
   // still lands somewhere useful, instead of a straight 404.
   const RETIRED_REDIRECTS = {
     "register.html": "book-appointment.html",
-    "urgent-care.html": "clinic-services.html#urgent-care",
+    "urgent-care.html": "walk-ins.html#urgent-care",
     "long-term-care.html": "clinic-services.html",
     "pharmacy-services.html": "clinic-services.html",
     "visit-us.html": "about.html#visit-us"

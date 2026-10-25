@@ -176,7 +176,7 @@ nav.main-nav a.nav-cta::after { display: none; }
 }
 .nav-toggle:hover { background: var(--accent-light); }
 
-@media (max-width: 860px) {
+@media (max-width: 1040px) {
   nav.main-nav {
     display: none; width: 100%;
     animation: navDrop 0.2s var(--ease);
@@ -220,7 +220,7 @@ nav.main-nav a.nav-cta {
   transition: background 0.18s var(--ease), transform 0.18s var(--ease);
 }
 nav.main-nav a.nav-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
-@media (max-width: 860px) {
+@media (max-width: 1040px) {
   nav.main-nav a.nav-cta { display: inline-block; margin-top: 6px; }
 }
 
@@ -509,4 +509,38 @@ footer.site-footer li a { display: inline-block; padding: 10px 0; }  /* 44px hit
     animation: none !important;
   }
   .card:hover, .provider-card:hover, .btn-primary:hover, .btn-secondary:hover { transform: none; }
+}
+
+/* ---------- No-show notice ribbon ----------
+   Scrolling announcement (client request). Safeguards (WCAG 2.2.2): visible
+   Pause button, pauses on hover/focus, and is static (no motion) when the
+   visitor prefers reduced motion. */
+.ribbon {
+  display: flex; align-items: center;
+  background: var(--accent2); color: #fff;
+  font-size: 15px; font-weight: 600;
+  overflow: hidden;
+}
+.ribbon-track {
+  display: flex; flex: 1 1 auto; min-width: 0;
+  white-space: nowrap;
+  width: max-content;
+  animation: ribbonScroll 60s linear infinite;
+}
+.ribbon:hover .ribbon-track, .ribbon:focus-within .ribbon-track, .ribbon.is-paused .ribbon-track { animation-play-state: paused; }
+.ribbon-item { padding: 10px 40px 10px 0; }
+.ribbon-item::after { content: "•"; margin-left: 40px; opacity: 0.7; }
+.ribbon a { color: #fff; text-decoration: underline; }
+.ribbon-pause {
+  flex: 0 0 auto; margin: 0 12px; min-height: 36px; padding: 4px 14px;
+  background: rgba(255,255,255,0.18); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.6); border-radius: 999px; cursor: pointer;
+  position: relative; z-index: 1;
+}
+.ribbon-pause:hover { background: rgba(255,255,255,0.3); }
+@keyframes ribbonScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .ribbon-track { animation: none; width: auto; flex-wrap: wrap; white-space: normal; padding: 0 16px; }
+  .ribbon-item[aria-hidden="true"], .ribbon-item::after, .ribbon-pause { display: none; }
+  .ribbon-item { padding: 10px 0; }
 }

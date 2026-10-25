@@ -183,3 +183,16 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
+
+// ---- Notice ribbon: Pause / Play (WCAG 2.2.2) ----
+(function () {
+  var btn = document.getElementById("ribbon-pause");
+  if (!btn) return;
+  var ribbon = btn.closest(".ribbon");
+  btn.addEventListener("click", function () {
+    var paused = ribbon.classList.toggle("is-paused");
+    btn.setAttribute("aria-pressed", paused ? "true" : "false");
+    btn.textContent = paused ? btn.getAttribute("data-play") : btn.getAttribute("data-pause");
+  });
+})();

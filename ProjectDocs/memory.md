@@ -436,6 +436,18 @@ Care section, EN+FR) in `build-site.js` behind `SHOW_PHARMACY = false`. When
 false: no nav item, no home card, page not generated (stub redirects to Clinic
 Services). Flip to true and rebuild to restore; tested both states.
 
+**2026-10-25 — Walk-Ins tab, Policies tab, no-show ribbon (modelled on
+maplecures.ca).** Added a Walk-Ins page (hours, what to bring, urgent-care
+guidance moved here from Clinic Services), a Policies page (Late Cancellation &
+No-Show, Respectful Environment) and a scrolling ribbon under the top bar with
+the no-show fee notice + "View policy" link, on every page (EN+FR). Nav is now
+Walk-Ins / Clinic Services / Meet the Team / Policies / About Us + Book CTA;
+Home tab dropped (logo links home) and French labels shortened to avoid
+wrapping. The ribbon is an explicit exception to the no-animation rule (Pause
+button, hover/focus pause, static for reduced motion). **Open:** $80 fee and
+policy wording copied from maplecures.ca/draft — confirm with client; the
+MapleCures policies are branded images, so none were copied.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.
