@@ -430,6 +430,12 @@ map) renamed "Hours & Location" / "Heures et emplacement". Open: "Accepting
 new patients" is still static text in the Clinic Services card as well as
 the admin-controlled banner (can drift); no map yet (needs real address).
 
+**2026-10-25 — Pharmacy pages hidden, not deleted.** Client wants the
+pharmacy content kept for later. Restored the Pharmacy Services page (+ Long-Term
+Care section, EN+FR) in `build-site.js` behind `SHOW_PHARMACY = false`. When
+false: no nav item, no home card, page not generated (stub redirects to Clinic
+Services). Flip to true and rebuild to restore; tested both states.
+
 ## Next things likely to happen
 
 - Finish the backend registration endpoint + wire the frontend form to it.

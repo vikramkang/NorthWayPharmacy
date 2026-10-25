@@ -60,8 +60,11 @@ these rules win over convenience or speed.
   preference.
 - **Fewer top-level nav items, not more.** Nav is 5 items: Home, Book an
   Appointment, Clinic Services, Meet the Team (`team.html`, opens the doctors
-  list directly), About Us. The business is now **clinic only — no pharmacy**
-  (client decision, Oct 2026): never reintroduce pharmacy/long-term-care copy.
+  list directly), About Us. The business is **clinic only for now**. Pharmacy
+  pages are kept in the source but hidden behind `SHOW_PHARMACY = false` at the
+  top of `build-site.js` (no nav item, home card, or page; the old URL
+  redirects to Clinic Services). Set it to `true` to bring them back; review
+  the clinic-only hero/trust-strip wording when you do.
   Register lives on Book an Appointment; Urgent Care is a section of Clinic
   Services (`#urgent-care`); Hours/Location/Contact are the `#visit-us`
   section of About Us. Retired URLs (`register`, `urgent-care`,

@@ -21,6 +21,10 @@ const OUT = __dirname;
 // launch, and remove the sitewide noindex meta tag / robots.txt block at
 // the same time — see ProjectDocs/Architecture.md §5 and Rules.md.
 const BUILD_ID = Date.now().toString(36); // cache-buster so browsers fetch the latest stylesheet after each rebuild
+// Pharmacy is paused (clinic-only for now). Flip to true to bring back the
+// Pharmacy Services page (+ Long-Term Care section), nav item and home card.
+// Note: hero/trust-strip wording is clinic-only; review it when re-enabling.
+const SHOW_PHARMACY = false;
 const SITE_ORIGIN = "https://vikramkang.github.io/NorthWayPharmacy";
 
 // ---------------------------------------------------------------------
@@ -36,6 +40,7 @@ const T = {
       ["book-appointment.html", "Book an Appointment"],
       ["clinic-services.html", "Clinic Services"],
       ["team.html", "Meet the Team"],
+      ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Pharmacy Services"]] : []),
       ["about.html", "About Us"]
     ],
     footerHours: "Hours",
@@ -56,6 +61,7 @@ const T = {
       ["book-appointment.html", "Prendre rendez-vous"],
       ["clinic-services.html", "Services de la clinique"],
       ["team.html", "Rencontrer l'équipe"],
+      ...(SHOW_PHARMACY ? [["pharmacy-services.html", "Services de la pharmacie"]] : []),
       ["about.html", "À propos de nous"]
     ],
     footerHours: "Heures d'ouverture",
@@ -287,6 +293,7 @@ ${heroSection({
       ${card(ICONS.stethoscope,"b-accent", "Family &amp; Walk-In Clinic", null, "clinic-services.html")}
       ${card(ICONS.cross,"b-accent2", "Urgent Care Guidance", null, "clinic-services.html#urgent-care")}
       ${card(ICONS.person,"b-accent", "Meet the Team", null, "team.html")}
+      ${SHOW_PHARMACY ? card(ICONS.pill,"b-accent2", "Pharmacy Services", null, "pharmacy-services.html") : ""}
       ${card(ICONS.bilingual,"b-accent2", "Bilingual Service", null, null)}
     </div>
   </div>
@@ -465,6 +472,43 @@ ${photoBand("../assets/img/family-physician.jpg", "A family physician checking o
 `
 };
 
+pagesEn["pharmacy-services"] = {
+  title: "Pharmacy Services",
+  metaDesc: "Retail dispensing, vaccinations, and compliance packaging at NorthWay Pharmacy.",
+  body: `
+${pageHeader("Pharmacy Services", "Everything you need, close by.")}
+${photoBand("../assets/img/pharmacy-prescription.jpg", "A pharmacist preparing a bilingual prescription pickup")}
+<section class="reveal">
+  <div class="container">
+    <div class="card-grid">
+      ${card(ICONS.pill,"b-accent", "Prescriptions", "Filled with a pharmacist consultation.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Seasonal and travel shots, walk in anytime.")}
+      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Sorted by date and time.")}
+      ${card(ICONS.house,"b-accent2", "Long-Term Care &amp; Retirement Home Services", null, "#long-term-care")}
+    </div>
+
+    <p class="hint" style="margin-top:28px;">Need a refill or transfer? Call <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Long-Term Care &amp; Retirement Home Services</h2></div>
+  ${photoBand("../assets/img/ltc-support.jpg", "A caregiver holding hands with a resident during a home visit")}
+  <div class="container">
+    <div class="card-grid">
+      ${card(ICONS.box,"b-accent", "Easy-to-Follow Packaging", "Organized by resident, date, and time.")}
+      ${card(ICONS.truck,"b-accent2", "Scheduled Delivery", "Built around your facility's routine.")}
+      ${card(ICONS.person,"b-accent", "One Point of Contact", "A dedicated pharmacist for your team.")}
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Interested in partnering?</h3>
+      <p>Contact us at <a href="tel:[PHONE NUMBER]">[PHONE NUMBER]</a> or <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a>.</p>
+    </div>
+  </div>
+</section>
+`
+};
+
 pagesEn.team = {
   title: "Meet the Team",
   metaDesc: "Meet the doctors and staff at NorthWay Clinics in Cornwall, Ontario.",
@@ -587,6 +631,7 @@ ${heroSection({
       ${card(ICONS.stethoscope,"b-accent", "Clinique familiale et sans rendez-vous", null, "clinic-services.html")}
       ${card(ICONS.cross,"b-accent2", "Que faire en cas d'urgence", null, "clinic-services.html#urgent-care")}
       ${card(ICONS.person,"b-accent", "Rencontrer l'équipe", null, "team.html")}
+      ${SHOW_PHARMACY ? card(ICONS.pill,"b-accent2", "Services de pharmacie", null, "pharmacy-services.html") : ""}
       ${card(ICONS.bilingual,"b-accent2", "Service bilingue", null, null)}
     </div>
   </div>
@@ -764,6 +809,43 @@ ${photoBand("../assets/img/family-physician.jpg", "Un médecin de famille examin
 `
 };
 
+pagesFr["pharmacy-services"] = {
+  title: "Services de la pharmacie",
+  metaDesc: "Distribution de médicaments, vaccinations et emballage de conformité à la Pharmacie NorthWay.",
+  body: `
+${pageHeader("Services de la pharmacie", "Tout ce qu'il vous faut, juste à côté.")}
+${photoBand("../assets/img/pharmacy-prescription.jpg", "Un pharmacien préparant une ordonnance bilingue")}
+<section class="reveal">
+  <div class="container">
+    <div class="card-grid">
+      ${card(ICONS.pill,"b-accent", "Ordonnances", "Préparées avec une consultation d'un pharmacien.")}
+      ${card(ICONS.droplet,"b-accent2", "Vaccinations", "Saisonnières et de voyage, sans rendez-vous.")}
+      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par date et heure.")}
+      ${card(ICONS.house,"b-accent2", "Services de soins de longue durée et résidences pour retraités", null, "#long-term-care")}
+    </div>
+
+    <p class="hint" style="margin-top:28px;">Besoin d'un renouvellement ou transfert? Appelez le <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a>.</p>
+  </div>
+</section>
+
+<section class="reveal" id="long-term-care">
+  <div class="container"><h2>Services de soins de longue durée et résidences pour retraités</h2></div>
+  ${photoBand("../assets/img/ltc-support.jpg", "Une aidante tenant la main d'une résidente lors d'une visite à domicile")}
+  <div class="container">
+    <div class="card-grid">
+      ${card(ICONS.box,"b-accent", "Emballage facile à suivre", "Organisé par résident, date et heure.")}
+      ${card(ICONS.truck,"b-accent2", "Livraison planifiée", "Adaptée à la routine de votre établissement.")}
+      ${card(ICONS.person,"b-accent", "Un seul point de contact", "Un pharmacien dédié pour votre équipe.")}
+    </div>
+    <div class="callout info" style="margin-top:28px;">
+      <h3>Intéressé par un partenariat?</h3>
+      <p>Contactez-nous au <a href="tel:[NUMÉRO DE TÉLÉPHONE]">[NUMÉRO DE TÉLÉPHONE]</a> ou à <a href="mailto:[ADRESSE COURRIEL]">[ADRESSE COURRIEL]</a>.</p>
+    </div>
+  </div>
+</section>
+`
+};
+
 pagesFr.team = {
   title: "Rencontrer l'équipe",
   metaDesc: "Rencontrez les médecins et le personnel des Cliniques NorthWay à Cornwall, en Ontario.",
@@ -877,13 +959,16 @@ function writeSite() {
 
   [["en", pagesEn], ["fr", pagesFr]].forEach(([lang, pages]) => {
     Object.keys(pages).forEach(slug => {
+      if (!SHOW_PHARMACY && slug === "pharmacy-services") return; // hidden: stub written below
       const p = pages[slug];
       let html = layout({ lang, slug, title: p.title, metaDesc: p.metaDesc, body: p.body });
       html = fixLangToggle(html, lang, slug);
       fs.writeFileSync(path.join(OUT, lang, slug + ".html"), html);
     });
 
-    Object.entries(RETIRED_REDIRECTS).forEach(([oldFile, newTarget]) => {
+    const redirects = Object.assign({}, RETIRED_REDIRECTS);
+    if (SHOW_PHARMACY) { delete redirects["pharmacy-services.html"]; redirects["long-term-care.html"] = "pharmacy-services.html#long-term-care"; }
+    Object.entries(redirects).forEach(([oldFile, newTarget]) => {
       const destSlug = newTarget.split("#")[0];
       const destLabel = navLabel(T[lang], destSlug);
       const linkText = lang === "fr" ? `Continuer vers ${destLabel}` : `Continue to ${destLabel}`;
